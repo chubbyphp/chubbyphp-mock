@@ -107,7 +107,7 @@ trait MockByCallsTrait
         int $i,
         array $expectedArguments,
         array $arguments
-    ): void {
+    ) {
         $expectedArgumentsCount = count($expectedArguments);
         $argumentsCount = count($arguments);
 

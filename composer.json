@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": "~7.0",
-        "phpunit/phpunit": "^6.0|^7.0"
+        "phpunit/phpunit": "^6.5|^7.0"
     },
     "autoload": {
         "psr-4": { "Chubbyphp\\Mock\\": "src/" }
