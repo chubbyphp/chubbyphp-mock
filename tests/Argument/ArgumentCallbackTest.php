@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Chubbyphp\Tests\Mock\Argument;
 
-use PHPUnit\Framework\TestCase;
 use Chubbyphp\Mock\Argument\ArgumentCallback;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Chubbyphp\Mock\Argument\ArgumentCallback

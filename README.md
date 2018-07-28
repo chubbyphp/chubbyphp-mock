@@ -27,6 +27,40 @@ composer require chubbyphp/chubbyphp-mock "~1.0"
 
 ## Usage
 
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace MyProject\Tests;
+
+use Chubbyphp\Mock\Argument\ArgumentInstanceOf;
+use Chubbyphp\Mock\Call;
+use Chubbyphp\Mock\MockByCallsTrait;
+use MyProject\Services\DateTimeService;
+use MyProject\Services\MainService;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+
+class MyTest extends TestCase
+{
+    use MockByCallsTrait;
+
+    public function testExecute()
+    {
+        /** @var DateTimeService|MockObject $dateTimeService */
+        $dateTimeService = $this->getMockByCalls(DateTimeService::class, [
+            Call::create('format')
+                ->with(new ArgumentInstanceOf(\DateTime::class), 'c'),
+                ->willReturn('2004-02-12T15:19:21+00:00')
+        ]);
+
+        $manager = new MainService($dateTimeService);
+        $manager->execute();
+    }
+}
+```
+
 ## Copyright
 
 Dominik Zogg 2018

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Chubbyphp\Tests\Mock\Argument;
 
-use PHPUnit\Framework\TestCase;
 use Chubbyphp\Mock\Argument\ArgumentInstanceOf;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Chubbyphp\Mock\Argument\ArgumentInstanceOf

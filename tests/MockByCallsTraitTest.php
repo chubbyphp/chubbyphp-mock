@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Chubbyphp\Tests\Mock;
 
+use Chubbyphp\Mock\Argument\ArgumentInstanceOf;
+use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
+use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\InvocationMocker;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\Argument\ArgumentInstanceOf;
-use PHPUnit\Framework\AssertionFailedError;
 
 /**
  * @covers \Chubbyphp\Mock\MockByCallsTrait

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Chubbyphp\Tests\Mock;
 
-use PHPUnit\Framework\TestCase;
 use Chubbyphp\Mock\Call;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Chubbyphp\Mock\Call
