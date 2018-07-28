@@ -1,0 +1,24 @@
+{
+    "name": "chubbyphp/chubbyphp-mock",
+    "description": "Chubbyphp Mock",
+    "keywords": ["chubbyphp", "slim", "phpunit", "mock"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dominik Zogg",
+            "email": "dominik.zogg@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "~7.0",
+        "phpunit/phpunit": "^6.0|^7.0"
+    },
+    "autoload": {
+        "psr-4": { "Chubbyphp\\Mock\\": "src/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
