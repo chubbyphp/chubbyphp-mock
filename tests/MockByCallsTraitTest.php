@@ -123,7 +123,7 @@ class MockByCallsTraitTest extends TestCase
             $mock->sample(new \DateTime());
         } catch (ExpectationFailedException $e) {
             self::assertSame(
-                'Method "sample" on class "Chubbyphp\Tests\Mock\SampleInterface" at call with index 0'.PHP_EOL.
+                'Method "sample" on class "Chubbyphp\Tests\Mock\SampleInterface" at call 0, argument 0'.PHP_EOL.
                 'Failed asserting that DateTime Object (...) is an instance of class "stdClass".',
                 $e->getMessage()
             );

@@ -20,12 +20,12 @@ class ArgumentCallback implements ArgumentInterface
     }
 
     /**
-     * @param mixed  $argument
-     * @param string $message
+     * @param mixed $argument
+     * @param array $context
      */
-    public function assert($argument, string $message)
+    public function assert($argument, array $context)
     {
         $callback = $this->callback;
-        $callback($argument, $message);
+        $callback($argument, $context);
     }
 }

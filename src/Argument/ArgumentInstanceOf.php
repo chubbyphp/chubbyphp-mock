@@ -22,11 +22,21 @@ class ArgumentInstanceOf implements ArgumentInterface
     }
 
     /**
-     * @param mixed  $argument
-     * @param string $message
+     * @param mixed $argument
+     * @param array $context
      */
-    public function assert($argument, string $message)
+    public function assert($argument, array $context)
     {
-        Assert::assertInstanceOf($this->class, $argument, $message);
+        Assert::assertInstanceOf(
+            $this->class,
+            $argument,
+            sprintf(
+                'Method "%s" on class "%s" at call %d, argument %d',
+                $context['method'],
+                $context['class'],
+                $context['at'],
+                $context['index']
+            )
+        );
     }
 }

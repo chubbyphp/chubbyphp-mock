@@ -16,24 +16,24 @@ class ArgumentInstanceOfTest extends TestCase
     public function testAssert()
     {
         $expectedArgument = new \stdClass();
-        $expectedMessage = 'message';
+        $expectContext = ['class' => 'class', 'method' => 'method', 'at' => 0, 'index' => 0];
 
         $argumentCallback = new ArgumentInstanceOf(\stdClass::class);
-        $argumentCallback->assert($expectedArgument, $expectedMessage);
+        $argumentCallback->assert($expectedArgument, $expectContext);
     }
 
     public function testAssertFail()
     {
         $expectedArgument = new \DateTime('2004-02-12T15:19:21+00:00');
-        $expectedMessage = 'message';
+        $expectContext = ['class' => 'class', 'method' => 'method', 'at' => 0, 'index' => 0];
 
         $argumentCallback = new ArgumentInstanceOf(\stdClass::class);
 
         try {
-            $argumentCallback->assert($expectedArgument, $expectedMessage);
+            $argumentCallback->assert($expectedArgument, $expectContext);
         } catch (ExpectationFailedException $e) {
             self::assertSame(
-                'message'.PHP_EOL.
+                'Method "method" on class "class" at call 0, argument 0'.PHP_EOL.
                 'Failed asserting that DateTime Object (...) is an instance of class "stdClass".',
                 $e->getMessage()
             );

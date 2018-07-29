@@ -40,10 +40,10 @@ trait MockByCallsTrait
             return $mock;
         }
 
-        foreach ($calls as $i => $call) {
-            $mock->expects(self::at($i))
+        foreach ($calls as $at => $call) {
+            $mock->expects(self::at($at))
                 ->method($call->getMethod())
-                ->willReturnCallback($this->getMockCallback($class, $i, $call, $mock));
+                ->willReturnCallback($this->getMockCallback($class, $at, $call, $mock));
         }
 
         $callIndex = 0;
@@ -63,7 +63,7 @@ trait MockByCallsTrait
 
     /**
      * @param string     $class
-     * @param int        $i
+     * @param int        $at
      * @param Call       $call
      * @param MockObject $mock
      *
@@ -71,13 +71,13 @@ trait MockByCallsTrait
      */
     private function getMockCallback(
         string $class,
-        int $i,
+        int $at,
         Call $call,
         MockObject $mock
     ): \Closure {
-        return function () use ($class, $i, $call, $mock) {
+        return function () use ($class, $at, $call, $mock) {
             if ($call->hasWith()) {
-                $this->compareArguments($class, $call->getMethod(), $i, $call->getWith(), func_get_args());
+                $this->compareArguments($class, $call->getMethod(), $at, $call->getWith(), func_get_args());
             }
 
             if (null !== $exception = $call->getException()) {
@@ -97,14 +97,14 @@ trait MockByCallsTrait
     /**
      * @param string $class
      * @param string $method
-     * @param int    $i
+     * @param int    $at
      * @param array  $expectedArguments
      * @param array  $arguments
      */
     private function compareArguments(
         string $class,
         string $method,
-        int $i,
+        int $at,
         array $expectedArguments,
         array $arguments
     ) {
@@ -115,20 +115,20 @@ trait MockByCallsTrait
             $expectedArgumentsCount,
             $argumentsCount,
             sprintf(
-                'Method "%s" on class "%s" at call with index %d, got %d arguments, but %d are expected',
+                'Method "%s" on class "%s" at call %d, got %d arguments, but %d are expected',
                 $method,
                 $class,
-                $i,
+                $at,
                 $expectedArgumentsCount,
                 $argumentsCount
             )
         );
 
-        foreach ($expectedArguments as $y => $expectedArgument) {
+        foreach ($expectedArguments as $index => $expectedArgument) {
             if ($expectedArgument instanceof ArgumentInterface) {
                 $expectedArgument->assert(
-                    $arguments[$y],
-                    sprintf('Method "%s" on class "%s" at call with index %d', $method, $class, $i)
+                    $arguments[$index],
+                    ['class' => $class, 'method' => $method, 'at' => $at, 'index' => $index]
                 );
 
                 continue;
@@ -136,8 +136,14 @@ trait MockByCallsTrait
 
             self::assertSame(
                 $expectedArgument,
-                $arguments[$y],
-                sprintf('Method "%s" on class "%s" at call with index %d', $method, $class, $i)
+                $arguments[$index],
+                sprintf(
+                    'Method "%s" on class "%s" at call %d, argument %d',
+                    $method,
+                    $class,
+                    $at,
+                    $index
+                )
             );
         }
     }

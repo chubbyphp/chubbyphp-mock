@@ -7,8 +7,8 @@ namespace Chubbyphp\Mock\Argument;
 interface ArgumentInterface
 {
     /**
-     * @param mixed  $argument
-     * @param string $message
+     * @param mixed $argument
+     * @param array $context
      */
-    public function assert($argument, string $message);
+    public function assert($argument, array $context);
 }

@@ -15,15 +15,15 @@ class ArgumentCallbackTest extends TestCase
     public function testAssert()
     {
         $expectedArgument = 'test';
-        $expectedMessage = 'message';
+        $expectContext = ['class' => 'class', 'method' => 'method', 'at' => 0, 'index' => 0];
 
         $argumentCallback = new ArgumentCallback(
-            function ($argument, string $message) use ($expectedArgument, $expectedMessage) {
+            function ($argument, array $context) use ($expectedArgument, $expectContext) {
                 self::assertSame($expectedArgument, $argument);
-                self::assertSame($expectedMessage, $message);
+                self::assertSame($expectContext, $context);
             }
         );
 
-        $argumentCallback->assert($expectedArgument, $expectedMessage);
+        $argumentCallback->assert($expectedArgument, $expectContext);
     }
 }
