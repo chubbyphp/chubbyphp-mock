@@ -49,9 +49,15 @@ trait MockByCallsTrait
         $callIndex = 0;
 
         $mock->expects(self::any())->method(self::anything())->willReturnCallback(
-            function () use ($class, $callCount, &$callIndex) {
+            function () use ($class, $mock, $callCount, &$callIndex) {
                 if ($callIndex === $callCount) {
-                    self::fail(sprintf('Additional call at index %d on class "%s"!', $callIndex, $class));
+                    $options = JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+
+                    self::fail(
+                        sprintf('Additional call at index %d on class "%s"', $callIndex, $class)
+                        .PHP_EOL
+                        .json_encode($this->getStackTrace($mock), JSON_PRETTY_PRINT | $options)
+                    );
                 }
 
                 ++$callIndex;
@@ -146,5 +152,37 @@ trait MockByCallsTrait
                 )
             );
         }
+    }
+
+    /**
+     * @param MockObject $mock
+     *
+     * @return array
+     */
+    private function getStackTrace(MockObject $mock): array
+    {
+        $mockName = (new \ReflectionObject($mock))->getShortName();
+
+        $trace = [];
+        $enableTrace = false;
+        foreach (debug_backtrace() as $i => $row) {
+            if (isset($row['class']) && $mockName === $row['class']) {
+                $enableTrace = true;
+            }
+
+            if ($enableTrace) {
+                $traceRow = $row['class'].$row['type'].$row['function'];
+
+                if (isset($row['file'])) {
+                    $traceRow .= sprintf(' (%s:%d)', $row['file'], $row['line']);
+                }
+
+                $trace[] = $traceRow;
+            }
+        }
+
+        krsort($trace);
+
+        return array_values($trace);
     }
 }

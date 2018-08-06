@@ -189,10 +189,30 @@ class MockByCallsTraitTest extends TestCase
         try {
             $mock->sample($argument1);
         } catch (AssertionFailedError $e) {
-            self::assertSame(
-                'Additional call at index 1 on class "Chubbyphp\Tests\Mock\SampleInterface"!',
-                $e->getMessage()
+            $exceptionMessage = <<<'EOT'
+Additional call at index 1 on class "Chubbyphp\Tests\Mock\SampleInterface"
+[
+    "PHPUnit\\TextUI\\Command::main (/vagrant/chubbyphp-mock/vendor/phpunit/phpunit/phpunit:53)",
+    "PHPUnit\\TextUI\\Command->run (/vagrant/chubbyphp-mock/vendor/phpunit/phpunit/src/TextUI/Command.php:155)",
+    "PHPUnit\\TextUI\\TestRunner->doRun (/vagrant/chubbyphp-mock/vendor/phpunit/phpunit/src/TextUI/Command.php:200)",
+    "PHPUnit\\Framework\\TestSuite->run (/vagrant/chubbyphp-mock/vendor/phpunit/phpunit/src/TextUI/TestRunner.php:566)",
+    "PHPUnit\\Framework\\TestSuite->run (/vagrant/chubbyphp-mock/vendor/phpunit/phpunit/src/Framework/TestSuite.php:765)",
+    "PHPUnit\\Framework\\TestCase->run (/vagrant/chubbyphp-mock/vendor/phpunit/phpunit/src/Framework/TestSuite.php:765)",
+    "PHPUnit\\Framework\\TestResult->run (/vagrant/chubbyphp-mock/vendor/phpunit/phpunit/src/Framework/TestCase.php:798)",
+    "PHPUnit\\Framework\\TestCase->runBare (/vagrant/chubbyphp-mock/vendor/phpunit/phpunit/src/Framework/TestResult.php:645)",
+    "PHPUnit\\Framework\\TestCase->runTest (/vagrant/chubbyphp-mock/vendor/phpunit/phpunit/src/Framework/TestCase.php:844)",
+    "Chubbyphp\\Tests\\Mock\\MockByCallsTraitTest->testInterfaceWithAdditionalCall (/vagrant/chubbyphp-mock/vendor/phpunit/phpunit/src/Framework/TestCase.php:1146)",
+    "Mock_SampleInterface_7cdf04ac->sample (/vagrant/chubbyphp-mock/tests/MockByCallsTraitTest.php:190)"
+]
+EOT;
+
+            $exceptionMessage = str_replace(
+                'Mock_SampleInterface_7cdf04ac',
+                (new \ReflectionObject($mock))->getShortName(),
+                $exceptionMessage
             );
+
+            self::assertSame($exceptionMessage, $e->getMessage());
 
             return;
         }
