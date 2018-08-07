@@ -34,12 +34,6 @@ trait MockByCallsTrait
 
         $callCount = count($calls);
 
-        if (0 === $callCount) {
-            $mock->expects(self::never())->method(self::anything());
-
-            return $mock;
-        }
-
         foreach ($calls as $at => $call) {
             $mock->expects(self::at($at))
                 ->method($call->getMethod())

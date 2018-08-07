@@ -9,7 +9,6 @@ use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\InvocationMocker;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -20,90 +19,10 @@ class MockByCallsTraitTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testInterfaceWithoutCallsButRunMethodExpectExpectationFailedExceptions()
-    {
-        /** @var SampleInterface|MockObject $mock */
-        $mock = $this->getMockByCalls(SampleInterface::class);
-
-        clone $mock;
-
-        try {
-            $mock->sample('argument1');
-        } catch (ExpectationFailedException $e) {
-            self::assertSame(
-                'Chubbyphp\Tests\Mock\SampleInterface::sample(\'argument1\', true) was not expected to be called.',
-                $e->getMessage()
-            );
-
-            /** @var InvocationMocker $invocationMocker */
-            $invocationMocker = $mock->__phpunit_getInvocationMocker();
-
-            try {
-                $invocationMocker->verify();
-            } catch (ExpectationFailedException $e) {
-                self::assertSame(
-                    'Expectation failed for method name is anything when invoked 0 time(s).'.PHP_EOL.
-                    'Method was expected to be called 0 times, actually called 1 times.'.PHP_EOL,
-                    $e->getMessage()
-                );
-
-                $reflectionProperty = new \ReflectionProperty($mock, '__phpunit_invocationMocker');
-                $reflectionProperty->setAccessible(true);
-                $reflectionProperty->setValue($mock, null);
-
-                return;
-            }
-
-            self::fail('Expectation failed for method name is anything when invoked 0 time(s).');
-        }
-
-        self::fail('Chubbyphp\Tests\Mock\SampleInterface::sample(\'argument1\', true) was not expected to be called.');
-    }
-
-    public function testClassWithoutCallsButRunMethodExpectExpectationFailedExceptions()
-    {
-        /** @var SampleClass|MockObject $mock */
-        $mock = $this->getMockByCalls(SampleClass::class);
-
-        clone $mock;
-
-        try {
-            $mock->sample('argument1');
-        } catch (ExpectationFailedException $e) {
-            self::assertSame(
-                'Chubbyphp\Tests\Mock\SampleClass::sample(\'argument1\', true) was not expected to be called.',
-                $e->getMessage()
-            );
-
-            /** @var InvocationMocker $invocationMocker */
-            $invocationMocker = $mock->__phpunit_getInvocationMocker();
-
-            try {
-                $invocationMocker->verify();
-            } catch (ExpectationFailedException $e) {
-                self::assertSame(
-                    'Expectation failed for method name is anything when invoked 0 time(s).'.PHP_EOL.
-                    'Method was expected to be called 0 times, actually called 1 times.'.PHP_EOL,
-                    $e->getMessage()
-                );
-
-                $reflectionProperty = new \ReflectionProperty($mock, '__phpunit_invocationMocker');
-                $reflectionProperty->setAccessible(true);
-                $reflectionProperty->setValue($mock, null);
-
-                return;
-            }
-
-            self::fail('Expectation failed for method name is anything when invoked 0 time(s).');
-        }
-
-        self::fail('Chubbyphp\Tests\Mock\SampleInterface::sample(\'argument1\', true) was not expected to be called.');
-    }
-
     public function testInterfaceWithCallUsingArgumentInterface()
     {
-        /** @var SampleInterface|MockObject $mock */
-        $mock = $this->getMockByCalls(SampleInterface::class, [
+        /** @var SampleClass|MockObject $mock */
+        $mock = $this->getMockByCalls(SampleClass::class, [
             Call::create('sample')
                 ->with(new ArgumentInstanceOf(\DateTime::class), true),
         ]);
