@@ -15,7 +15,7 @@ A simple mock solution for phpunit.
 ## Requirements
 
  * php: ~7.0
-
+ * phpunit/phpunit: ^6.5|^7.0
 
 ## Installation
 
