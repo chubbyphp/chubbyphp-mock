@@ -22,7 +22,7 @@ A simple mock solution for phpunit.
 Through [Composer](http://getcomposer.org) as [chubbyphp/chubbyphp-mock][1].
 
 ```sh
-composer require chubbyphp/chubbyphp-mock "~1.0"
+composer require chubbyphp/chubbyphp-mock "~1.1"
 ```
 
 ## Usage

@@ -6,31 +6,24 @@ namespace Chubbyphp\Mock;
 
 use Chubbyphp\Mock\Argument\ArgumentInterface;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 
 trait MockByCallsTrait
 {
     /**
-     * @param string $class
-     * @param Call[] $calls
+     * @param string[]|string $class
+     * @param Call[]          $calls
      *
      * @return MockObject
      */
-    private function getMockByCalls(string $class, array $calls = []): MockObject
+    private function getMockByCalls($class, array $calls = []): MockObject
     {
-        /** @var MockByCallsTrait|TestCase $this */
-        $reflectionClass = new \ReflectionClass($class);
-
         $mockBuilder = $this->getMockBuilder($class)
             ->disableOriginalConstructor()
             ->disableOriginalClone();
 
-        /* @var MockObject $mock */
-        if ($reflectionClass->isAbstract() || $reflectionClass->isInterface()) {
-            $mock = $mockBuilder->getMockForAbstractClass();
-        } else {
-            $mock = $mockBuilder->getMock();
-        }
+        $mock = $mockBuilder->getMock();
+
+        $class = $this->getMockClassAsString($class);
 
         $callCount = count($calls);
 
@@ -59,6 +52,20 @@ trait MockByCallsTrait
         );
 
         return $mock;
+    }
+
+    /**
+     * @param string[]|string $class
+     *
+     * @return string
+     */
+    private function getMockClassAsString($class): string
+    {
+        if (is_array($class)) {
+            return implode('|', $class);
+        }
+
+        return $class;
     }
 
     /**

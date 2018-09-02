@@ -19,10 +19,21 @@ class MockByCallsTraitTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testInterfaceWithCallUsingArgumentInterface()
+    public function testClassWithCallUsingArgumentInterface()
     {
         /** @var SampleClass|MockObject $mock */
         $mock = $this->getMockByCalls(SampleClass::class, [
+            Call::create('sample')
+                ->with(new ArgumentInstanceOf(\DateTime::class), true),
+        ]);
+
+        $mock->sample(new \DateTime());
+    }
+
+    public function testAbstractClassWithCallUsingArgumentInterface()
+    {
+        /** @var AbstractSampleClass|MockObject $mock */
+        $mock = $this->getMockByCalls(AbstractSampleClass::class, [
             Call::create('sample')
                 ->with(new ArgumentInstanceOf(\DateTime::class), true),
         ]);
@@ -93,6 +104,21 @@ class MockByCallsTraitTest extends TestCase
         self::assertSame($mock, $mock->sample($argument1));
     }
 
+    public function testInterfacesWithCallAndReturnSelf()
+    {
+        $argument1 = 'argument1';
+        $argument2 = 'argument2';
+
+        /** @var SampleInterface|MockObject $mock */
+        $mock = $this->getMockByCalls([SampleInterface::class, AdditionalSampleInterface::class], [
+            Call::create('sample')->with($argument1, true)->willReturnSelf(),
+            Call::create('additionalSample')->with($argument2, true)->willReturnSelf(),
+        ]);
+
+        self::assertSame($mock, $mock->sample($argument1));
+        self::assertSame($mock, $mock->additionalSample($argument2));
+    }
+
     public function testInterfaceWithAdditionalCall()
     {
         $argument1 = 'argument1';
@@ -152,6 +178,27 @@ class SampleClass implements SampleInterface
     }
 }
 
+abstract class AbstractSampleClass implements SampleInterface
+{
+    public function __construct()
+    {
+        TestCase::fail('Construct should be mocked');
+    }
+
+    public function __clone()
+    {
+        TestCase::fail('Clone should be mocked');
+    }
+
+    /**
+     * @param mixed $argument1
+     * @param bool  $argument2
+     */
+    public function sample($argument1, bool $argument2 = true)
+    {
+    }
+}
+
 interface SampleInterface
 {
     /**
@@ -159,4 +206,13 @@ interface SampleInterface
      * @param bool  $argument2
      */
     public function sample($argument1, bool $argument2 = true);
+}
+
+interface AdditionalSampleInterface
+{
+    /**
+     * @param mixed $argument1
+     * @param bool  $argument2
+     */
+    public function additionalSample($argument1, bool $argument2 = true);
 }
