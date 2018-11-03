@@ -23,31 +23,43 @@ trait MockByCallsTrait
 
         $mock = $mockBuilder->getMock();
 
+        $mockName = (new \ReflectionObject($mock))->getShortName();
+
         $class = $this->getMockClassAsString($class);
 
-        $callCount = count($calls);
+        $options = JSON_PRETTY_PRINT | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
 
-        foreach ($calls as $at => $call) {
-            $mock->expects(self::at($at))
-                ->method($call->getMethod())
-                ->willReturnCallback($this->getMockCallback($class, $at, $call, $mock));
-        }
-
-        $callIndex = 0;
+        $callIndex = -1;
 
         $mock->expects(self::any())->method(self::anything())->willReturnCallback(
-            function () use ($class, $mock, $callCount, &$callIndex) {
-                if ($callIndex === $callCount) {
-                    $options = JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+            function () use ($class, $mock, $mockName, $callIndex, &$calls, $options) {
+                ++$callIndex;
+                $call = array_shift($calls);
 
+                if (!$call instanceof Call) {
                     self::fail(
-                        sprintf('Additional call at index %d on class "%s"', $callIndex, $class)
+                        // fixme: $callIndex + 1 is logically wrong ...
+                        sprintf('Additional call at index %d on class "%s"', $callIndex + 1, $class)
                         .PHP_EOL
-                        .json_encode($this->getStackTrace($mock), JSON_PRETTY_PRINT | $options)
+                        .json_encode($this->getStackTrace($mock), $options)
                     );
                 }
 
-                ++$callIndex;
+                $mocketMethod = $this->getMockedMethod($mockName);
+
+                self::assertSame(
+                    $mocketMethod,
+                    $call->getMethod(),
+                    sprintf(
+                        'Call at index %d on class "%s" expected method "%s", "%s" given',
+                        $callIndex,
+                        $class,
+                        $call->getMethod(),
+                        $mocketMethod
+                    ).PHP_EOL.json_encode($this->getStackTrace($mock), $options)
+                );
+
+                return $this->getMockCallback($class, $callIndex, $call, $mock)(...func_get_args());
             }
         );
 
@@ -69,8 +81,22 @@ trait MockByCallsTrait
     }
 
     /**
+     * @param string $mockName
+     *
+     * @return string
+     */
+    private function getMockedMethod(string $mockName): string
+    {
+        foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $trace) {
+            if ($mockName === $trace['class']) {
+                return $trace['function'];
+            }
+        }
+    }
+
+    /**
      * @param string     $class
-     * @param int        $at
+     * @param int        $callIndex
      * @param Call       $call
      * @param MockObject $mock
      *
@@ -78,13 +104,13 @@ trait MockByCallsTrait
      */
     private function getMockCallback(
         string $class,
-        int $at,
+        int $callIndex,
         Call $call,
         MockObject $mock
     ): \Closure {
-        return function () use ($class, $at, $call, $mock) {
+        return function () use ($class, $callIndex, $call, $mock) {
             if ($call->hasWith()) {
-                $this->compareArguments($class, $call->getMethod(), $at, $call->getWith(), func_get_args());
+                $this->compareArguments($class, $call->getMethod(), $callIndex, $call->getWith(), func_get_args());
             }
 
             if (null !== $exception = $call->getException()) {
