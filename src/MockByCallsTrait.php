@@ -32,14 +32,13 @@ trait MockByCallsTrait
         $callIndex = -1;
 
         $mock->expects(self::any())->method(self::anything())->willReturnCallback(
-            function () use ($class, $mock, $mockName, $callIndex, &$calls, $options) {
+            function () use ($class, $mock, $mockName, &$callIndex, &$calls, $options) {
                 ++$callIndex;
                 $call = array_shift($calls);
 
                 if (!$call instanceof Call) {
                     self::fail(
-                        // fixme: $callIndex + 1 is logically wrong ...
-                        sprintf('Additional call at index %d on class "%s"', $callIndex + 1, $class)
+                        sprintf('Additional call at index %d on class "%s"', $callIndex, $class)
                         .PHP_EOL
                         .json_encode($this->getStackTrace($mock), $options)
                     );
