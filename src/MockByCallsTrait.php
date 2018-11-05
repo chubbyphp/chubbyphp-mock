@@ -17,11 +17,13 @@ trait MockByCallsTrait
      */
     private function getMockByCalls($class, array $calls = []): MockObject
     {
-        $mockBuilder = $this->getMockBuilder($class)
-            ->disableOriginalConstructor()
-            ->disableOriginalClone();
+        $mock = $this->prepareMock($class);
 
-        $mock = $mockBuilder->getMock();
+        if ([] === $calls) {
+            $mock->expects(self::never())->method(self::anything());
+
+            return $mock;
+        }
 
         $mockName = (new \ReflectionObject($mock))->getShortName();
 
@@ -66,6 +68,20 @@ trait MockByCallsTrait
         );
 
         return $mock;
+    }
+
+    /**
+     * @param string[]|string $class
+     *
+     * @return MockObject
+     */
+    private function prepareMock($class): MockObject
+    {
+        $mockBuilder = $this->getMockBuilder($class)
+            ->disableOriginalConstructor()
+            ->disableOriginalClone();
+
+        return $mockBuilder->getMock();
     }
 
     /**
