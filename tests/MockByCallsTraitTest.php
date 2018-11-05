@@ -151,6 +151,35 @@ class MockByCallsTraitTest extends TestCase
 
         self::fail(sprintf('Expected "%s"', AssertionFailedError::class));
     }
+
+    public function testInterfaceWithWrongCall()
+    {
+        /** @var SampleInterface|MockObject $mock */
+        $mock = $this->getMockByCalls(SampleInterface::class, [
+            Call::create('sample1')->with('argument1', true),
+        ]);
+
+        try {
+            $mock->sample('argument1');
+        } catch (AssertionFailedError $e) {
+            self::assertStringStartsWith(
+                'Call at index 0 on class "Chubbyphp\Tests\Mock\SampleInterface" expected method "sample1"'
+                    .', "sample" given'.PHP_EOL.'[',
+                $e->getMessage()
+            );
+
+            self::assertRegExp('/'.(new \ReflectionObject($mock))->getShortName().'/', $e->getMessage());
+
+            self::assertStringEndsWith(
+                ']',
+                $e->getMessage()
+            );
+
+            return;
+        }
+
+        self::fail(sprintf('Expected "%s"', AssertionFailedError::class));
+    }
 }
 
 class SampleClass implements SampleInterface

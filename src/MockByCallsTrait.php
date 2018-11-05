@@ -44,19 +44,22 @@ trait MockByCallsTrait
                     );
                 }
 
+                $method = $call->getMethod();
                 $mocketMethod = $this->getMockedMethod($mockName);
 
-                self::assertSame(
-                    $mocketMethod,
-                    $call->getMethod(),
-                    sprintf(
-                        'Call at index %d on class "%s" expected method "%s", "%s" given',
-                        $callIndex,
-                        $class,
-                        $call->getMethod(),
-                        $mocketMethod
-                    ).PHP_EOL.json_encode($this->getStackTrace($mock), $options)
-                );
+                if ($mocketMethod !== $method) {
+                    self::fail(
+                        sprintf(
+                            'Call at index %d on class "%s" expected method "%s", "%s" given',
+                            $callIndex,
+                            $class,
+                            $method,
+                            $mocketMethod
+                        )
+                        .PHP_EOL
+                        .json_encode($this->getStackTrace($mock), $options)
+                    );
+                }
 
                 return $this->getMockCallback($class, $callIndex, $call, $mock)(...func_get_args());
             }
@@ -197,7 +200,19 @@ trait MockByCallsTrait
             }
 
             if ($enableTrace) {
-                $traceRow = $row['class'].$row['type'].$row['function'];
+                $traceRow = '';
+
+                if (isset($row['class'])) {
+                    $traceRow .= $row['class'];
+                }
+
+                if (isset($row['type'])) {
+                    $traceRow .= $row['type'];
+                }
+
+                if (isset($row['function'])) {
+                    $traceRow .= $row['function'];
+                }
 
                 if (isset($row['file'])) {
                     $traceRow .= sprintf(' (%s:%d)', $row['file'], $row['line']);
