@@ -19,32 +19,19 @@ trait MockByCallsTrait
     {
         $mock = $this->prepareMock($class);
 
-        if ([] === $calls) {
-            $mock->expects(self::never())->method(self::anything());
-
-            return $mock;
-        }
-
         $mockName = (new \ReflectionObject($mock))->getShortName();
 
-        $class = $this->getMockClassAsString($class);
+        $className = $this->getMockClassAsString($class);
 
         $options = JSON_PRETTY_PRINT | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
 
         $callIndex = -1;
 
-        $mock->expects(self::any())->method(self::anything())->willReturnCallback(
-            function () use ($class, $mock, $mockName, &$callIndex, &$calls, $options) {
+        $mock->expects(self::exactly(count($calls)))->method(self::anything())->willReturnCallback(
+            function () use ($className, $mock, $mockName, &$callIndex, &$calls, $options) {
                 ++$callIndex;
-                $call = array_shift($calls);
 
-                if (!$call instanceof Call) {
-                    self::fail(
-                        sprintf('Additional call at index %d on class "%s"', $callIndex, $class)
-                        .PHP_EOL
-                        .json_encode($this->getStackTrace($mock), $options)
-                    );
-                }
+                $call = array_shift($calls);
 
                 $method = $call->getMethod();
                 $mocketMethod = $this->getMockedMethod($mockName);
@@ -54,7 +41,7 @@ trait MockByCallsTrait
                         sprintf(
                             'Call at index %d on class "%s" expected method "%s", "%s" given',
                             $callIndex,
-                            $class,
+                            $className,
                             $method,
                             $mocketMethod
                         )
@@ -63,7 +50,7 @@ trait MockByCallsTrait
                     );
                 }
 
-                return $this->getMockCallback($class, $callIndex, $call, $mock)(...func_get_args());
+                return $this->getMockCallback($className, $callIndex, $call, $mock)(...func_get_args());
             }
         );
 

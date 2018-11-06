@@ -119,12 +119,10 @@ class MockByCallsTraitTest extends TestCase
         self::assertSame($mock, $mock->additionalSample($argument2));
     }
 
-    public function testInterfaceWithoutCallsExpectsNoMethodGetCalled()
+    public function testInterfaceWithToManyCalls()
     {
         /** @var SampleInterface|MockObject $mock */
         $mock = $this->getMockByCalls(SampleInterface::class);
-
-        clone $mock;
 
         try {
             $mock->sample('argument1');
@@ -159,37 +157,36 @@ class MockByCallsTraitTest extends TestCase
         self::fail('Chubbyphp\Tests\Mock\SampleInterface::sample(\'argument1\', true) was not expected to be called.');
     }
 
-    public function testInterfaceWithAdditionalCall()
+    public function testInterfaceWithToLessCalls()
     {
-        $argument1 = 'argument1';
-        $return = 'return';
-
         /** @var SampleInterface|MockObject $mock */
         $mock = $this->getMockByCalls(SampleInterface::class, [
-            Call::create('sample')->with($argument1, true)->willReturn($return),
+            Call::create('sample')->with('argument1', true),
+            Call::create('sample')->with('argument1', true),
         ]);
 
-        self::assertSame($return, $mock->sample($argument1));
+        $mock->sample('argument1');
+
+        /** @var InvocationMocker $invocationMocker */
+        $invocationMocker = $mock->__phpunit_getInvocationMocker();
 
         try {
-            $mock->sample($argument1);
-        } catch (AssertionFailedError $e) {
-            self::assertStringStartsWith(
-                'Additional call at index 1 on class "Chubbyphp\Tests\Mock\SampleInterface"'.PHP_EOL.'[',
+            $invocationMocker->verify();
+        } catch (ExpectationFailedException $e) {
+            self::assertSame(
+                'Expectation failed for method name is anything when invoked 2 time(s).'.PHP_EOL.
+                'Method was expected to be called 2 times, actually called 1 times.'.PHP_EOL,
                 $e->getMessage()
             );
 
-            self::assertRegExp('/'.(new \ReflectionObject($mock))->getShortName().'/', $e->getMessage());
-
-            self::assertStringEndsWith(
-                ']',
-                $e->getMessage()
-            );
+            $reflectionProperty = new \ReflectionProperty($mock, '__phpunit_invocationMocker');
+            $reflectionProperty->setAccessible(true);
+            $reflectionProperty->setValue($mock, null);
 
             return;
         }
 
-        self::fail(sprintf('Expected "%s"', AssertionFailedError::class));
+        self::fail('Expectation failed for method name is anything when invoked 2 time(s).');
     }
 
     public function testInterfaceWithWrongCall()
