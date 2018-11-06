@@ -34,11 +34,11 @@ declare(strict_types=1);
 
 namespace MyProject\Tests;
 
+use Chubbyphp\Mock\Argument\ArgumentCallback;
 use Chubbyphp\Mock\Argument\ArgumentInstanceOf;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use MyProject\Services\DateTimeService;
-use MyProject\Services\MainService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -53,10 +53,18 @@ class MyTest extends TestCase
             Call::create('format')
                 ->with(new ArgumentInstanceOf(\DateTime::class), 'c'),
                 ->willReturn('2004-02-12T15:19:21+00:00')
+            Call::create('format')
+                ->with(
+                    new ArgumentCallback(function ($dateTime) {
+                        self::assertInstanceOf(\DateTime::class, $dateTime);
+                    }),
+                    'c'
+                )
+                ->willReturn('2004-02-12T15:19:21+00:00')
         ]);
 
-        $manager = new MainService($dateTimeService);
-        $manager->execute();
+        self::assertSame('2004-02-12T15:19:21+00:00' , $dateTimeService->format(new \DateTime(), 'c'));
+        self::assertSame('2004-02-12T15:19:21+00:00' , $dateTimeService->format(new \DateTime(), 'c'));
     }
 }
 ```
