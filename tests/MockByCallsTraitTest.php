@@ -104,6 +104,22 @@ class MockByCallsTraitTest extends TestCase
         self::assertSame($mock, $mock->sample($argument1));
     }
 
+    public function testInterfaceWithCallAndReturnCallback()
+    {
+        $argument1 = 'argument1';
+
+        /** @var SampleInterface|MockObject $mock */
+        $mock = $this->getMockByCalls(SampleInterface::class, [
+            Call::create('sample')->with($argument1, true)->willReturnCallback(function ($argument) use ($argument1) {
+                self::assertSame($argument1, $argument);
+
+                return 'test';
+            }),
+        ]);
+
+        self::assertSame('test', $mock->sample($argument1));
+    }
+
     public function testInterfacesWithCallAndReturnSelf()
     {
         $argument1 = 'argument1';

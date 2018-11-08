@@ -29,17 +29,27 @@ class Call
     /**
      * @var bool
      */
+    private $hasReturnSelf = false;
+
+    /**
+     * @var bool
+     */
     private $hasReturn = false;
 
     /**
      * @var bool
      */
-    private $returnSelf = false;
+    private $hasReturnCallback = false;
 
     /**
      * @var mixed
      */
     private $return;
+
+    /**
+     * @var callable|null
+     */
+    private $returnCallback;
 
     private function __construct()
     {
@@ -78,36 +88,19 @@ class Call
      */
     public function willThrowException(\Throwable $exception): self
     {
+        if ($this->hasReturnSelf) {
+            throw new \InvalidArgumentException(sprintf('%s: There is already a return self', __METHOD__));
+        }
+
         if ($this->hasReturn) {
             throw new \InvalidArgumentException(sprintf('%s: There is already a return', __METHOD__));
         }
 
-        if ($this->returnSelf) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a return self', __METHOD__));
+        if ($this->hasReturnCallback) {
+            throw new \InvalidArgumentException(sprintf('%s: There is already a return callback', __METHOD__));
         }
 
         $this->exception = $exception;
-
-        return $this;
-    }
-
-    /**
-     * @param mixed $return
-     *
-     * @return self
-     */
-    public function willReturn($return): self
-    {
-        if (null !== $this->exception) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a exception', __METHOD__));
-        }
-
-        if ($this->returnSelf) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a return self', __METHOD__));
-        }
-
-        $this->hasReturn = true;
-        $this->return = $return;
 
         return $this;
     }
@@ -125,7 +118,59 @@ class Call
             throw new \InvalidArgumentException(sprintf('%s: There is already a return', __METHOD__));
         }
 
-        $this->returnSelf = true;
+        if ($this->hasReturnCallback) {
+            throw new \InvalidArgumentException(sprintf('%s: There is already a return callback', __METHOD__));
+        }
+
+        $this->hasReturnSelf = true;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $return
+     *
+     * @return self
+     */
+    public function willReturn($return): self
+    {
+        if (null !== $this->exception) {
+            throw new \InvalidArgumentException(sprintf('%s: There is already a exception', __METHOD__));
+        }
+
+        if ($this->hasReturnSelf) {
+            throw new \InvalidArgumentException(sprintf('%s: There is already a return self', __METHOD__));
+        }
+
+        if ($this->hasReturnCallback) {
+            throw new \InvalidArgumentException(sprintf('%s: There is already a return callback', __METHOD__));
+        }
+
+        $this->hasReturn = true;
+        $this->return = $return;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function willReturnCallback(callable $returnCallback): self
+    {
+        if (null !== $this->exception) {
+            throw new \InvalidArgumentException(sprintf('%s: There is already a exception', __METHOD__));
+        }
+
+        if ($this->hasReturnSelf) {
+            throw new \InvalidArgumentException(sprintf('%s: There is already a return self', __METHOD__));
+        }
+
+        if ($this->hasReturn) {
+            throw new \InvalidArgumentException(sprintf('%s: There is already a return', __METHOD__));
+        }
+
+        $this->hasReturnCallback = true;
+        $this->returnCallback = $returnCallback;
 
         return $this;
     }
@@ -149,6 +194,14 @@ class Call
     /**
      * @return bool
      */
+    public function hasReturnSelf(): bool
+    {
+        return $this->hasReturnSelf;
+    }
+
+    /**
+     * @return bool
+     */
     public function hasReturn(): bool
     {
         return $this->hasReturn;
@@ -157,9 +210,9 @@ class Call
     /**
      * @return bool
      */
-    public function hasReturnSelf(): bool
+    public function hasReturnCallback(): bool
     {
-        return $this->returnSelf;
+        return $this->hasReturnCallback;
     }
 
     /**
@@ -184,5 +237,13 @@ class Call
     public function getReturn()
     {
         return $this->return;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReturnCallback()
+    {
+        return $this->returnCallback;
     }
 }
