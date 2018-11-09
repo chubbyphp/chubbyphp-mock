@@ -129,6 +129,12 @@ trait MockByCallsTrait
             if ($call->hasReturn()) {
                 return $call->getReturn();
             }
+
+            if ($call->hasReturnCallback()) {
+                $callback = $call->getReturnCallback();
+
+                return $callback(...func_get_args());
+            }
         };
     }
 
