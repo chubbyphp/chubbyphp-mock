@@ -10,7 +10,7 @@
 
 ## Description
 
-A simple mock solution for phpunit.
+A helper trait simplify mocking within phpunit.
 
 ## Requirements
 
