@@ -15,7 +15,7 @@ A simple mock solution for phpunit.
 ## Requirements
 
  * php: ~7.0
- * phpunit/phpunit: ^6.5|^7.0
+ * phpunit/phpunit: ^6.5|^7.0|^8.0
 
 ## Installation
 
@@ -60,11 +60,11 @@ class MyTest extends TestCase
                     }),
                     'c'
                 )
-                ->willReturn('2004-02-12T15:19:21+00:00')
+                ->willReturn('2008-05-23T08:12:55+00:00')
         ]);
 
         self::assertSame('2004-02-12T15:19:21+00:00' , $dateTimeService->format(new \DateTime(), 'c'));
-        self::assertSame('2004-02-12T15:19:21+00:00' , $dateTimeService->format(new \DateTime(), 'c'));
+        self::assertSame('2008-05-23T08:12:55+00:00' , $dateTimeService->format(new \DateTime(), 'c'));
     }
 }
 ```
