@@ -34,16 +34,16 @@ trait MockByCallsTrait
                 $call = array_shift($calls);
 
                 $method = $call->getMethod();
-                $mocketMethod = $this->getMockedMethod($mockName);
+                $mockedMethod = $this->getMockedMethod($mockName);
 
-                if ($mocketMethod !== $method) {
+                if ($mockedMethod !== $method) {
                     self::fail(
                         sprintf(
                             'Call at index %d on class "%s" expected method "%s", "%s" given',
                             $callIndex,
                             $className,
                             $method,
-                            $mocketMethod
+                            $mockedMethod
                         )
                         .PHP_EOL
                         .json_encode($this->getStackTrace($mock), $options)
