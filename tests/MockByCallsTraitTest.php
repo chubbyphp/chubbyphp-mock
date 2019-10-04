@@ -9,6 +9,8 @@ use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\MockObject\InvocationHandler;
+use PHPUnit\Framework\MockObject\InvocationMocker;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -148,11 +150,16 @@ class MockByCallsTraitTest extends TestCase
                 $e->getMessage()
             );
 
-            /** @var InvocationMocker $invocationMocker */
-            $invocationMocker = $mock->__phpunit_getInvocationMocker();
+            if (is_callable([$mock, '__phpunit_getInvocationHandler'])) {
+                /** @var InvocationHandler $invocation */
+                $invocation = $mock->__phpunit_getInvocationHandler();
+            } else {
+                /** @var InvocationMocker $invocation */
+                $invocation = $mock->__phpunit_getInvocationMocker();
+            }
 
             try {
-                $invocationMocker->verify();
+                $invocation->verify();
             } catch (ExpectationFailedException $e) {
                 self::assertSame(
                     'Expectation failed for method name is anything when invoked 0 time(s).'.PHP_EOL.
@@ -183,11 +190,16 @@ class MockByCallsTraitTest extends TestCase
 
         $mock->sample('argument1');
 
-        /** @var InvocationMocker $invocationMocker */
-        $invocationMocker = $mock->__phpunit_getInvocationMocker();
+        if (is_callable([$mock, '__phpunit_getInvocationHandler'])) {
+            /** @var InvocationHandler $invocation */
+            $invocation = $mock->__phpunit_getInvocationHandler();
+        } else {
+            /** @var InvocationMocker $invocation */
+            $invocation = $mock->__phpunit_getInvocationMocker();
+        }
 
         try {
-            $invocationMocker->verify();
+            $invocation->verify();
         } catch (ExpectationFailedException $e) {
             self::assertSame(
                 'Expectation failed for method name is anything when invoked 2 time(s).'.PHP_EOL.
