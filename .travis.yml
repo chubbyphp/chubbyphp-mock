@@ -3,25 +3,78 @@ language: php
 matrix:
   include:
     - php: 7.0
-      env: dependencies=lowest
+      env: phpunit=6.5.0
     - php: 7.0
-      env: dependencies=highest
+      env: phpunit=~6.5.0
     - php: 7.1
-      env: dependencies=lowest
+      env: phpunit=7.0.0
     - php: 7.1
-      env: dependencies=highest
+      env: phpunit=~7.0.0
+    - php: 7.1
+      env: phpunit=7.1.0
+    - php: 7.1
+      env: phpunit=~7.1.0
+    - php: 7.1
+      env: phpunit=7.2.0
+    - php: 7.1
+      env: phpunit=~7.2.0
+    - php: 7.1
+      env: phpunit=7.3.0
+    - php: 7.1
+      env: phpunit=~7.3.0
+    - php: 7.1
+      env: phpunit=7.4.0
+    - php: 7.1
+      env: phpunit=~7.4.0
+    - php: 7.1
+      env: phpunit=7.5.0
+    - php: 7.1
+      env: phpunit=~7.5.0
     - php: 7.2
-      env: dependencies=lowest
+      env: phpunit=8.0.0
     - php: 7.2
-      env: dependencies=highest
+      env: phpunit=~8.0.0
     - php: 7.3
-      env: dependencies=lowest
+      env: phpunit=8.0.0
     - php: 7.3
-      env: dependencies=highest
+      env: phpunit=~8.0.0
+    - php: 7.2
+      env: phpunit=8.1.0
+    - php: 7.2
+      env: phpunit=~8.1.0
+    - php: 7.3
+      env: phpunit=8.1.0
+    - php: 7.3
+      env: phpunit=~8.1.0
+    - php: 7.2
+      env: phpunit=8.2.0
+    - php: 7.2
+      env: phpunit=~8.2.0
+    - php: 7.3
+      env: phpunit=8.2.0
+    - php: 7.3
+      env: phpunit=~8.2.0
+    - php: 7.2
+      env: phpunit=8.3.0
+    - php: 7.2
+      env: phpunit=~8.3.0
+    - php: 7.3
+      env: phpunit=8.3.0
+    - php: 7.3
+      env: phpunit=~8.3.0
+    - php: 7.2
+      env: phpunit=8.4.0
+    - php: 7.2
+      env: phpunit=~8.4.0
+    - php: 7.3
+      env: phpunit=8.4.0
+    - php: 7.3
+      env: phpunit=~8.4.0
     - php: 7.4snapshot
-      env: dependencies=lowest
+      env: phpunit=8.4.0
     - php: 7.4snapshot
-      env: dependencies=highest
+      env: phpunit=~8.4.0
+
   allow_failures:
     - php: 7.4snapshot
 
@@ -29,8 +82,6 @@ before_script:
   - echo 'Europe/Zurich' | sudo tee /etc/timezone
   - echo 'date.timezone = "Europe/Zurich"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer self-update -q
-  - if [ -z "$dependencies" ]; then composer install; fi;
-  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest -n; fi;
-  - if [ "$dependencies" = "highest" ]; then composer update -n; fi;
+  - composer require phpunit/phpunit:${phpunit}
 
 script: phpdbg -qrr vendor/bin/phpunit --coverage-text --verbose
