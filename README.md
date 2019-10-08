@@ -69,6 +69,12 @@ class MyTest extends TestCase
 }
 ```
 
+## FAQ
+
+### Expectation failed for method name is anything when invoked <1...> time(s).
+
+There is a mock `$calls` given, but no method get called on the mock.
+
 ## Copyright
 
 Dominik Zogg 2018
