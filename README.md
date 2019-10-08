@@ -73,7 +73,17 @@ class MyTest extends TestCase
 
 ### Expectation failed for method name is anything when invoked <1...> time(s).
 
-There is a mock `$calls` given, but no method get called on the mock.
+There is a mock with `$calls` given, but no method get called on the mock.
+
+```php
+/** @var User|MockObject $user */
+$user = $this->getMockByCalls(Job::class, [
+    Call::create('getId')->with()->willReturn('a656cca7-7363-4ba7-875d-74bb0fd4f543'),
+]);
+
+// uncomment and test will be green
+//$job->getId();
+```
 
 ## Copyright
 
