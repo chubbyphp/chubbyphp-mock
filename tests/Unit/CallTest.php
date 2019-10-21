@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Chubbyphp\Tests\Mock;
+namespace Chubbyphp\Tests\Mock\Unit;
 
 use Chubbyphp\Mock\Call;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Chubbyphp\Mock\Call
+ *
+ * @internal
  */
 class CallTest extends TestCase
 {
@@ -132,7 +134,8 @@ class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willThrowException(new \Exception())
-            ->willReturnSelf();
+            ->willReturnSelf()
+        ;
     }
 
     public function testTryExceptionAndReturn()
@@ -142,7 +145,8 @@ class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willThrowException(new \Exception())
-            ->willReturn('test');
+            ->willReturn('test')
+        ;
     }
 
     public function testTryExceptionAndReturnCallback()
@@ -152,7 +156,8 @@ class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willThrowException(new \Exception())
-            ->willReturnCallback(function () {});
+            ->willReturnCallback(function () {})
+        ;
     }
 
     public function testTryReturnSelfAndException()
@@ -162,7 +167,8 @@ class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willReturnSelf()
-            ->willThrowException(new \Exception());
+            ->willThrowException(new \Exception())
+        ;
     }
 
     public function testTryReturnSelfAndReturn()
@@ -172,7 +178,8 @@ class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willReturnSelf()
-            ->willReturn('test');
+            ->willReturn('test')
+        ;
     }
 
     public function testTryReturnSelfAndReturnCallback()
@@ -182,7 +189,8 @@ class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willReturnSelf()
-            ->willReturnCallback(function () {});
+            ->willReturnCallback(function () {})
+        ;
     }
 
     public function testTryReturnAndException()
@@ -192,7 +200,8 @@ class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willReturn('test')
-            ->willThrowException(new \Exception());
+            ->willThrowException(new \Exception())
+        ;
     }
 
     public function testTryReturnAndReturnSelf()
@@ -202,7 +211,8 @@ class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willReturn('test')
-            ->willReturnSelf();
+            ->willReturnSelf()
+        ;
     }
 
     public function testTryReturnAndReturnCallback()
@@ -212,7 +222,8 @@ class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willReturn('test')
-            ->willReturnCallback(function () {});
+            ->willReturnCallback(function () {})
+        ;
     }
 
     public function testTryReturnCallbackAndException()
@@ -222,7 +233,8 @@ class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willReturnCallback(function () {})
-            ->willThrowException(new \Exception());
+            ->willThrowException(new \Exception())
+        ;
     }
 
     public function testTryReturnCallbackAndReturnSelf()
@@ -232,7 +244,8 @@ class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willReturnCallback(function () {})
-            ->willReturnSelf();
+            ->willReturnSelf()
+        ;
     }
 
     public function testTryReturnCallbackAndReturn()
@@ -242,6 +255,7 @@ class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willReturnCallback(function () {})
-            ->willReturn('test');
+            ->willReturn('test')
+        ;
     }
 }

@@ -66,7 +66,8 @@ trait MockByCallsTrait
     {
         $mockBuilder = $this->getMockBuilder($class)
             ->disableOriginalConstructor()
-            ->disableOriginalClone();
+            ->disableOriginalClone()
+        ;
 
         return $mockBuilder->getMock();
     }
