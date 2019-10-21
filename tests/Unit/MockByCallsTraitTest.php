@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Chubbyphp\Tests\Mock;
+namespace Chubbyphp\Tests\Mock\Unit;
 
 use Chubbyphp\Mock\Argument\ArgumentInstanceOf;
 use Chubbyphp\Mock\Call;
@@ -16,6 +16,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Chubbyphp\Mock\MockByCallsTrait
+ *
+ * @internal
  */
 class MockByCallsTraitTest extends TestCase
 {
@@ -55,7 +57,7 @@ class MockByCallsTraitTest extends TestCase
             $mock->sample(new \DateTime());
         } catch (ExpectationFailedException $e) {
             self::assertSame(
-                'Method "sample" on class "Chubbyphp\Tests\Mock\SampleInterface" at call 0, argument 0'.PHP_EOL.
+                'Method "sample" on class "Chubbyphp\Tests\Mock\Unit\SampleInterface" at call 0, argument 0'.PHP_EOL.
                 'Failed asserting that DateTime Object (...) is an instance of class "stdClass".',
                 $e->getMessage()
             );
@@ -146,7 +148,7 @@ class MockByCallsTraitTest extends TestCase
             $mock->sample('argument1');
         } catch (ExpectationFailedException $e) {
             self::assertSame(
-                'Chubbyphp\Tests\Mock\SampleInterface::sample(\'argument1\', true) was not expected to be called.',
+                'Chubbyphp\Tests\Mock\Unit\SampleInterface::sample(\'argument1\', true) was not expected to be called.',
                 $e->getMessage()
             );
 
@@ -177,7 +179,7 @@ class MockByCallsTraitTest extends TestCase
             self::fail('Expectation failed for method name is anything when invoked 0 time(s).');
         }
 
-        self::fail('Chubbyphp\Tests\Mock\SampleInterface::sample(\'argument1\', true) was not expected to be called.');
+        self::fail('Chubbyphp\Tests\Mock\Unit\SampleInterface::sample(\'argument1\', true) was not expected to be called.');
     }
 
     public function testInterfaceWithToLessCalls()
@@ -228,7 +230,7 @@ class MockByCallsTraitTest extends TestCase
             $mock->sample('argument1');
         } catch (AssertionFailedError $e) {
             self::assertStringStartsWith(
-                'Call at index 0 on class "Chubbyphp\Tests\Mock\SampleInterface" expected method "sample1"'
+                'Call at index 0 on class "Chubbyphp\Tests\Mock\Unit\SampleInterface" expected method "sample1"'
                     .', "sample" given'.PHP_EOL.'[',
                 $e->getMessage()
             );

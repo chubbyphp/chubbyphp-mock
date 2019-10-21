@@ -5,13 +5,16 @@
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
+         executionOrder="random"
          processIsolation="false"
          stopOnFailure="false"
-         bootstrap="tests/bootstrap.php"
         >
     <testsuites>
-        <testsuite name="chubbyphp mock">
-            <directory>./tests</directory>
+        <testsuite name="Integration">
+            <directory>./tests/Integration</directory>
+        </testsuite>
+        <testsuite name="Unit">
+            <directory>./tests/Unit</directory>
         </testsuite>
     </testsuites>
     <filter>
@@ -19,7 +22,4 @@
             <directory>./src</directory>
         </whitelist>
     </filter>
-    <logging>
-        <log type="coverage-html" target="phpunit/coverage" />
-    </logging>
 </phpunit>

@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Chubbyphp\Tests\Mock\Argument;
+namespace Chubbyphp\Tests\Mock\Unit\Argument;
 
 use Chubbyphp\Mock\Argument\ArgumentCallback;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Chubbyphp\Mock\Argument\ArgumentCallback
+ *
+ * @internal
  */
 class ArgumentCallbackTest extends TestCase
 {
