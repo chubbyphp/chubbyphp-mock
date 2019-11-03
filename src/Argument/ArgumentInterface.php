@@ -8,7 +8,6 @@ interface ArgumentInterface
 {
     /**
      * @param mixed $argument
-     * @param array $context
      */
     public function assert($argument, array $context);
 }

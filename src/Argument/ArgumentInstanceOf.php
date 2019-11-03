@@ -13,9 +13,6 @@ class ArgumentInstanceOf implements ArgumentInterface
      */
     private $class;
 
-    /**
-     * @param string $class
-     */
     public function __construct(string $class)
     {
         $this->class = $class;
@@ -23,7 +20,6 @@ class ArgumentInstanceOf implements ArgumentInterface
 
     /**
      * @param mixed $argument
-     * @param array $context
      */
     public function assert($argument, array $context)
     {

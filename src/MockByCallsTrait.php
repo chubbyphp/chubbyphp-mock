@@ -12,8 +12,6 @@ trait MockByCallsTrait
     /**
      * @param string[]|string $class
      * @param Call[]          $calls
-     *
-     * @return MockObject
      */
     private function getMockByCalls($class, array $calls = []): MockObject
     {
@@ -59,8 +57,6 @@ trait MockByCallsTrait
 
     /**
      * @param string[]|string $class
-     *
-     * @return MockObject
      */
     private function prepareMock($class): MockObject
     {
@@ -74,8 +70,6 @@ trait MockByCallsTrait
 
     /**
      * @param string[]|string $class
-     *
-     * @return string
      */
     private function getMockClassAsString($class): string
     {
@@ -86,11 +80,6 @@ trait MockByCallsTrait
         return $class;
     }
 
-    /**
-     * @param string $mockName
-     *
-     * @return string
-     */
     private function getMockedMethod(string $mockName): string
     {
         foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $trace) {
@@ -100,14 +89,6 @@ trait MockByCallsTrait
         }
     }
 
-    /**
-     * @param string     $class
-     * @param int        $callIndex
-     * @param Call       $call
-     * @param MockObject $mock
-     *
-     * @return \Closure
-     */
     private function getMockCallback(
         string $class,
         int $callIndex,
@@ -139,13 +120,6 @@ trait MockByCallsTrait
         };
     }
 
-    /**
-     * @param string $class
-     * @param string $method
-     * @param int    $at
-     * @param array  $expectedArguments
-     * @param array  $arguments
-     */
     private function compareArguments(
         string $class,
         string $method,
@@ -193,11 +167,6 @@ trait MockByCallsTrait
         }
     }
 
-    /**
-     * @param MockObject $mock
-     *
-     * @return array
-     */
     private function getStackTrace(MockObject $mock): array
     {
         $mockName = (new \ReflectionObject($mock))->getShortName();

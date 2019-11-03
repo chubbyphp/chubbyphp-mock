@@ -11,9 +11,6 @@ class ArgumentCallback implements ArgumentInterface
      */
     private $callback;
 
-    /**
-     * @param callable $callback
-     */
     public function __construct(callable $callback)
     {
         $this->callback = $callback;
@@ -21,7 +18,6 @@ class ArgumentCallback implements ArgumentInterface
 
     /**
      * @param mixed $argument
-     * @param array $context
      */
     public function assert($argument, array $context)
     {

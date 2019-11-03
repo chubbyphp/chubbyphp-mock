@@ -263,7 +263,6 @@ class SampleClass implements SampleInterface
 
     /**
      * @param mixed $argument1
-     * @param bool  $argument2
      */
     public function sample($argument1, bool $argument2 = true)
     {
@@ -288,7 +287,6 @@ abstract class AbstractSampleClass implements SampleInterface
 
     /**
      * @param mixed $argument1
-     * @param bool  $argument2
      */
     public function sample($argument1, bool $argument2 = true)
     {
@@ -299,7 +297,6 @@ interface SampleInterface
 {
     /**
      * @param mixed $argument1
-     * @param bool  $argument2
      */
     public function sample($argument1, bool $argument2 = true);
 }
@@ -308,7 +305,6 @@ interface AdditionalSampleInterface
 {
     /**
      * @param mixed $argument1
-     * @param bool  $argument2
      */
     public function additionalSample($argument1, bool $argument2 = true);
 }

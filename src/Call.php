@@ -55,11 +55,6 @@ class Call
     {
     }
 
-    /**
-     * @param string $method
-     *
-     * @return self
-     */
     public static function create(string $method): self
     {
         $self = new self();
@@ -70,8 +65,6 @@ class Call
 
     /**
      * @param mixed ...$with
-     *
-     * @return self
      */
     public function with(...$with): self
     {
@@ -81,11 +74,6 @@ class Call
         return $this;
     }
 
-    /**
-     * @param \Throwable $exception
-     *
-     * @return self
-     */
     public function willThrowException(\Throwable $exception): self
     {
         if ($this->hasReturnSelf) {
@@ -105,9 +93,6 @@ class Call
         return $this;
     }
 
-    /**
-     * @return self
-     */
     public function willReturnSelf(): self
     {
         if (null !== $this->exception) {
@@ -129,8 +114,6 @@ class Call
 
     /**
      * @param mixed $return
-     *
-     * @return self
      */
     public function willReturn($return): self
     {
@@ -152,9 +135,6 @@ class Call
         return $this;
     }
 
-    /**
-     * @return self
-     */
     public function willReturnCallback(callable $returnCallback): self
     {
         if (null !== $this->exception) {
@@ -175,49 +155,31 @@ class Call
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getMethod(): string
     {
         return $this->method;
     }
 
-    /**
-     * @return bool
-     */
     public function hasWith(): bool
     {
         return $this->hasWith;
     }
 
-    /**
-     * @return bool
-     */
     public function hasReturnSelf(): bool
     {
         return $this->hasReturnSelf;
     }
 
-    /**
-     * @return bool
-     */
     public function hasReturn(): bool
     {
         return $this->hasReturn;
     }
 
-    /**
-     * @return bool
-     */
     public function hasReturnCallback(): bool
     {
         return $this->hasReturnCallback;
     }
 
-    /**
-     * @return array
-     */
     public function getWith(): array
     {
         return $this->with;
