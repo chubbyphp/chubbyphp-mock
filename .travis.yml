@@ -75,9 +75,6 @@ matrix:
     - php: 7.4snapshot
       env: phpunit=~8.4.0
 
-  allow_failures:
-    - php: 7.4snapshot
-
 before_script:
   - echo 'extension=apcu.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/apcu.ini
   - echo 'Europe/Zurich' | sudo tee /etc/timezone
