@@ -70,9 +70,9 @@ matrix:
       env: phpunit=8.4.0
     - php: 7.3
       env: phpunit=~8.4.0
-    - php: 7.4snapshot
+    - php: 7.4
       env: phpunit=8.4.0
-    - php: 7.4snapshot
+    - php: 7.4
       env: phpunit=~8.4.0
 
 before_script:
