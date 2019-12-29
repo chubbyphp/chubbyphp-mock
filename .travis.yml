@@ -70,10 +70,22 @@ matrix:
       env: phpunit=8.4.0
     - php: 7.3
       env: phpunit=~8.4.0
-    - php: 7.4snapshot
+    - php: 7.4
       env: phpunit=8.4.0
-    - php: 7.4snapshot
+    - php: 7.4
       env: phpunit=~8.4.0
+    - php: 7.2
+      env: phpunit=8.5.0
+    - php: 7.2
+      env: phpunit=~8.5.0
+    - php: 7.3
+      env: phpunit=8.5.0
+    - php: 7.3
+      env: phpunit=~8.5.0
+    - php: 7.4
+      env: phpunit=8.5.0
+    - php: 7.4
+      env: phpunit=~8.5.0
 
 before_script:
   - echo 'extension=apcu.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/apcu.ini
@@ -85,4 +97,6 @@ before_script:
 
 script:
   - composer test
-  - vendor/bin/php-coveralls --coverage_clover=build/phpunit/phpunit.clover.xml --json_path=build/coveralls.json -v
+
+after_success:
+  - travis_retry php vendor/bin/php-coveralls --coverage_clover=build/phpunit/phpunit.clover.xml --json_path=build/coveralls.json -v
