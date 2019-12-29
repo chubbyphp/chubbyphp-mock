@@ -13,7 +13,7 @@ A helper trait simplify mocking within phpunit.
 
 ## Requirements
 
- * php: ~7.0
+ * php: ^7.0
  * phpunit/phpunit: ^6.5|^7.0|^8.0
 
 ## Installation
@@ -21,7 +21,7 @@ A helper trait simplify mocking within phpunit.
 Through [Composer](http://getcomposer.org) as [chubbyphp/chubbyphp-mock][1].
 
 ```sh
-composer require chubbyphp/chubbyphp-mock "~1.4" --dev
+composer require chubbyphp/chubbyphp-mock "^1.4" --dev
 ```
 
 ## Usage
@@ -70,18 +70,18 @@ class MyTest extends TestCase
 
 ## FAQ
 
-### Expectation failed for method name is anything when invoked <1...> time(s).
+### Expectation failed for method name is anything when invoked <n...> time(s).
 
 There is a mock with `$calls` given, but no method get called on the mock.
 
 ```php
 /** @var User|MockObject $user */
-$user = $this->getMockByCalls(Job::class, [
+$user = $this->getMockByCalls(User::class, [
     Call::create('getId')->with()->willReturn('a656cca7-7363-4ba7-875d-74bb0fd4f543'),
 ]);
 
 // uncomment and test will be green
-//$job->getId();
+//$user->getId();
 ```
 
 ## Copyright
