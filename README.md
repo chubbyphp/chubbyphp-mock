@@ -86,7 +86,7 @@ $user = $this->getMockByCalls(User::class, [
 
 ## Copyright
 
-Dominik Zogg 2018
+Dominik Zogg 2020
 
 
 [1]: https://packagist.org/packages/chubbyphp/chubbyphp-mock
