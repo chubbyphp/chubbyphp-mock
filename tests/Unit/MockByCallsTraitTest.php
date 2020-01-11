@@ -129,14 +129,31 @@ class MockByCallsTraitTest extends TestCase
         $argument1 = 'argument1';
         $argument2 = 'argument2';
 
-        /** @var SampleInterface|MockObject $mock */
-        $mock = $this->getMockByCalls([SampleInterface::class, AdditionalSampleInterface::class], [
-            Call::create('sample')->with($argument1, true)->willReturnSelf(),
-            Call::create('additionalSample')->with($argument2, true)->willReturnSelf(),
-        ]);
+        try {
+            error_clear_last();
 
-        self::assertSame($mock, $mock->sample($argument1));
-        self::assertSame($mock, $mock->additionalSample($argument2));
+            /** @var SampleInterface|MockObject $mock */
+            $mock = $this->getMockByCalls([SampleInterface::class, AdditionalSampleInterface::class], [
+                Call::create('sample')->with($argument1, true)->willReturnSelf(),
+                Call::create('additionalSample')->with($argument2, true)->willReturnSelf(),
+            ]);
+
+            $error = error_get_last();
+
+            self::assertNotNull($error);
+
+            self::assertSame(E_USER_DEPRECATED, $error['type']);
+            self::assertSame('Multiple interfaces support will be dropped within phpunit: 9', $error['message']);
+
+            self::assertSame($mock, $mock->sample($argument1));
+            self::assertSame($mock, $mock->additionalSample($argument2));
+        } catch (\TypeError $typeError) {
+            self::assertSame(
+                'Argument 1 passed to PHPUnit\Framework\TestCase::getMockBuilder() must be of the type string'
+                    .', array given, called in /vagrant/chubbyphp-mock/src/MockByCallsTrait.php on line 67',
+                $typeError->getMessage()
+            );
+        }
     }
 
     public function testInterfaceWithToManyCalls()

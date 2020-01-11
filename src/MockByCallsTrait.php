@@ -74,6 +74,8 @@ trait MockByCallsTrait
     private function getMockClassAsString($class): string
     {
         if (is_array($class)) {
+            @trigger_error('Multiple interfaces support will be dropped within phpunit: 9', E_USER_DEPRECATED);
+
             return implode('|', $class);
         }
 
