@@ -86,6 +86,17 @@ matrix:
       env: phpunit=8.5.0
     - php: 7.4
       env: phpunit=~8.5.0
+    - php: 7.3
+      env: phpunit=^9.0@dev phpunit/php-invoker:^3.0@dev
+    - php: 7.4
+      env: phpunit=^9.0@dev phpunit/php-invoker:^3.0@dev
+
+  allow_failures:
+    - php: 7.3
+      env: phpunit=^9.0@dev phpunit/php-invoker:^3.0@dev
+    - php: 7.4
+      env: phpunit=^9.0@dev phpunit/php-invoker:^3.0@dev
+
 
 before_script:
   - echo 'extension=apcu.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/apcu.ini
