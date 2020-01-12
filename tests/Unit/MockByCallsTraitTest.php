@@ -148,9 +148,9 @@ class MockByCallsTraitTest extends TestCase
             self::assertSame($mock, $mock->sample($argument1));
             self::assertSame($mock, $mock->additionalSample($argument2));
         } catch (\TypeError $typeError) {
-            self::assertSame(
+            self::assertStringStartsWith(
                 'Argument 1 passed to PHPUnit\Framework\TestCase::getMockBuilder() must be of the type string'
-                    .', array given, called in /vagrant/chubbyphp-mock/src/MockByCallsTrait.php on line 67',
+                    .', array given',
                 $typeError->getMessage()
             );
         }
