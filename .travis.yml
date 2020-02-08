@@ -87,15 +87,13 @@ matrix:
     - php: 7.4
       env: phpunit=~8.5.0
     - php: 7.3
-      env: phpunit=^9.0@dev phpinvoker=^3.0@dev
-    - php: 7.4
-      env: phpunit=^9.0@dev phpinvoker=^3.0@dev
-
-  allow_failures:
+      env: phpunit=9.0.0
     - php: 7.3
-      env: phpunit=^9.0@dev phpinvoker=^3.0@dev
+      env: phpunit=~9.0.0
     - php: 7.4
-      env: phpunit=^9.0@dev phpinvoker=^3.0@dev
+      env: phpunit=9.0.0
+    - php: 7.4
+      env: phpunit=~9.0.0
 
 before_script:
   - echo 'extension=apcu.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/apcu.ini
@@ -103,7 +101,7 @@ before_script:
   - echo 'date.timezone = "Europe/Zurich"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer self-update -q
   - composer global require hirak/prestissimo
-  - if [ -z "$phpinvoker" ]; then composer require phpunit/phpunit:${phpunit}; else composer require phpunit/phpunit:${phpunit} phpunit/php-invoker:${phpinvoker}; fi
+  - composer require phpunit/phpunit:${phpunit}
 
 script:
   - composer test
