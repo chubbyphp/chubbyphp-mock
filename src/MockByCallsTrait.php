@@ -15,11 +15,11 @@ trait MockByCallsTrait
      */
     private function getMockByCalls($class, array $calls = []): MockObject
     {
+        $className = $this->getMockClassAsString($class);
+
         $mock = $this->prepareMock($class);
 
         $mockName = (new \ReflectionObject($mock))->getShortName();
-
-        $className = $this->getMockClassAsString($class);
 
         $options = JSON_PRETTY_PRINT | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
 
