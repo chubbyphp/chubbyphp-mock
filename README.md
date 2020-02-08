@@ -14,7 +14,7 @@ A helper trait simplify mocking within phpunit.
 ## Requirements
 
  * php: ^7.0
- * phpunit/phpunit: ^6.5|^7.0|^8.0
+ * phpunit/phpunit: ^6.5|^7.0|^8.0|^9.0
 
 ## Installation
 
