@@ -102,6 +102,14 @@ matrix:
       env: phpunit=9.1.0
     - php: 7.4
       env: phpunit=~9.1.0
+    - php: 7.3
+      env: phpunit=9.2.0
+    - php: 7.3
+      env: phpunit=~9.2.0
+    - php: 7.4
+      env: phpunit=9.2.0
+    - php: 7.4
+      env: phpunit=~9.2.0
 
 before_script:
   - echo 'extension=apcu.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/apcu.ini
