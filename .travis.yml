@@ -110,14 +110,25 @@ matrix:
       env: phpunit=9.2.0
     - php: 7.4
       env: phpunit=~9.2.0
+    - php: 7.3
+      env: phpunit=9.3.0
+    - php: 7.3
+      env: phpunit=~9.3.0
+    - php: 7.4
+      env: phpunit=9.3.0
+    - php: 7.4
+      env: phpunit=~9.3.0
+    - php: nightly
+      env: phpunit=~9.3.0 composerargs="--ignore-platform-reqs"
+  allow_failures:
+    - php: nightly
 
 before_script:
-  - echo 'extension=apcu.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/apcu.ini
   - echo 'Europe/Zurich' | sudo tee /etc/timezone
   - echo 'date.timezone = "Europe/Zurich"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer self-update -q
   - composer global require hirak/prestissimo
-  - composer require phpunit/phpunit:${phpunit}
+  - composer require phpunit/phpunit:${phpunit} $composerarg
 
 script:
   - composer test
