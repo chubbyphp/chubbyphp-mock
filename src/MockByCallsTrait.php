@@ -21,12 +21,10 @@ trait MockByCallsTrait
 
         $mockName = (new \ReflectionObject($mock))->getShortName();
 
-        $options = JSON_PRETTY_PRINT | JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
-
         $callIndex = -1;
 
         $mock->expects(self::exactly(count($calls)))->method(self::anything())->willReturnCallback(
-            function () use ($className, $mock, $mockName, &$callIndex, &$calls, $options) {
+            function () use ($className, $mock, $mockName, &$callIndex, &$calls) {
                 ++$callIndex;
 
                 $call = array_shift($calls);
@@ -44,7 +42,7 @@ trait MockByCallsTrait
                             $mockedMethod
                         )
                         .PHP_EOL
-                        .json_encode($this->getStackTrace($mock), $options)
+                        .json_encode($this->getStackTrace($mockName), JSON_PRETTY_PRINT)
                     );
                 }
 
@@ -82,6 +80,9 @@ trait MockByCallsTrait
         return $class;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     private function getMockedMethod(string $mockName): string
     {
         foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $trace) {
@@ -128,7 +129,7 @@ trait MockByCallsTrait
         int $at,
         array $expectedArguments,
         array $arguments
-    ) {
+    ): void {
         $expectedArgumentsCount = count($expectedArguments);
         $argumentsCount = count($arguments);
 
@@ -169,10 +170,8 @@ trait MockByCallsTrait
         }
     }
 
-    private function getStackTrace(MockObject $mock): array
+    private function getStackTrace(string $mockName): array
     {
-        $mockName = (new \ReflectionObject($mock))->getShortName();
-
         $trace = [];
         $enableTrace = false;
         foreach (debug_backtrace() as $i => $row) {

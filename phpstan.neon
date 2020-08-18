@@ -1,0 +1,5 @@
+parameters:
+    ignoreErrors:
+        -
+            message: '/PHPUnit\\Framework\\Assert\:\:assertInstanceOf/'
+            path: %currentWorkingDirectory%/src/Argument/ArgumentInstanceOf.php

@@ -12,20 +12,25 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  */
-class ArgumentCallbackTest extends TestCase
+final class ArgumentCallbackTest extends TestCase
 {
-    public function testAssert()
+    public function testAssert(): void
     {
         $expectedArgument = 'test';
         $expectContext = ['class' => 'class', 'method' => 'method', 'at' => 0, 'index' => 0];
+        $called = false;
 
         $argumentCallback = new ArgumentCallback(
-            function ($argument, array $context) use ($expectedArgument, $expectContext) {
+            function ($argument, array $context) use ($expectedArgument, $expectContext, &$called): void {
                 self::assertSame($expectedArgument, $argument);
                 self::assertSame($expectContext, $context);
+
+                $called = true;
             }
         );
 
         $argumentCallback->assert($expectedArgument, $expectContext);
+
+        self::assertTrue($called);
     }
 }

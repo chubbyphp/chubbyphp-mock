@@ -13,9 +13,9 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  */
-class ArgumentInstanceOfTest extends TestCase
+final class ArgumentInstanceOfTest extends TestCase
 {
-    public function testAssert()
+    public function testAssert(): void
     {
         $expectedArgument = new \stdClass();
         $expectContext = ['class' => 'class', 'method' => 'method', 'at' => 0, 'index' => 0];
@@ -24,7 +24,7 @@ class ArgumentInstanceOfTest extends TestCase
         $argumentCallback->assert($expectedArgument, $expectContext);
     }
 
-    public function testAssertFail()
+    public function testAssertFail(): void
     {
         $expectedArgument = new \DateTime('2004-02-12T15:19:21+00:00');
         $expectContext = ['class' => 'class', 'method' => 'method', 'at' => 0, 'index' => 0];

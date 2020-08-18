@@ -1,11 +1,9 @@
+dist: bionic
+
 language: php
 
 matrix:
   include:
-    - php: 7.0
-      env: phpunit=^6.5.14
-    - php: 7.1
-      env: phpunit=^7.5.20
     - php: 7.2
       env: phpunit=^8.5.8
     - php: 7.3
@@ -46,6 +44,8 @@ matrix:
       env: phpunit=~9.3.0
 
 before_script:
+  - (phpenv config-rm xdebug.ini || exit 0)
+  - pecl install pcov
   - echo 'Europe/Zurich' | sudo tee /etc/timezone
   - echo 'date.timezone = "Europe/Zurich"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer self-update -q

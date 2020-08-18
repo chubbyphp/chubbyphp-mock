@@ -19,9 +19,10 @@ class ArgumentInstanceOf implements ArgumentInterface
     }
 
     /**
-     * @param mixed $argument
+     * @param mixed        $argument
+     * @param array<mixed> $context
      */
-    public function assert($argument, array $context)
+    public function assert($argument, array $context): void
     {
         Assert::assertInstanceOf(
             $this->class,

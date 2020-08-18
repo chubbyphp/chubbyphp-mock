@@ -13,15 +13,15 @@ A helper trait simplify mocking within phpunit.
 
 ## Requirements
 
- * php: ^7.0
- * phpunit/phpunit: ^6.5|^7.0|^8.0|^9.0
+ * php: ^7.2
+ * phpunit/phpunit: ^8.0|^9.0
 
 ## Installation
 
 Through [Composer](http://getcomposer.org) as [chubbyphp/chubbyphp-mock][1].
 
 ```sh
-composer require chubbyphp/chubbyphp-mock "^1.4" --dev
+composer require chubbyphp/chubbyphp-mock "^1.5" --dev
 ```
 
 ## Usage

@@ -17,7 +17,7 @@ class Call
     private $hasWith = false;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     private $with = [];
 
@@ -180,6 +180,9 @@ class Call
         return $this->hasReturnCallback;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getWith(): array
     {
         return $this->with;

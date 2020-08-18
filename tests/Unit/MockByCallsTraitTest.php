@@ -19,11 +19,11 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  */
-class MockByCallsTraitTest extends TestCase
+final class MockByCallsTraitTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testClassWithCallUsingArgumentInterface()
+    public function testClassWithCallUsingArgumentInterface(): void
     {
         /** @var SampleClass|MockObject $mock */
         $mock = $this->getMockByCalls(SampleClass::class, [
@@ -34,7 +34,7 @@ class MockByCallsTraitTest extends TestCase
         $mock->sample(new \DateTime());
     }
 
-    public function testAbstractClassWithCallUsingArgumentInterface()
+    public function testAbstractClassWithCallUsingArgumentInterface(): void
     {
         /** @var AbstractSampleClass|MockObject $mock */
         $mock = $this->getMockByCalls(AbstractSampleClass::class, [
@@ -45,7 +45,7 @@ class MockByCallsTraitTest extends TestCase
         $mock->sample(new \DateTime());
     }
 
-    public function testInterfaceWithInvalidCallUsingArgumentInterface()
+    public function testInterfaceWithInvalidCallUsingArgumentInterface(): void
     {
         /** @var SampleInterface|MockObject $mock */
         $mock = $this->getMockByCalls(SampleInterface::class, [
@@ -68,7 +68,7 @@ class MockByCallsTraitTest extends TestCase
         self::fail(sprintf('Expected "%s"', ExpectationFailedException::class));
     }
 
-    public function testInterfaceWithCallAndException()
+    public function testInterfaceWithCallAndException(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('sample');
@@ -83,7 +83,7 @@ class MockByCallsTraitTest extends TestCase
         $mock->sample($argument1);
     }
 
-    public function testInterfaceWithCallAndReturn()
+    public function testInterfaceWithCallAndReturn(): void
     {
         $argument1 = 'argument1';
         $return = 'return';
@@ -96,7 +96,7 @@ class MockByCallsTraitTest extends TestCase
         self::assertSame($return, $mock->sample($argument1));
     }
 
-    public function testInterfaceWithCallAndReturnSelf()
+    public function testInterfaceWithCallAndReturnSelf(): void
     {
         $argument1 = 'argument1';
 
@@ -108,7 +108,7 @@ class MockByCallsTraitTest extends TestCase
         self::assertSame($mock, $mock->sample($argument1));
     }
 
-    public function testInterfaceWithCallAndReturnCallback()
+    public function testInterfaceWithCallAndReturnCallback(): void
     {
         $argument1 = 'argument1';
 
@@ -124,7 +124,7 @@ class MockByCallsTraitTest extends TestCase
         self::assertSame('test', $mock->sample($argument1));
     }
 
-    public function testInterfacesWithCallAndReturnSelf()
+    public function testInterfacesWithCallAndReturnSelf(): void
     {
         $argument1 = 'argument1';
         $argument2 = 'argument2';
@@ -156,7 +156,7 @@ class MockByCallsTraitTest extends TestCase
         }
     }
 
-    public function testInterfaceWithToManyCalls()
+    public function testInterfaceWithToManyCalls(): void
     {
         /** @var SampleInterface|MockObject $mock */
         $mock = $this->getMockByCalls(SampleInterface::class);
@@ -199,7 +199,7 @@ class MockByCallsTraitTest extends TestCase
         self::fail('Chubbyphp\Tests\Mock\Unit\SampleInterface::sample(\'argument1\', true) was not expected to be called.');
     }
 
-    public function testInterfaceWithToLessCalls()
+    public function testInterfaceWithToLessCalls(): void
     {
         /** @var SampleInterface|MockObject $mock */
         $mock = $this->getMockByCalls(SampleInterface::class, [
@@ -236,7 +236,7 @@ class MockByCallsTraitTest extends TestCase
         self::fail('Expectation failed for method name is anything when invoked 2 time(s).');
     }
 
-    public function testInterfaceWithWrongCall()
+    public function testInterfaceWithWrongCall(): void
     {
         /** @var SampleInterface|MockObject $mock */
         $mock = $this->getMockByCalls(SampleInterface::class, [
@@ -281,11 +281,11 @@ class SampleClass implements SampleInterface
     /**
      * @param mixed $argument1
      */
-    public function sample($argument1, bool $argument2 = true)
+    public function sample($argument1, bool $argument2 = true): void
     {
     }
 
-    public function dotNotProxy()
+    public function dotNotProxy(): void
     {
     }
 }
@@ -305,7 +305,7 @@ abstract class AbstractSampleClass implements SampleInterface
     /**
      * @param mixed $argument1
      */
-    public function sample($argument1, bool $argument2 = true)
+    public function sample($argument1, bool $argument2 = true): void
     {
     }
 }

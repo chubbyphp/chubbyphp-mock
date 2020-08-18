@@ -12,9 +12,9 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  */
-class CallTest extends TestCase
+final class CallTest extends TestCase
 {
-    public function testEmptyWith()
+    public function testEmptyWith(): void
     {
         $call = Call::create('method')->with();
 
@@ -29,7 +29,7 @@ class CallTest extends TestCase
         self::assertNull($call->getReturnCallback());
     }
 
-    public function testWith()
+    public function testWith(): void
     {
         $call = Call::create('method')->with('argument');
 
@@ -44,7 +44,7 @@ class CallTest extends TestCase
         self::assertNull($call->getReturnCallback());
     }
 
-    public function testError()
+    public function testError(): void
     {
         $exception = new \Error();
 
@@ -61,7 +61,7 @@ class CallTest extends TestCase
         self::assertNull($call->getReturnCallback());
     }
 
-    public function testException()
+    public function testException(): void
     {
         $exception = new \Exception();
 
@@ -78,7 +78,7 @@ class CallTest extends TestCase
         self::assertNull($call->getReturnCallback());
     }
 
-    public function testReturnSelf()
+    public function testReturnSelf(): void
     {
         $call = Call::create('method')->willReturnSelf();
 
@@ -93,7 +93,7 @@ class CallTest extends TestCase
         self::assertNull($call->getReturnCallback());
     }
 
-    public function testReturn()
+    public function testReturn(): void
     {
         $return = 'test';
 
@@ -110,9 +110,9 @@ class CallTest extends TestCase
         self::assertNull($call->getReturnCallback());
     }
 
-    public function testReturnCallback()
+    public function testReturnCallback(): void
     {
-        $returnCallback = function () {};
+        $returnCallback = function (): void {};
 
         $call = Call::create('method')->willReturnCallback($returnCallback);
 
@@ -127,7 +127,7 @@ class CallTest extends TestCase
         self::assertSame($returnCallback, $call->getReturnCallback());
     }
 
-    public function testTryExceptionAndReturnSelf()
+    public function testTryExceptionAndReturnSelf(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willReturnSelf: There is already a exception');
@@ -138,7 +138,7 @@ class CallTest extends TestCase
         ;
     }
 
-    public function testTryExceptionAndReturn()
+    public function testTryExceptionAndReturn(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willReturn: There is already a exception');
@@ -149,18 +149,18 @@ class CallTest extends TestCase
         ;
     }
 
-    public function testTryExceptionAndReturnCallback()
+    public function testTryExceptionAndReturnCallback(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willReturnCallback: There is already a exception');
 
         $call = Call::create('method')
             ->willThrowException(new \Exception())
-            ->willReturnCallback(function () {})
+            ->willReturnCallback(function (): void {})
         ;
     }
 
-    public function testTryReturnSelfAndException()
+    public function testTryReturnSelfAndException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willThrowException: There is already a return self');
@@ -171,7 +171,7 @@ class CallTest extends TestCase
         ;
     }
 
-    public function testTryReturnSelfAndReturn()
+    public function testTryReturnSelfAndReturn(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willReturn: There is already a return self');
@@ -182,18 +182,18 @@ class CallTest extends TestCase
         ;
     }
 
-    public function testTryReturnSelfAndReturnCallback()
+    public function testTryReturnSelfAndReturnCallback(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willReturnCallback: There is already a return self');
 
         $call = Call::create('method')
             ->willReturnSelf()
-            ->willReturnCallback(function () {})
+            ->willReturnCallback(function (): void {})
         ;
     }
 
-    public function testTryReturnAndException()
+    public function testTryReturnAndException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willThrowException: There is already a return');
@@ -204,7 +204,7 @@ class CallTest extends TestCase
         ;
     }
 
-    public function testTryReturnAndReturnSelf()
+    public function testTryReturnAndReturnSelf(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willReturnSelf: There is already a return');
@@ -215,46 +215,46 @@ class CallTest extends TestCase
         ;
     }
 
-    public function testTryReturnAndReturnCallback()
+    public function testTryReturnAndReturnCallback(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willReturnCallback: There is already a return');
 
         $call = Call::create('method')
             ->willReturn('test')
-            ->willReturnCallback(function () {})
+            ->willReturnCallback(function (): void {})
         ;
     }
 
-    public function testTryReturnCallbackAndException()
+    public function testTryReturnCallbackAndException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willThrowException: There is already a return callback');
 
         $call = Call::create('method')
-            ->willReturnCallback(function () {})
+            ->willReturnCallback(function (): void {})
             ->willThrowException(new \Exception())
         ;
     }
 
-    public function testTryReturnCallbackAndReturnSelf()
+    public function testTryReturnCallbackAndReturnSelf(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willReturnSelf: There is already a return callback');
 
         $call = Call::create('method')
-            ->willReturnCallback(function () {})
+            ->willReturnCallback(function (): void {})
             ->willReturnSelf()
         ;
     }
 
-    public function testTryReturnCallbackAndReturn()
+    public function testTryReturnCallbackAndReturn(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willReturn: There is already a return callback');
 
         $call = Call::create('method')
-            ->willReturnCallback(function () {})
+            ->willReturnCallback(function (): void {})
             ->willReturn('test')
         ;
     }
