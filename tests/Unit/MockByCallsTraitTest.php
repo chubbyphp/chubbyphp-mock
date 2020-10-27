@@ -7,6 +7,7 @@ namespace Chubbyphp\Tests\Mock\Unit;
 use Chubbyphp\Mock\Argument\ArgumentInstanceOf;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Tests\Mock\Helper\AssertTrait;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\InvocationHandler;
@@ -21,6 +22,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class MockByCallsTraitTest extends TestCase
 {
+    use AssertTrait;
     use MockByCallsTrait;
 
     public function testClassWithCallUsingArgumentInterface(): void
@@ -147,6 +149,18 @@ final class MockByCallsTraitTest extends TestCase
 
             self::assertSame($mock, $mock->sample($argument1));
             self::assertSame($mock, $mock->additionalSample($argument2));
+
+            $warningReflectionProperty = new \ReflectionProperty(TestCase::class, 'warnings');
+            $warningReflectionProperty->setAccessible(true);
+
+            $warnings = $warningReflectionProperty->getValue($this);
+
+            self::assertSame([
+                'Passing an array of interface names to getMockBuilder() for creating a test double that implements'
+                .' multiple interfaces is deprecated and will no longer be supported in PHPUnit 9.',
+            ], $warnings);
+
+            $warningReflectionProperty->setValue($this, []);
         } catch (\TypeError $typeError) {
             self::assertStringStartsWith(
                 'Argument 1 passed to PHPUnit\Framework\TestCase::getMockBuilder() must be of the type string'
@@ -252,7 +266,7 @@ final class MockByCallsTraitTest extends TestCase
                 $e->getMessage()
             );
 
-            self::assertRegExp('/'.(new \ReflectionObject($mock))->getShortName().'/', $e->getMessage());
+            self::assertMatchesRegularExpression('/'.(new \ReflectionObject($mock))->getShortName().'/', $e->getMessage());
 
             self::assertStringEndsWith(
                 ']',
