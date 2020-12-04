@@ -57,6 +57,18 @@ matrix:
       env: phpunit=9.4.0
     - php: 7.4
       env: phpunit=~9.4.0
+    - php: 7.3
+      env: phpunit=9.5.0
+    - php: 7.3
+      env: phpunit=~9.5.0
+    - php: 7.4
+      env: phpunit=9.5.0
+    - php: 7.4
+      env: phpunit=~9.5.0
+    - php: nightly
+      env: phpunit=~9.5.0 composerargs="--ignore-platform-reqs"
+  allow_failures:
+    - php: nightly
 
 before_script:
   - (phpenv config-rm xdebug.ini || exit 0)
@@ -64,7 +76,7 @@ before_script:
   - echo 'Europe/Zurich' | sudo tee /etc/timezone
   - echo 'date.timezone = "Europe/Zurich"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer self-update -q
-  - composer require phpunit/phpunit:${phpunit}
+  - composer require phpunit/phpunit:${phpunit} $composerargs
 
 script:
   - composer test

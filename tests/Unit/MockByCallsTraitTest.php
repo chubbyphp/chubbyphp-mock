@@ -162,11 +162,22 @@ final class MockByCallsTraitTest extends TestCase
 
             $warningReflectionProperty->setValue($this, []);
         } catch (\TypeError $typeError) {
-            self::assertStringStartsWith(
-                'Argument 1 passed to PHPUnit\Framework\TestCase::getMockBuilder() must be of the type string'
-                    .', array given',
-                $typeError->getMessage()
-            );
+            $message = $typeError->getMessage();
+
+            $allowedMessagesStartsWith = [
+                'PHPUnit\Framework\TestCase::getMockBuilder(): Argument #1',
+                'Argument 1 passed to PHPUnit\Framework\TestCase::getMockBuilder()',
+            ];
+
+            foreach ($allowedMessagesStartsWith as $allowedMessageStartsWith) {
+                if (0 === strpos($message, $allowedMessageStartsWith)) {
+                    self::assertTrue(true);
+
+                    return;
+                }
+            }
+
+            self::fail(implode(' or ', $allowedMessagesStartsWith));
         }
     }
 
