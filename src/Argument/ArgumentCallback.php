@@ -22,7 +22,6 @@ class ArgumentCallback implements ArgumentInterface
      */
     public function assert($argument, array $context): void
     {
-        $callback = $this->callback;
-        $callback($argument, $context);
+        ($this->callback)($argument, $context);
     }
 }

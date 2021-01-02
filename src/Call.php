@@ -6,40 +6,22 @@ namespace Chubbyphp\Mock;
 
 class Call
 {
-    /**
-     * @var string
-     */
-    private $method;
+    private string $method;
 
-    /**
-     * @var bool
-     */
-    private $hasWith = false;
+    private bool $hasWith = false;
 
     /**
      * @var array<mixed>
      */
-    private $with = [];
+    private array $with = [];
 
-    /**
-     * @var \Throwable|null
-     */
-    private $exception;
+    private ?\Throwable $exception = null;
 
-    /**
-     * @var bool
-     */
-    private $hasReturnSelf = false;
+    private bool $hasReturnSelf = false;
 
-    /**
-     * @var bool
-     */
-    private $hasReturn = false;
+    private bool $hasReturn = false;
 
-    /**
-     * @var bool
-     */
-    private $hasReturnCallback = false;
+    private bool $hasReturnCallback = false;
 
     /**
      * @var mixed

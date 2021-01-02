@@ -10,8 +10,6 @@ use Chubbyphp\Mock\MockByCallsTrait;
 use Chubbyphp\Tests\Mock\Helper\AssertTrait;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\InvocationHandler;
-use PHPUnit\Framework\MockObject\InvocationMocker;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -126,61 +124,6 @@ final class MockByCallsTraitTest extends TestCase
         self::assertSame('test', $mock->sample($argument1));
     }
 
-    public function testInterfacesWithCallAndReturnSelf(): void
-    {
-        $argument1 = 'argument1';
-        $argument2 = 'argument2';
-
-        try {
-            error_clear_last();
-
-            /** @var SampleInterface|MockObject $mock */
-            $mock = $this->getMockByCalls([SampleInterface::class, AdditionalSampleInterface::class], [
-                Call::create('sample')->with($argument1, true)->willReturnSelf(),
-                Call::create('additionalSample')->with($argument2, true)->willReturnSelf(),
-            ]);
-
-            $error = error_get_last();
-
-            self::assertNotNull($error);
-
-            self::assertSame(E_USER_DEPRECATED, $error['type']);
-            self::assertSame('Multiple interfaces support will be dropped within phpunit: 9', $error['message']);
-
-            self::assertSame($mock, $mock->sample($argument1));
-            self::assertSame($mock, $mock->additionalSample($argument2));
-
-            $warningReflectionProperty = new \ReflectionProperty(TestCase::class, 'warnings');
-            $warningReflectionProperty->setAccessible(true);
-
-            $warnings = $warningReflectionProperty->getValue($this);
-
-            self::assertSame([
-                'Passing an array of interface names to getMockBuilder() for creating a test double that implements'
-                .' multiple interfaces is deprecated and will no longer be supported in PHPUnit 9.',
-            ], $warnings);
-
-            $warningReflectionProperty->setValue($this, []);
-        } catch (\TypeError $typeError) {
-            $message = $typeError->getMessage();
-
-            $allowedMessagesStartsWith = [
-                'PHPUnit\Framework\TestCase::getMockBuilder(): Argument #1',
-                'Argument 1 passed to PHPUnit\Framework\TestCase::getMockBuilder()',
-            ];
-
-            foreach ($allowedMessagesStartsWith as $allowedMessageStartsWith) {
-                if (0 === strpos($message, $allowedMessageStartsWith)) {
-                    self::assertTrue(true);
-
-                    return;
-                }
-            }
-
-            self::fail(implode(' or ', $allowedMessagesStartsWith));
-        }
-    }
-
     public function testInterfaceWithToManyCalls(): void
     {
         /** @var SampleInterface|MockObject $mock */
@@ -194,13 +137,7 @@ final class MockByCallsTraitTest extends TestCase
                 $e->getMessage()
             );
 
-            if (is_callable([$mock, '__phpunit_getInvocationHandler'])) {
-                /** @var InvocationHandler $invocation */
-                $invocation = $mock->__phpunit_getInvocationHandler();
-            } else {
-                /** @var InvocationMocker $invocation */
-                $invocation = $mock->__phpunit_getInvocationMocker();
-            }
+            $invocation = $mock->__phpunit_getInvocationHandler();
 
             try {
                 $invocation->verify();
@@ -234,13 +171,7 @@ final class MockByCallsTraitTest extends TestCase
 
         $mock->sample('argument1');
 
-        if (is_callable([$mock, '__phpunit_getInvocationHandler'])) {
-            /** @var InvocationHandler $invocation */
-            $invocation = $mock->__phpunit_getInvocationHandler();
-        } else {
-            /** @var InvocationMocker $invocation */
-            $invocation = $mock->__phpunit_getInvocationMocker();
-        }
+        $invocation = $mock->__phpunit_getInvocationHandler();
 
         try {
             $invocation->verify();

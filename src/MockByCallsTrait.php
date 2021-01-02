@@ -10,13 +10,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 trait MockByCallsTrait
 {
     /**
-     * @param string[]|string $class
-     * @param Call[]          $calls
+     * @param array<int,Call> $calls
      */
-    private function getMockByCalls($class, array $calls = []): MockObject
+    private function getMockByCalls(string $class, array $calls = []): MockObject
     {
-        $className = $this->getMockClassAsString($class);
-
         $mock = $this->prepareMock($class);
 
         $mockName = (new \ReflectionObject($mock))->getShortName();
@@ -24,7 +21,7 @@ trait MockByCallsTrait
         $callIndex = -1;
 
         $mock->expects(self::exactly(count($calls)))->method(self::anything())->willReturnCallback(
-            function () use ($className, $mock, $mockName, &$callIndex, &$calls) {
+            function () use ($class, $mock, $mockName, &$callIndex, &$calls) {
                 ++$callIndex;
 
                 $call = array_shift($calls);
@@ -37,7 +34,7 @@ trait MockByCallsTrait
                         sprintf(
                             'Call at index %d on class "%s" expected method "%s", "%s" given',
                             $callIndex,
-                            $className,
+                            $class,
                             $method,
                             $mockedMethod
                         )
@@ -46,17 +43,14 @@ trait MockByCallsTrait
                     );
                 }
 
-                return $this->getMockCallback($className, $callIndex, $call, $mock)(...func_get_args());
+                return $this->getMockCallback($class, $callIndex, $call, $mock)(...func_get_args());
             }
         );
 
         return $mock;
     }
 
-    /**
-     * @param string[]|string $class
-     */
-    private function prepareMock($class): MockObject
+    private function prepareMock(string $class): MockObject
     {
         $mockBuilder = $this->getMockBuilder($class)
             ->disableOriginalConstructor()
@@ -64,20 +58,6 @@ trait MockByCallsTrait
         ;
 
         return $mockBuilder->getMock();
-    }
-
-    /**
-     * @param string[]|string $class
-     */
-    private function getMockClassAsString($class): string
-    {
-        if (is_array($class)) {
-            @trigger_error('Multiple interfaces support will be dropped within phpunit: 9', E_USER_DEPRECATED);
-
-            return implode('|', $class);
-        }
-
-        return $class;
     }
 
     /**
@@ -174,7 +154,7 @@ trait MockByCallsTrait
     {
         $trace = [];
         $enableTrace = false;
-        foreach (debug_backtrace() as $i => $row) {
+        foreach (debug_backtrace() as $row) {
             if (isset($row['class']) && $mockName === $row['class']) {
                 $enableTrace = true;
             }

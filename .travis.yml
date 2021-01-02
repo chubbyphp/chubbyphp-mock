@@ -1,4 +1,4 @@
-dist: bionic
+dist: focal
 
 language: php
 
@@ -11,64 +11,38 @@ git:
 
 matrix:
   include:
-    - php: 7.2
-      env: phpunit=^8.5.8
-    - php: 7.3
-      env: phpunit=^8.5.8
-    - php: 7.4
-      env: phpunit=^8.5.8
-    - php: 7.3
-      env: phpunit=9.0.0
-    - php: 7.3
-      env: phpunit=~9.0.0
-    - php: 7.4
-      env: phpunit=9.0.0
-    - php: 7.4
-      env: phpunit=~9.0.0
-    - php: 7.3
-      env: phpunit=9.1.0
-    - php: 7.3
-      env: phpunit=~9.1.0
     - php: 7.4
       env: phpunit=9.1.0
     - php: 7.4
       env: phpunit=~9.1.0
-    - php: 7.3
-      env: phpunit=9.2.0
-    - php: 7.3
-      env: phpunit=~9.2.0
     - php: 7.4
       env: phpunit=9.2.0
     - php: 7.4
       env: phpunit=~9.2.0
-    - php: 7.3
-      env: phpunit=9.3.0
-    - php: 7.3
-      env: phpunit=~9.3.0
     - php: 7.4
       env: phpunit=9.3.0
     - php: 7.4
       env: phpunit=~9.3.0
-    - php: 7.3
-      env: phpunit=9.4.0
-    - php: 7.3
-      env: phpunit=~9.4.0
+    - php: 8.0
+      env: phpunit=9.3.0 composerargs="--ignore-platform-reqs"
+    - php: 8.0
+      env: phpunit=~9.3.0 composerargs="--ignore-platform-reqs"
     - php: 7.4
       env: phpunit=9.4.0
     - php: 7.4
       env: phpunit=~9.4.0
-    - php: 7.3
-      env: phpunit=9.5.0
-    - php: 7.3
-      env: phpunit=~9.5.0
+    - php: 8.0
+      env: phpunit=9.4.0 composerargs="--ignore-platform-reqs"
+    - php: 8.0
+      env: phpunit=~9.4.0 composerargs="--ignore-platform-reqs"
     - php: 7.4
       env: phpunit=9.5.0
     - php: 7.4
       env: phpunit=~9.5.0
-    - php: nightly
+    - php: 8.0
+      env: phpunit=9.5.0 composerargs="--ignore-platform-reqs"
+    - php: 8.0
       env: phpunit=~9.5.0 composerargs="--ignore-platform-reqs"
-  allow_failures:
-    - php: nightly
 
 before_script:
   - (phpenv config-rm xdebug.ini || exit 0)

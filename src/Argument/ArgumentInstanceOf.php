@@ -8,10 +8,7 @@ use PHPUnit\Framework\Assert;
 
 class ArgumentInstanceOf implements ArgumentInterface
 {
-    /**
-     * @var string
-     */
-    private $class;
+    private string $class;
 
     public function __construct(string $class)
     {
