@@ -6,6 +6,11 @@ namespace Chubbyphp\Mock;
 
 class Call
 {
+    private const ALREADY_A_EXCEPTION = '%s: There is already a exception';
+    private const ALREADY_A_RETURN = '%s: There is already a return';
+    private const ALREADY_A_RETURN_CALLBACK = '%s: There is already a return callback';
+    private const ALREADY_A_RETURN_SELF = '%s: There is already a return self';
+
     private string $method;
 
     private bool $hasWith = false;
@@ -33,16 +38,14 @@ class Call
      */
     private $returnCallback;
 
-    private function __construct()
+    private function __construct(string $method)
     {
+        $this->method = $method;
     }
 
     public static function create(string $method): self
     {
-        $self = new self();
-        $self->method = $method;
-
-        return $self;
+        return new self($method);
     }
 
     /**
@@ -59,15 +62,15 @@ class Call
     public function willThrowException(\Throwable $exception): self
     {
         if ($this->hasReturnSelf) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a return self', __METHOD__));
+            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN_SELF, __METHOD__));
         }
 
         if ($this->hasReturn) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a return', __METHOD__));
+            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN, __METHOD__));
         }
 
         if ($this->hasReturnCallback) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a return callback', __METHOD__));
+            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN_CALLBACK, __METHOD__));
         }
 
         $this->exception = $exception;
@@ -78,15 +81,15 @@ class Call
     public function willReturnSelf(): self
     {
         if (null !== $this->exception) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a exception', __METHOD__));
+            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_EXCEPTION, __METHOD__));
         }
 
         if ($this->hasReturn) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a return', __METHOD__));
+            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN, __METHOD__));
         }
 
         if ($this->hasReturnCallback) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a return callback', __METHOD__));
+            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN_CALLBACK, __METHOD__));
         }
 
         $this->hasReturnSelf = true;
@@ -100,15 +103,15 @@ class Call
     public function willReturn($return): self
     {
         if (null !== $this->exception) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a exception', __METHOD__));
+            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_EXCEPTION, __METHOD__));
         }
 
         if ($this->hasReturnSelf) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a return self', __METHOD__));
+            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN_SELF, __METHOD__));
         }
 
         if ($this->hasReturnCallback) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a return callback', __METHOD__));
+            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN_CALLBACK, __METHOD__));
         }
 
         $this->hasReturn = true;
@@ -120,15 +123,15 @@ class Call
     public function willReturnCallback(callable $returnCallback): self
     {
         if (null !== $this->exception) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a exception', __METHOD__));
+            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_EXCEPTION, __METHOD__));
         }
 
         if ($this->hasReturnSelf) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a return self', __METHOD__));
+            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN_SELF, __METHOD__));
         }
 
         if ($this->hasReturn) {
-            throw new \InvalidArgumentException(sprintf('%s: There is already a return', __METHOD__));
+            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN, __METHOD__));
         }
 
         $this->hasReturnCallback = true;
