@@ -26,7 +26,7 @@ A helper trait simplify mocking within phpunit.
 ## Requirements
 
  * php: ^7.4|^8.0
- * phpunit/phpunit: ^9.1
+ * phpunit/phpunit: ^9.3
 
 ## Installation
 
