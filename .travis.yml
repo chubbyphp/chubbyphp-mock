@@ -15,25 +15,25 @@ matrix:
     - php: 7.4
       env: phpunit=~9.3.0
     - php: 8.0
-      env: phpunit=9.3.0 composerargs="--ignore-platform-reqs"
+      env: phpunit=9.3.0
     - php: 8.0
-      env: phpunit=~9.3.0 composerargs="--ignore-platform-reqs"
+      env: phpunit=~9.3.0
     - php: 7.4
       env: phpunit=9.4.0
     - php: 7.4
       env: phpunit=~9.4.0
     - php: 8.0
-      env: phpunit=9.4.0 composerargs="--ignore-platform-reqs"
+      env: phpunit=9.4.0
     - php: 8.0
-      env: phpunit=~9.4.0 composerargs="--ignore-platform-reqs"
+      env: phpunit=~9.4.0
     - php: 7.4
       env: phpunit=9.5.0
     - php: 7.4
       env: phpunit=~9.5.0
     - php: 8.0
-      env: phpunit=9.5.0 composerargs="--ignore-platform-reqs"
+      env: phpunit=9.5.0
     - php: 8.0
-      env: phpunit=~9.5.0 composerargs="--ignore-platform-reqs"
+      env: phpunit=~9.5.0
 
 before_script:
   - (phpenv config-rm xdebug.ini || exit 0)
