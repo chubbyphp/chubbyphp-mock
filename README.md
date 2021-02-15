@@ -1,8 +1,8 @@
 # chubbyphp-mock
 
-[![Build Status](https://api.travis-ci.org/chubbyphp/chubbyphp-mock.png?branch=master)](https://travis-ci.org/chubbyphp/chubbyphp-mock)
+[![CI](https://github.com/chubbyphp/chubbyphp-mock/workflows/CI/badge.svg?branch=master)](https://github.com/chubbyphp/chubbyphp-mock/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/chubbyphp/chubbyphp-mock/badge.svg?branch=master)](https://coveralls.io/github/chubbyphp/chubbyphp-mock?branch=master)
-[![Infection MSI](https://badge.stryker-mutator.io/github.com/chubbyphp/chubbyphp-mock/master)](https://travis-ci.org/chubbyphp/chubbyphp-mock)
+[![Infection MSI](https://badge.stryker-mutator.io/github.com/chubbyphp/chubbyphp-mock/master)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/chubbyphp-mock/master)
 [![Latest Stable Version](https://poser.pugx.org/chubbyphp/chubbyphp-mock/v/stable.png)](https://packagist.org/packages/chubbyphp/chubbyphp-mock)
 [![Total Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-mock/downloads.png)](https://packagist.org/packages/chubbyphp/chubbyphp-mock)
 [![Monthly Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-mock/d/monthly)](https://packagist.org/packages/chubbyphp/chubbyphp-mock)
