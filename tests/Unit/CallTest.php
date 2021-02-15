@@ -112,7 +112,7 @@ final class CallTest extends TestCase
 
     public function testReturnCallback(): void
     {
-        $returnCallback = function (): void {};
+        $returnCallback = static function (): void {};
 
         $call = Call::create('method')->willReturnCallback($returnCallback);
 
@@ -156,7 +156,7 @@ final class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willThrowException(new \Exception())
-            ->willReturnCallback(function (): void {})
+            ->willReturnCallback(static function (): void {})
         ;
     }
 
@@ -189,7 +189,7 @@ final class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willReturnSelf()
-            ->willReturnCallback(function (): void {})
+            ->willReturnCallback(static function (): void {})
         ;
     }
 
@@ -222,7 +222,7 @@ final class CallTest extends TestCase
 
         $call = Call::create('method')
             ->willReturn('test')
-            ->willReturnCallback(function (): void {})
+            ->willReturnCallback(static function (): void {})
         ;
     }
 
@@ -232,7 +232,7 @@ final class CallTest extends TestCase
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willThrowException: There is already a return callback');
 
         $call = Call::create('method')
-            ->willReturnCallback(function (): void {})
+            ->willReturnCallback(static function (): void {})
             ->willThrowException(new \Exception())
         ;
     }
@@ -243,7 +243,7 @@ final class CallTest extends TestCase
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willReturnSelf: There is already a return callback');
 
         $call = Call::create('method')
-            ->willReturnCallback(function (): void {})
+            ->willReturnCallback(static function (): void {})
             ->willReturnSelf()
         ;
     }
@@ -254,7 +254,7 @@ final class CallTest extends TestCase
         $this->expectExceptionMessage('Chubbyphp\Mock\Call::willReturn: There is already a return callback');
 
         $call = Call::create('method')
-            ->willReturnCallback(function (): void {})
+            ->willReturnCallback(static function (): void {})
             ->willReturn('test')
         ;
     }

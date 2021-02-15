@@ -21,7 +21,7 @@ final class ArgumentCallbackTest extends TestCase
         $called = false;
 
         $argumentCallback = new ArgumentCallback(
-            function ($argument, array $context) use ($expectedArgument, $expectContext, &$called): void {
+            static function ($argument, array $context) use ($expectedArgument, $expectContext, &$called): void {
                 self::assertSame($expectedArgument, $argument);
                 self::assertSame($expectContext, $context);
 

@@ -114,7 +114,7 @@ final class MockByCallsTraitTest extends TestCase
 
         /** @var SampleInterface|MockObject $mock */
         $mock = $this->getMockByCalls(SampleInterface::class, [
-            Call::create('sample')->with($argument1, true)->willReturnCallback(function ($argument) use ($argument1) {
+            Call::create('sample')->with($argument1, true)->willReturnCallback(static function ($argument) use ($argument1) {
                 self::assertSame($argument1, $argument);
 
                 return 'test';
