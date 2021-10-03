@@ -20,7 +20,7 @@ trait MockByCallsTrait
 
         $callIndex = -1;
 
-        $mock->expects(self::exactly(count($calls)))->method(self::anything())->willReturnCallback(
+        $mock->expects(self::exactly(\count($calls)))->method(self::anything())->willReturnCallback(
             function () use ($class, $mock, $mockName, &$callIndex, &$calls) {
                 ++$callIndex;
 
@@ -43,7 +43,7 @@ trait MockByCallsTrait
                     );
                 }
 
-                return $this->getMockCallback($class, $callIndex, $call, $mock)(...func_get_args());
+                return $this->getMockCallback($class, $callIndex, $call, $mock)(...\func_get_args());
             }
         );
 
@@ -80,7 +80,7 @@ trait MockByCallsTrait
     ): \Closure {
         return function () use ($class, $callIndex, $call, $mock) {
             if ($call->hasWith()) {
-                $this->compareArguments($class, $call->getMethod(), $callIndex, $call->getWith(), func_get_args());
+                $this->compareArguments($class, $call->getMethod(), $callIndex, $call->getWith(), \func_get_args());
             }
 
             if (null !== $exception = $call->getException()) {
@@ -98,7 +98,7 @@ trait MockByCallsTrait
             if ($call->hasReturnCallback()) {
                 $callback = $call->getReturnCallback();
 
-                return $callback(...func_get_args());
+                return $callback(...\func_get_args());
             }
         };
     }
@@ -110,8 +110,8 @@ trait MockByCallsTrait
         array $expectedArguments,
         array $arguments
     ): void {
-        $expectedArgumentsCount = count($expectedArguments);
-        $argumentsCount = count($arguments);
+        $expectedArgumentsCount = \count($expectedArguments);
+        $argumentsCount = \count($arguments);
 
         self::assertSame(
             $expectedArgumentsCount,

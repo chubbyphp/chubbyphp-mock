@@ -25,13 +25,13 @@ final class MockByCallsTraitTest extends TestCase
 
     public function testClassWithCallUsingArgumentInterface(): void
     {
-        /** @var SampleClass|MockObject $mock */
+        /** @var MockObject|SampleClass $mock */
         $mock = $this->getMockByCalls(SampleClass::class, [
             Call::create('sample')
-                ->with(new ArgumentInstanceOf(\DateTime::class), true),
+                ->with(new ArgumentInstanceOf(\DateTimeImmutable::class), true),
         ]);
 
-        $mock->sample(new \DateTime());
+        $mock->sample(new \DateTimeImmutable());
     }
 
     public function testAbstractClassWithCallUsingArgumentInterface(): void
@@ -39,26 +39,26 @@ final class MockByCallsTraitTest extends TestCase
         /** @var AbstractSampleClass|MockObject $mock */
         $mock = $this->getMockByCalls(AbstractSampleClass::class, [
             Call::create('sample')
-                ->with(new ArgumentInstanceOf(\DateTime::class), true),
+                ->with(new ArgumentInstanceOf(\DateTimeImmutable::class), true),
         ]);
 
-        $mock->sample(new \DateTime());
+        $mock->sample(new \DateTimeImmutable());
     }
 
     public function testInterfaceWithInvalidCallUsingArgumentInterface(): void
     {
-        /** @var SampleInterface|MockObject $mock */
+        /** @var MockObject|SampleInterface $mock */
         $mock = $this->getMockByCalls(SampleInterface::class, [
             Call::create('sample')
                 ->with(new ArgumentInstanceOf(\stdClass::class), true),
         ]);
 
         try {
-            $mock->sample(new \DateTime());
+            $mock->sample(new \DateTimeImmutable());
         } catch (ExpectationFailedException $e) {
             self::assertSame(
                 'Method "sample" on class "Chubbyphp\Tests\Mock\Unit\SampleInterface" at call 0, argument 0'.PHP_EOL.
-                'Failed asserting that DateTime Object (...) is an instance of class "stdClass".',
+                'Failed asserting that DateTimeImmutable Object (...) is an instance of class "stdClass".',
                 $e->getMessage()
             );
 
@@ -75,7 +75,7 @@ final class MockByCallsTraitTest extends TestCase
 
         $argument1 = 'argument1';
 
-        /** @var SampleInterface|MockObject $mock */
+        /** @var MockObject|SampleInterface $mock */
         $mock = $this->getMockByCalls(SampleInterface::class, [
             Call::create('sample')->with($argument1, true)->willThrowException(new \RuntimeException('sample')),
         ]);
@@ -88,7 +88,7 @@ final class MockByCallsTraitTest extends TestCase
         $argument1 = 'argument1';
         $return = 'return';
 
-        /** @var SampleInterface|MockObject $mock */
+        /** @var MockObject|SampleInterface $mock */
         $mock = $this->getMockByCalls(SampleInterface::class, [
             Call::create('sample')->with($argument1, true)->willReturn($return),
         ]);
@@ -100,7 +100,7 @@ final class MockByCallsTraitTest extends TestCase
     {
         $argument1 = 'argument1';
 
-        /** @var SampleInterface|MockObject $mock */
+        /** @var MockObject|SampleInterface $mock */
         $mock = $this->getMockByCalls(SampleInterface::class, [
             Call::create('sample')->with($argument1, true)->willReturnSelf(),
         ]);
@@ -112,7 +112,7 @@ final class MockByCallsTraitTest extends TestCase
     {
         $argument1 = 'argument1';
 
-        /** @var SampleInterface|MockObject $mock */
+        /** @var MockObject|SampleInterface $mock */
         $mock = $this->getMockByCalls(SampleInterface::class, [
             Call::create('sample')->with($argument1, true)->willReturnCallback(static function ($argument) use ($argument1) {
                 self::assertSame($argument1, $argument);
@@ -126,7 +126,7 @@ final class MockByCallsTraitTest extends TestCase
 
     public function testInterfaceWithToManyCalls(): void
     {
-        /** @var SampleInterface|MockObject $mock */
+        /** @var MockObject|SampleInterface $mock */
         $mock = $this->getMockByCalls(SampleInterface::class);
 
         try {
@@ -163,7 +163,7 @@ final class MockByCallsTraitTest extends TestCase
 
     public function testInterfaceWithToLessCalls(): void
     {
-        /** @var SampleInterface|MockObject $mock */
+        /** @var MockObject|SampleInterface $mock */
         $mock = $this->getMockByCalls(SampleInterface::class, [
             Call::create('sample')->with('argument1', true),
             Call::create('sample')->with('argument1', true),
@@ -194,7 +194,7 @@ final class MockByCallsTraitTest extends TestCase
 
     public function testInterfaceWithWrongCall(): void
     {
-        /** @var SampleInterface|MockObject $mock */
+        /** @var MockObject|SampleInterface $mock */
         $mock = $this->getMockByCalls(SampleInterface::class, [
             Call::create('sample1')->with('argument1', true),
         ]);

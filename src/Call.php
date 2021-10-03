@@ -34,7 +34,7 @@ class Call
     private $return;
 
     /**
-     * @var callable|null
+     * @var null|callable
      */
     private $returnCallback;
 
@@ -173,10 +173,7 @@ class Call
         return $this->with;
     }
 
-    /**
-     * @return \Throwable|null
-     */
-    public function getException()
+    public function getException(): ?\Throwable
     {
         return $this->exception;
     }

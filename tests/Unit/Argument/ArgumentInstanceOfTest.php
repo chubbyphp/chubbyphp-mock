@@ -26,7 +26,7 @@ final class ArgumentInstanceOfTest extends TestCase
 
     public function testAssertFail(): void
     {
-        $expectedArgument = new \DateTime('2004-02-12T15:19:21+00:00');
+        $expectedArgument = new \DateTimeImmutable('2004-02-12T15:19:21+00:00');
         $expectContext = ['class' => 'class', 'method' => 'method', 'at' => 0, 'index' => 0];
 
         $argumentCallback = new ArgumentInstanceOf(\stdClass::class);
@@ -36,7 +36,7 @@ final class ArgumentInstanceOfTest extends TestCase
         } catch (ExpectationFailedException $e) {
             self::assertSame(
                 'Method "method" on class "class" at call 0, argument 0'.PHP_EOL.
-                'Failed asserting that DateTime Object (...) is an instance of class "stdClass".',
+                'Failed asserting that DateTimeImmutable Object (...) is an instance of class "stdClass".',
                 $e->getMessage()
             );
 
