@@ -25,8 +25,8 @@ A helper trait simplify mocking within phpunit.
 
 ## Requirements
 
- * php: ^7.4|^8.0
- * phpunit/phpunit: ^9.3
+ * php: ^8.0
+ * phpunit/phpunit: ^9.5
 
 ## Installation
 
@@ -98,7 +98,7 @@ $user = $this->getMockByCalls(User::class, [
 
 ## Copyright
 
-Dominik Zogg 2021
+Dominik Zogg 2022
 
 
 [1]: https://packagist.org/packages/chubbyphp/chubbyphp-mock
