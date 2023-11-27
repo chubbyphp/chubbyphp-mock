@@ -28,10 +28,7 @@ class Call
 
     private bool $hasReturnCallback = false;
 
-    /**
-     * @var mixed
-     */
-    private $return;
+    private mixed $return = null;
 
     /**
      * @var null|callable
@@ -97,10 +94,7 @@ class Call
         return $this;
     }
 
-    /**
-     * @param mixed $return
-     */
-    public function willReturn($return): self
+    public function willReturn(mixed $return): self
     {
         if (null !== $this->exception) {
             throw new \InvalidArgumentException(sprintf(self::ALREADY_A_EXCEPTION, __METHOD__));

@@ -4,6 +4,4 @@ declare(strict_types=1);
 
 namespace Chubbyphp\Tests\Mock\Helper;
 
-trait AssertTrait
-{
-}
+trait AssertTrait {}
