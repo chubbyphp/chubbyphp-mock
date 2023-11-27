@@ -2,8 +2,7 @@
 
 [![CI](https://github.com/chubbyphp/chubbyphp-mock/workflows/CI/badge.svg?branch=master)](https://github.com/chubbyphp/chubbyphp-mock/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/chubbyphp/chubbyphp-mock/badge.svg?branch=master)](https://coveralls.io/github/chubbyphp/chubbyphp-mock?branch=master)
-[![Infection MSI](https://badge.stryker-mutator.io/github.com/chubbyphp/chubbyphp-mock/master)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/chubbyphp-mock/master)
-[![Latest Stable Version](https://poser.pugx.org/chubbyphp/chubbyphp-mock/v/stable.png)](https://packagist.org/packages/chubbyphp/chubbyphp-mock)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fchubbyphp%2Fchubbyphp-mock%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/chubbyphp-mock/master)[![Latest Stable Version](https://poser.pugx.org/chubbyphp/chubbyphp-mock/v/stable.png)](https://packagist.org/packages/chubbyphp/chubbyphp-mock)
 [![Total Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-mock/downloads.png)](https://packagist.org/packages/chubbyphp/chubbyphp-mock)
 [![Monthly Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-mock/d/monthly)](https://packagist.org/packages/chubbyphp/chubbyphp-mock)
 
@@ -25,15 +24,15 @@ A helper trait simplify mocking within phpunit.
 
 ## Requirements
 
- * php: ^8.0
- * phpunit/phpunit: ^9.5
+ * php: ^8.1
+ * phpunit/phpunit: ^10.4.2
 
 ## Installation
 
 Through [Composer](http://getcomposer.org) as [chubbyphp/chubbyphp-mock][1].
 
 ```sh
-composer require chubbyphp/chubbyphp-mock "^1.6" --dev
+composer require chubbyphp/chubbyphp-mock "^1.7" --dev
 ```
 
 ## Usage

@@ -17,10 +17,9 @@ class ArgumentCallback implements ArgumentInterface
     }
 
     /**
-     * @param mixed        $argument
      * @param array<mixed> $context
      */
-    public function assert($argument, array $context): void
+    public function assert(mixed $argument, array $context): void
     {
         ($this->callback)($argument, $context);
     }

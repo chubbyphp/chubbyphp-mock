@@ -36,7 +36,7 @@ final class ArgumentInstanceOfTest extends TestCase
         } catch (ExpectationFailedException $e) {
             self::assertSame(
                 'Method "method" on class "class" at call 0, argument 0'.PHP_EOL.
-                'Failed asserting that DateTimeImmutable Object (...) is an instance of class "stdClass".',
+                'Failed asserting that an object is an instance of class stdClass.',
                 $e->getMessage()
             );
 
