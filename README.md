@@ -1,9 +1,10 @@
 # chubbyphp-mock
 
-[![CI](https://github.com/chubbyphp/chubbyphp-mock/workflows/CI/badge.svg?branch=master)](https://github.com/chubbyphp/chubbyphp-mock/actions?query=workflow%3ACI)
+[![CI](https://github.com/chubbyphp/chubbyphp-mock/actions/workflows/ci.yml/badge.svg)](https://github.com/chubbyphp/chubbyphp-mock/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/chubbyphp/chubbyphp-mock/badge.svg?branch=master)](https://coveralls.io/github/chubbyphp/chubbyphp-mock?branch=master)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fchubbyphp%2Fchubbyphp-mock%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/chubbyphp-mock/master)
-[![Total Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-mock/downloads.png)](https://packagist.org/packages/chubbyphp/chubbyphp-mock)
+[![Latest Stable Version](https://poser.pugx.org/chubbyphp/chubbyphp-mock/v)](https://packagist.org/packages/chubbyphp/chubbyphp-mock)
+[![Total Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-mock/downloads)](https://packagist.org/packages/chubbyphp/chubbyphp-mock)
 [![Monthly Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-mock/d/monthly)](https://packagist.org/packages/chubbyphp/chubbyphp-mock)
 
 [![bugs](https://sonarcloud.io/api/project_badges/measure?project=chubbyphp_chubbyphp-mock&metric=bugs)](https://sonarcloud.io/dashboard?id=chubbyphp_chubbyphp-mock)
