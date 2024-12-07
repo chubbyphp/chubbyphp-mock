@@ -11,6 +11,7 @@ use Chubbyphp\Tests\Mock\Helper\AssertTrait;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\TestDoubleState;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -58,14 +59,14 @@ final class MockByCallsTraitTest extends TestCase
         } catch (ExpectationFailedException $e) {
             self::assertSame(
                 'Method "sample" on class "Chubbyphp\Tests\Mock\Unit\SampleInterface" at call 0, argument 0'.PHP_EOL.
-                'Failed asserting that an object is an instance of class stdClass.',
+                'Failed asserting that an instance of class DateTimeImmutable is an instance of class stdClass.',
                 $e->getMessage()
             );
 
             return;
         }
 
-        self::fail(sprintf('Expected "%s"', ExpectationFailedException::class));
+        self::fail(\sprintf('Expected "%s"', ExpectationFailedException::class));
     }
 
     public function testInterfaceWithCallAndException(): void
@@ -137,7 +138,13 @@ final class MockByCallsTraitTest extends TestCase
                 $e->getMessage()
             );
 
-            $invocation = $mock->__phpunit_getInvocationHandler();
+            $reflectionProperty = new \ReflectionProperty($mock, '__phpunit_state');
+            $reflectionProperty->setAccessible(true);
+
+            /** @var TestDoubleState $state */
+            $state = $reflectionProperty->getValue($mock);
+
+            $invocation = $state->invocationHandler();
 
             try {
                 $invocation->verify();
@@ -148,9 +155,7 @@ final class MockByCallsTraitTest extends TestCase
                     $e->getMessage()
                 );
 
-                $reflectionProperty = new \ReflectionProperty($mock, '__phpunit_invocationMocker');
-                $reflectionProperty->setAccessible(true);
-                $reflectionProperty->setValue($mock, null);
+                $state->unsetInvocationHandler();
 
                 return;
             }
@@ -171,7 +176,13 @@ final class MockByCallsTraitTest extends TestCase
 
         $mock->sample('argument1');
 
-        $invocation = $mock->__phpunit_getInvocationHandler();
+        $reflectionProperty = new \ReflectionProperty($mock, '__phpunit_state');
+        $reflectionProperty->setAccessible(true);
+
+        /** @var TestDoubleState $state */
+        $state = $reflectionProperty->getValue($mock);
+
+        $invocation = $state->invocationHandler();
 
         try {
             $invocation->verify();
@@ -182,9 +193,7 @@ final class MockByCallsTraitTest extends TestCase
                 $e->getMessage()
             );
 
-            $reflectionProperty = new \ReflectionProperty($mock, '__phpunit_invocationMocker');
-            $reflectionProperty->setAccessible(true);
-            $reflectionProperty->setValue($mock, null);
+            $state->unsetInvocationHandler();
 
             return;
         }
@@ -218,7 +227,7 @@ final class MockByCallsTraitTest extends TestCase
             return;
         }
 
-        self::fail(sprintf('Expected "%s"', AssertionFailedError::class));
+        self::fail(\sprintf('Expected "%s"', AssertionFailedError::class));
     }
 }
 

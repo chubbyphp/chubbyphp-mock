@@ -59,15 +59,15 @@ class Call
     public function willThrowException(\Throwable $exception): self
     {
         if ($this->hasReturnSelf) {
-            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN_SELF, __METHOD__));
+            throw new \InvalidArgumentException(\sprintf(self::ALREADY_A_RETURN_SELF, __METHOD__));
         }
 
         if ($this->hasReturn) {
-            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN, __METHOD__));
+            throw new \InvalidArgumentException(\sprintf(self::ALREADY_A_RETURN, __METHOD__));
         }
 
         if ($this->hasReturnCallback) {
-            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN_CALLBACK, __METHOD__));
+            throw new \InvalidArgumentException(\sprintf(self::ALREADY_A_RETURN_CALLBACK, __METHOD__));
         }
 
         $this->exception = $exception;
@@ -78,15 +78,15 @@ class Call
     public function willReturnSelf(): self
     {
         if (null !== $this->exception) {
-            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_EXCEPTION, __METHOD__));
+            throw new \InvalidArgumentException(\sprintf(self::ALREADY_A_EXCEPTION, __METHOD__));
         }
 
         if ($this->hasReturn) {
-            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN, __METHOD__));
+            throw new \InvalidArgumentException(\sprintf(self::ALREADY_A_RETURN, __METHOD__));
         }
 
         if ($this->hasReturnCallback) {
-            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN_CALLBACK, __METHOD__));
+            throw new \InvalidArgumentException(\sprintf(self::ALREADY_A_RETURN_CALLBACK, __METHOD__));
         }
 
         $this->hasReturnSelf = true;
@@ -97,15 +97,15 @@ class Call
     public function willReturn(mixed $return): self
     {
         if (null !== $this->exception) {
-            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_EXCEPTION, __METHOD__));
+            throw new \InvalidArgumentException(\sprintf(self::ALREADY_A_EXCEPTION, __METHOD__));
         }
 
         if ($this->hasReturnSelf) {
-            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN_SELF, __METHOD__));
+            throw new \InvalidArgumentException(\sprintf(self::ALREADY_A_RETURN_SELF, __METHOD__));
         }
 
         if ($this->hasReturnCallback) {
-            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN_CALLBACK, __METHOD__));
+            throw new \InvalidArgumentException(\sprintf(self::ALREADY_A_RETURN_CALLBACK, __METHOD__));
         }
 
         $this->hasReturn = true;
@@ -117,15 +117,15 @@ class Call
     public function willReturnCallback(callable $returnCallback): self
     {
         if (null !== $this->exception) {
-            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_EXCEPTION, __METHOD__));
+            throw new \InvalidArgumentException(\sprintf(self::ALREADY_A_EXCEPTION, __METHOD__));
         }
 
         if ($this->hasReturnSelf) {
-            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN_SELF, __METHOD__));
+            throw new \InvalidArgumentException(\sprintf(self::ALREADY_A_RETURN_SELF, __METHOD__));
         }
 
         if ($this->hasReturn) {
-            throw new \InvalidArgumentException(sprintf(self::ALREADY_A_RETURN, __METHOD__));
+            throw new \InvalidArgumentException(\sprintf(self::ALREADY_A_RETURN, __METHOD__));
         }
 
         $this->hasReturnCallback = true;

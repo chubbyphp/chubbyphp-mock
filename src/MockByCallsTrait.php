@@ -10,7 +10,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 trait MockByCallsTrait
 {
     /**
-     * @param array<int,Call> $calls
+     * @param class-string<object> $class
+     * @param array<int,Call>      $calls
      */
     private function getMockByCalls(string $class, array $calls = []): MockObject
     {
@@ -24,6 +25,7 @@ trait MockByCallsTrait
             function () use ($class, $mock, $mockName, &$callIndex, &$calls) {
                 ++$callIndex;
 
+                /** @var Call $call */
                 $call = array_shift($calls);
 
                 $method = $call->getMethod();
@@ -31,7 +33,7 @@ trait MockByCallsTrait
 
                 if ($mockedMethod !== $method) {
                     self::fail(
-                        sprintf(
+                        \sprintf(
                             'Call at index %d on class "%s" expected method "%s", "%s" given',
                             $callIndex,
                             $class,
@@ -50,6 +52,9 @@ trait MockByCallsTrait
         return $mock;
     }
 
+    /**
+     * @param class-string<object> $class
+     */
     private function prepareMock(string $class): MockObject
     {
         $mockBuilder = $this->getMockBuilder($class)
@@ -66,10 +71,12 @@ trait MockByCallsTrait
     private function getMockedMethod(string $mockName): string
     {
         foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $trace) {
-            if ($mockName === $trace['class']) {
+            if (isset($trace['class']) && $trace['class'] === $mockName) {
                 return $trace['function'];
             }
         }
+
+        throw new \ErrorException('Internal error, file a bug');
     }
 
     private function getMockCallback(
@@ -103,6 +110,10 @@ trait MockByCallsTrait
         };
     }
 
+    /**
+     * @param array<int, mixed> $expectedArguments
+     * @param array<int, mixed> $arguments
+     */
     private function compareArguments(
         string $class,
         string $method,
@@ -116,7 +127,7 @@ trait MockByCallsTrait
         self::assertSame(
             $expectedArgumentsCount,
             $argumentsCount,
-            sprintf(
+            \sprintf(
                 'Method "%s" on class "%s" at call %d, got %d arguments, but %d are expected',
                 $method,
                 $class,
@@ -139,7 +150,7 @@ trait MockByCallsTrait
             self::assertSame(
                 $expectedArgument,
                 $arguments[$index],
-                sprintf(
+                \sprintf(
                     'Method "%s" on class "%s" at call %d, argument %d',
                     $method,
                     $class,
@@ -150,12 +161,15 @@ trait MockByCallsTrait
         }
     }
 
+    /**
+     * @return array<string>
+     */
     private function getStackTrace(string $mockName): array
     {
         $trace = [];
         $enableTrace = false;
         foreach (debug_backtrace() as $row) {
-            if (isset($row['class']) && $mockName === $row['class']) {
+            if (isset($row['class']) && $row['class'] === $mockName) {
                 $enableTrace = true;
             }
 
@@ -170,12 +184,10 @@ trait MockByCallsTrait
                     $traceRow .= $row['type'];
                 }
 
-                if (isset($row['function'])) {
-                    $traceRow .= $row['function'];
-                }
+                $traceRow .= $row['function'];
 
-                if (isset($row['file'])) {
-                    $traceRow .= sprintf(' (%s:%d)', $row['file'], $row['line']);
+                if (isset($row['file'], $row['line'])) {
+                    $traceRow .= \sprintf(' (%s:%d)', $row['file'], $row['line']);
                 }
 
                 $trace[] = $traceRow;

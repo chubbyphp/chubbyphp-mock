@@ -23,7 +23,7 @@ class ArgumentInstanceOf implements ArgumentInterface
         Assert::assertInstanceOf(
             $this->class,
             $argument,
-            sprintf(
+            \sprintf(
                 'Method "%s" on class "%s" at call %d, argument %d',
                 $context['method'],
                 $context['class'],

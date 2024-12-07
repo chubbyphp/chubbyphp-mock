@@ -25,15 +25,15 @@ A helper trait simplify mocking within phpunit.
 
 ## Requirements
 
- * php: ^8.1
- * phpunit/phpunit: ^10.4.2
+ * php: ^8.2
+ * phpunit/phpunit: ^11.5.0
 
 ## Installation
 
 Through [Composer](http://getcomposer.org) as [chubbyphp/chubbyphp-mock][1].
 
 ```sh
-composer require chubbyphp/chubbyphp-mock "^1.7" --dev
+composer require chubbyphp/chubbyphp-mock "^1.8" --dev
 ```
 
 ## Usage
