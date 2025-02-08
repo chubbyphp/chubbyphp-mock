@@ -1,5 +1,13 @@
 parameters:
     ignoreErrors:
         -
-            message: '/PHPUnit\\Framework\\Assert\:\:assertInstanceOf/'
-            path: %currentWorkingDirectory%/src/Argument/ArgumentInstanceOf.php
+            message: '/mock\(\) has no return type specified\./'
+        -
+            message: "/Offset 'file' might not exist on array/"
+            path: '%currentWorkingDirectory%/src/MockObjectBuilder.php'
+        -
+            message: "/Offset 'line' might not exist on array/"
+            path: '%currentWorkingDirectory%/src/MockObjectBuilder.php'
+        -
+            message: '/Offset 2 might not exist on array/'
+            path: '%currentWorkingDirectory%/src/MockObjectBuilder.php'
