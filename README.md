@@ -26,14 +26,13 @@ A helper trait simplify mocking within phpunit.
 ## Requirements
 
  * php: ^8.2
- * phpunit/phpunit: ^11.5.0
 
 ## Installation
 
 Through [Composer](http://getcomposer.org) as [chubbyphp/chubbyphp-mock][1].
 
 ```sh
-composer require chubbyphp/chubbyphp-mock "^1.8" --dev
+composer require chubbyphp/chubbyphp-mock "^2.0" --dev
 ```
 
 ## Usage
@@ -43,57 +42,57 @@ composer require chubbyphp/chubbyphp-mock "^1.8" --dev
 
 declare(strict_types=1);
 
-namespace MyProject\Tests;
+namespace MyProject\Tests\Unit\RequestHandler;
 
-use Chubbyphp\Mock\Argument\ArgumentCallback;
-use Chubbyphp\Mock\Argument\ArgumentInstanceOf;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
-use MyProject\Services\DateTimeService;
-use PHPUnit\Framework\MockObject\MockObject;
+use Chubbyphp\Mock\MockMethod\WithCallback;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockMethod\WithReturnSelf;
+use Chubbyphp\Mock\MockObjectBuilder;
+use MyProject\RequestHandler\PingRequestHandler;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
 
-class MyTest extends TestCase
+final class PingRequestHandlerTest extends TestCase
 {
-    use MockByCallsTrait;
-
-    public function testExecute()
+    public function testHandle(): void
     {
-        /** @var DateTimeService|MockObject $dateTimeService */
-        $dateTimeService = $this->getMockByCalls(DateTimeService::class, [
-            Call::create('format')
-                ->with(new ArgumentInstanceOf(\DateTime::class), 'c'),
-                ->willReturn('2004-02-12T15:19:21+00:00')
-            Call::create('format')
-                ->with(
-                    new ArgumentCallback(function ($dateTime) {
-                        self::assertInstanceOf(\DateTime::class, $dateTime);
-                    }),
-                    'c'
-                )
-                ->willReturn('2008-05-23T08:12:55+00:00')
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, []);
+
+        /** @var StreamInterface $responseBody */
+        $responseBody = $builder->create(StreamInterface::class, [
+            new WithCallback('write', static function (string $string): int {
+                $data = json_decode($string, true);
+                self::assertArrayHasKey('date', $data);
+
+                return \strlen($string);
+            }),
         ]);
 
-        self::assertSame('2004-02-12T15:19:21+00:00' , $dateTimeService->format(new \DateTime(), 'c'));
-        self::assertSame('2008-05-23T08:12:55+00:00' , $dateTimeService->format(new \DateTime(), 'c'));
+        /** @var ResponseInterface $response */
+        $response = $builder->create(ResponseInterface::class, [
+            new WithReturnSelf('withHeader', ['Content-Type', 'application/json']),
+            new WithReturnSelf('withHeader', ['Cache-Control', 'no-cache, no-store, must-revalidate']),
+            new WithReturnSelf('withHeader', ['Pragma', 'no-cache']),
+            new WithReturnSelf('withHeader', ['Expires', '0']),
+            new WithReturn('getBody', [], $responseBody),
+        ]);
+
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, [
+            new WithReturn('createResponse', [200, ''], $response),
+        ]);
+
+        $requestHandler = new PingRequestHandler($responseFactory);
+
+        self::assertSame($response, $requestHandler->handle($request));
     }
 }
-```
-
-## FAQ
-
-### Expectation failed for method name is anything when invoked <n...> time(s).
-
-There is a mock with `$calls` given, but no method get called on the mock.
-
-```php
-/** @var User|MockObject $user */
-$user = $this->getMockByCalls(User::class, [
-    Call::create('getId')->with()->willReturn('a656cca7-7363-4ba7-875d-74bb0fd4f543'),
-]);
-
-// uncomment and test will be green
-//$user->getId();
 ```
 
 ## Copyright
