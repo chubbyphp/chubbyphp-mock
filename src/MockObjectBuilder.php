@@ -59,10 +59,44 @@ final class MockObjectBuilder
      */
     private function generateMockedMethodString(\ReflectionClass $reflectionClass, \ReflectionMethod $reflectionMethod): string
     {
-        if (!$reflectionMethod->isPublic() || $reflectionMethod->isStatic() || $reflectionMethod->isConstructor()) {
+        if (!$reflectionMethod->isPublic() || $reflectionMethod->isConstructor()) {
             return '';
         }
 
+        if ($reflectionMethod->isStatic()) {
+            return $this->generateMockedStaticMethodString($reflectionClass, $reflectionMethod);
+        }
+
+        return $this->generateMockedDynamicMethodString($reflectionClass, $reflectionMethod);
+    }
+
+    /**
+     * @param \ReflectionClass<object> $reflectionClass
+     */
+    private function generateMockedStaticMethodString(\ReflectionClass $reflectionClass, \ReflectionMethod $reflectionMethod): string
+    {
+        $parameters = $this->generateMockedParameterString($reflectionClass, $reflectionMethod);
+
+        $methodName = $reflectionMethod->getName();
+
+        $method = 'public static function '.$methodName.'('.$parameters.')';
+
+        $returnType = (string) ($reflectionMethod->getReturnType() ?? $reflectionMethod->getTentativeReturnType());
+
+        if ($returnType) {
+            $method .= ': '.$returnType;
+        }
+
+        $method .= ' { throw new \Exception(\'Static method cannot be mocked\'); }';
+
+        return $method;
+    }
+
+    /**
+     * @param \ReflectionClass<object> $reflectionClass
+     */
+    private function generateMockedDynamicMethodString(\ReflectionClass $reflectionClass, \ReflectionMethod $reflectionMethod): string
+    {
         $parameters = $this->generateMockedParameterString($reflectionClass, $reflectionMethod);
 
         $methodName = $reflectionMethod->getName();
@@ -110,12 +144,16 @@ final class MockObjectBuilder
 
         $parameters = '';
 
-        foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
+        foreach ($reflectionMethod->getParameters() as $i => $reflectionParameter) {
+            $requiredOrOptional = !$reflectionParameter->isOptional() ? 'required' : 'optional';
+
+            $pattern = "/^Parameter \\#{$i} \\[ <{$requiredOrOptional}> (.+) \\]$/";
+
             $matches = [];
 
-            preg_match('/^Parameter \#\d+ \[ <(required|optional)> (.+) \]$/', (string) $reflectionParameter, $matches);
+            preg_match($pattern, (string) $reflectionParameter, $matches);
 
-            $parameters .= str_replace($search, $replace, $matches[2]).', ';
+            $parameters .= str_replace($search, $replace, $matches[1]).', ';
         }
 
         return \strlen($parameters) > 0 ? substr($parameters, 0, -2) : '';
