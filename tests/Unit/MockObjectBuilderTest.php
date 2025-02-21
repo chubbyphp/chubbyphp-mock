@@ -4,13 +4,20 @@ declare(strict_types=1);
 
 namespace Chubbyphp\Tests\Mock\Unit;
 
+use Chubbyphp\Mock\MockMethod\WithCallback;
 use Chubbyphp\Mock\MockMethod\WithoutReturn;
 use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockMethod\WithReturnSelf;
 use Chubbyphp\Mock\MockObjectBuilder;
 use Chubbyphp\Tests\Mock\Sample\DefaultParameters;
+use Chubbyphp\Tests\Mock\Sample\PingRequestHandler;
 use Chubbyphp\Tests\Mock\Sample\Sample;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  *  @covers \Chubbyphp\Mock\MockObjectBuilder
@@ -55,6 +62,42 @@ final class MockObjectBuilderTest extends TestCase
         ]);
 
         $defaultParameters->defaultParameters();
+    }
+
+    public function testWithPingRequestHandler(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, []);
+
+        /** @var StreamInterface $responseBody */
+        $responseBody = $builder->create(StreamInterface::class, [
+            new WithCallback('write', static function (string $string): int {
+                $data = json_decode($string, true);
+                self::assertArrayHasKey('date', $data);
+
+                return \strlen($string);
+            }),
+        ]);
+
+        /** @var ResponseInterface $response */
+        $response = $builder->create(ResponseInterface::class, [
+            new WithReturnSelf('withHeader', ['Content-Type', 'application/json']),
+            new WithReturnSelf('withHeader', ['Cache-Control', 'no-cache, no-store, must-revalidate']),
+            new WithReturnSelf('withHeader', ['Pragma', 'no-cache']),
+            new WithReturnSelf('withHeader', ['Expires', '0']),
+            new WithReturn('getBody', [], $responseBody),
+        ]);
+
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, [
+            new WithReturn('createResponse', [200, ''], $response),
+        ]);
+
+        $requestHandler = new PingRequestHandler($responseFactory);
+
+        self::assertSame($response, $requestHandler->handle($request));
     }
 
     public function testWithDateTimeImmutable(): void
