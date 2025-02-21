@@ -14,9 +14,8 @@ final class MockObjectBuilder
      */
     public function create(string $className, array $mockMethods): object
     {
-        $cwd = getcwd() ?: null;
         $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 0)[0];
-        $in = $cwd ? str_replace($cwd, '(project)', $trace['file'].':'.$trace['line']) : $trace['file'].':'.$trace['line'];
+        $in = replaceProjectInPath($trace['file'].':'.$trace['line']);
 
         /** @var class-string $mockClassName */
         $mockClassName = str_replace('\\', '_', $className).'_Mock';

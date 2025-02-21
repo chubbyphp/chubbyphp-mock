@@ -24,7 +24,12 @@
         "psr/http-server-handler": "^1.0.2"
     },
     "autoload": {
-        "psr-4": { "Chubbyphp\\Mock\\": "src/" }
+        "psr-4": {
+            "Chubbyphp\\Mock\\": "src/"
+        },
+        "files": [
+            "src/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": { "Chubbyphp\\Tests\\Mock\\": "tests/" }
