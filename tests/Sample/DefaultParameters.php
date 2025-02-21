@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Chubbyphp\Tests\Mock\Sample;
 
-#[ClassAttribute('name')]
 class DefaultParameters
 {
     public const NULL = null;
@@ -13,7 +12,6 @@ class DefaultParameters
     public const FLOAT = 9.81;
     public const STRING = 'string';
 
-    #[MethodAttribute('name')]
     public function defaultParameters(
         // null
         null $null = null,
