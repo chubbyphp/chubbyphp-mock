@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Chubbyphp\Mock\Exceptions;
 
+use function Chubbyphp\Mock\replaceProjectInPath;
+
 abstract class AbstractMock extends \RuntimeException
 {
     /**
@@ -95,12 +97,10 @@ abstract class AbstractMock extends \RuntimeException
      */
     private function getThrowableData(\Throwable $value): array
     {
-        $cwd = getcwd() ?: null;
-
         return [
             'message' => $value->getMessage(),
             'code' => $value->getCode(),
-            'file' => $cwd ? str_replace($cwd, '(project)', $value->getFile()) : $value->getFile(),
+            'file' => replaceProjectInPath($value->getFile()),
             'line' => $value->getLine(),
             'previous' => $value->getPrevious() ? $this->getThrowableData($value->getPrevious()) : null,
             '__CLASS__' => $value::class,

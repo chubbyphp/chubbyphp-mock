@@ -8,6 +8,3 @@ parameters:
         -
             message: "/Offset 'line' might not exist on array/"
             path: '%currentWorkingDirectory%/src/MockObjectBuilder.php'
-        -
-            message: '/Offset 2 might not exist on array/'
-            path: '%currentWorkingDirectory%/src/MockObjectBuilder.php'
