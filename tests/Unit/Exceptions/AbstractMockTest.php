@@ -80,7 +80,7 @@ final class AbstractMockTest extends TestCase
                 new \DateTimeImmutable('2025-02-16T00:25:30+01:00', new \DateTimeZone('Europe/Zurich')),
             ],
             Sample::class => [
-                ['name' => 'name', 'value' => 'value', '__CLASS__' => Sample::class],
+                ['previous' => null, 'name' => 'name', 'value' => 'value', '__CLASS__' => Sample::class],
                 new Sample('name', 'value'),
             ],
             \stdClass::class => [[...$array, '__CLASS__' => \stdClass::class], $object],
