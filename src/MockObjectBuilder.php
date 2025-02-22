@@ -64,6 +64,7 @@ final class MockObjectBuilder
 
         $methods = [
             'public function __construct(private Chubbyphp\Mock\MockMethods $mockMethods) { }'.PHP_EOL,
+            'public function __destruct() { }'.PHP_EOL,
         ];
 
         foreach ($reflectionClass->getMethods() as $reflectionMethod) {
@@ -84,7 +85,7 @@ final class MockObjectBuilder
         \ReflectionClass $reflectionClass,
         \ReflectionMethod $reflectionMethod
     ): string {
-        if (!$reflectionMethod->isPublic() || $reflectionMethod->isConstructor()) {
+        if (!$reflectionMethod->isPublic() || $reflectionMethod->isConstructor() || $reflectionMethod->isDestructor()) {
             return '';
         }
 
