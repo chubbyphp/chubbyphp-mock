@@ -27,6 +27,18 @@ use Psr\Http\Message\StreamInterface;
  */
 final class MockObjectBuilderTest extends TestCase
 {
+    public function testWithSample(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        /** @var Sample $sample */
+        $sample = $builder->create(Sample::class, [
+            new WithReturn('getPrevious', [], null),
+        ]);
+
+        self::assertNull($sample->getPrevious());
+    }
+
     #[DoesNotPerformAssertions]
     public function testWithDefaultParameters(): void
     {
@@ -56,6 +68,7 @@ final class MockObjectBuilderTest extends TestCase
                 'string',
                 ['null' => null, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string'],
                 null,
+                ['null' => null, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string'],
                 new \DateTimeImmutable('2025-02-16T00:25:30+01:00', new \DateTimeZone('Europe/Zurich')),
                 new \ArrayIterator(['null' => null, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string']),
                 new Sample('name', 'value'),
@@ -136,7 +149,7 @@ final class MockObjectBuilderTest extends TestCase
         } catch (ParameterMismatch $e) {
             self::assertSame(<<<'EOT'
                 {
-                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:128",
+                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:141",
                     "class": "DateTimeImmutable",
                     "index": 0,
                     "methodName": "format",

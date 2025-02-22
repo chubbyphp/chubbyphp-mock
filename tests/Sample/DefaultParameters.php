@@ -11,6 +11,7 @@ class DefaultParameters
     public const INT = 5;
     public const FLOAT = 9.81;
     public const STRING = 'string';
+    public const ARRAY = ['null' => self::NULL, 'boolean' => self::BOOLEAN, 'int' => self::INT, 'float' => self::FLOAT, 'string' => self::STRING];
 
     public function defaultParameters(
         // null
@@ -40,6 +41,7 @@ class DefaultParameters
         // array
         array $array = ['null' => self::NULL, 'boolean' => self::BOOLEAN, 'int' => self::INT, 'float' => self::FLOAT, 'string' => self::STRING],
         ?array $optionalArray = null,
+        array $arrayWithCustomConst = self::ARRAY,
         // datetime
         \DateTimeImmutable $dateTimeImmutable = new \DateTimeImmutable('2025-02-16T00:25:30+01:00', new \DateTimeZone('Europe/Zurich')),
         // iterator
@@ -76,6 +78,7 @@ class DefaultParameters
         // array
         array $array = ['null' => self::NULL, 'boolean' => self::BOOLEAN, 'int' => self::INT, 'float' => self::FLOAT, 'string' => self::STRING],
         ?array $optionalArray = null,
+        array $arrayWithCustomConst = self::ARRAY,
         // datetime
         \DateTimeImmutable $dateTimeImmutable = new \DateTimeImmutable('2025-02-16T00:25:30+01:00', new \DateTimeZone('Europe/Zurich')),
         // iterator
