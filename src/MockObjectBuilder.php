@@ -49,8 +49,7 @@ final class MockObjectBuilder
 
         // echo $mockedClassString;
 
-        // NOSONAR: This eval() is safe cause its generated code based on the original one
-        eval($mockedClass);
+        eval($mockedClass); // NOSONAR
 
         return $mockClassName;
     }
