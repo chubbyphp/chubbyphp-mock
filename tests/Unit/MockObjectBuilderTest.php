@@ -21,7 +21,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 
 /**
- *  @covers \Chubbyphp\Mock\MockObjectBuilder
+ * @covers \Chubbyphp\Mock\MockClassBuilder
+ * @covers \Chubbyphp\Mock\MockObjectBuilder
  *
  * @internal
  */
@@ -149,7 +150,7 @@ final class MockObjectBuilderTest extends TestCase
         } catch (ParameterMismatch $e) {
             self::assertSame(<<<'EOT'
                 {
-                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:141",
+                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:142",
                     "class": "DateTimeImmutable",
                     "index": 0,
                     "methodName": "format",
