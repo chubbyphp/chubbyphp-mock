@@ -161,12 +161,12 @@ final class MockClassBuilder
 
             preg_match($pattern, (string) $reflectionParameter, $matches);
 
-            $type = $reflectionParameter->hasType() ?
-                $this->replaceSelfWithOriginalClass($reflectionClass, (string) $reflectionParameter->getType()) :
-                '';
-            $default = $reflectionParameter->isDefaultValueAvailable() ?
-                '= '.$this->mockDefaultParameters($reflectionClass, $matches[1]) :
-                '';
+            $type = $reflectionParameter->hasType()
+                ? $this->replaceSelfWithOriginalClass($reflectionClass, (string) $reflectionParameter->getType())
+                : '';
+            $default = $reflectionParameter->isDefaultValueAvailable()
+                ? '= '.$this->mockDefaultParameters($reflectionClass, $matches[1])
+                : '';
 
             $parameters[] = trim($type.' $'.$reflectionParameter->getName().' '.$default);
         }
