@@ -61,10 +61,8 @@ final class PingRequestHandlerTest extends TestCase
     {
         $builder = new MockObjectBuilder();
 
-        /** @var ServerRequestInterface $request */
         $request = $builder->create(ServerRequestInterface::class, []);
 
-        /** @var StreamInterface $responseBody */
         $responseBody = $builder->create(StreamInterface::class, [
             new WithCallback('write', static function (string $string): int {
                 $data = json_decode($string, true);
@@ -74,7 +72,6 @@ final class PingRequestHandlerTest extends TestCase
             }),
         ]);
 
-        /** @var ResponseInterface $response */
         $response = $builder->create(ResponseInterface::class, [
             new WithReturnSelf('withHeader', ['Content-Type', 'application/json']),
             new WithReturnSelf('withHeader', ['Cache-Control', 'no-cache, no-store, must-revalidate']),
@@ -83,7 +80,6 @@ final class PingRequestHandlerTest extends TestCase
             new WithReturn('getBody', [], $responseBody),
         ]);
 
-        /** @var ResponseFactoryInterface $responseFactory */
         $responseFactory = $builder->create(ResponseFactoryInterface::class, [
             new WithReturn('createResponse', [200, ''], $response),
         ]);

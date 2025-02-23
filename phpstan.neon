@@ -8,3 +8,6 @@ parameters:
         -
             message: "/Offset 'line' might not exist on array/"
             path: '%currentWorkingDirectory%/src/MockObjectBuilder.php'
+        -
+            message: "/Method Chubbyphp\\\\Mock\\\\MockObjectBuilder::create\\(\\) should return T of object but returns object/"
+            path: '%currentWorkingDirectory%/src/MockObjectBuilder.php'

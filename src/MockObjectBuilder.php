@@ -11,8 +11,12 @@ final class MockObjectBuilder
     public function __construct(private MockClassBuilder $mockClassBuilder = new MockClassBuilder()) {}
 
     /**
-     * @param class-string               $className
+     * @template T of object
+     *
+     * @param class-string<T>            $className
      * @param array<MockMethodInterface> $mockMethods
+     *
+     * @return T
      */
     public function create(string $className, array $mockMethods): object
     {

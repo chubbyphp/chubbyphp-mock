@@ -32,7 +32,6 @@ final class MockObjectBuilderTest extends TestCase
     {
         $builder = new MockObjectBuilder();
 
-        /** @var Sample $sample */
         $sample = $builder->create(Sample::class, [
             new WithReturn('getPrevious', [], null),
         ]);
@@ -45,7 +44,6 @@ final class MockObjectBuilderTest extends TestCase
     {
         $builder = new MockObjectBuilder();
 
-        /** @var DefaultParameters $defaultParameters */
         $defaultParameters = $builder->create(DefaultParameters::class, [
             new WithoutReturn('defaultParameters', [
                 null,
@@ -83,10 +81,8 @@ final class MockObjectBuilderTest extends TestCase
     {
         $builder = new MockObjectBuilder();
 
-        /** @var ServerRequestInterface $request */
         $request = $builder->create(ServerRequestInterface::class, []);
 
-        /** @var StreamInterface $responseBody */
         $responseBody = $builder->create(StreamInterface::class, [
             new WithCallback('write', static function (string $string): int {
                 $data = json_decode($string, true);
@@ -96,7 +92,6 @@ final class MockObjectBuilderTest extends TestCase
             }),
         ]);
 
-        /** @var ResponseInterface $response */
         $response = $builder->create(ResponseInterface::class, [
             new WithReturnSelf('withHeader', ['Content-Type', 'application/json']),
             new WithReturnSelf('withHeader', ['Cache-Control', 'no-cache, no-store, must-revalidate']),
@@ -105,7 +100,6 @@ final class MockObjectBuilderTest extends TestCase
             new WithReturn('getBody', [], $responseBody),
         ]);
 
-        /** @var ResponseFactoryInterface $responseFactory */
         $responseFactory = $builder->create(ResponseFactoryInterface::class, [
             new WithReturn('createResponse', [200, ''], $response),
         ]);
@@ -119,14 +113,12 @@ final class MockObjectBuilderTest extends TestCase
     {
         $builder = new MockObjectBuilder();
 
-        /** @var \DateTimeImmutable $dateTimeImmutable */
         $dateTimeImmutable = $builder->create(\DateTimeImmutable::class, [
             new WithReturn('format', ['c'], '2025-02-16T00:25:30+01:00'),
         ]);
 
         self::assertSame('2025-02-16T00:25:30+01:00', $dateTimeImmutable->format('c'));
 
-        /** @var \DateTimeImmutable $dateTimeImmutable */
         $dateTimeImmutable = $builder->create(\DateTimeImmutable::class, [
             new WithReturn('format', ['c'], '2025-02-20T22:22:22+01:00'),
         ]);
@@ -138,7 +130,6 @@ final class MockObjectBuilderTest extends TestCase
     {
         $builder = new MockObjectBuilder();
 
-        /** @var \DateTimeImmutable $dateTimeImmutable */
         $dateTimeImmutable = $builder->create(\DateTimeImmutable::class, [
             new WithReturn('format', ['c'], '2025-02-16T00:25:30+01:00'),
         ]);
@@ -150,7 +141,7 @@ final class MockObjectBuilderTest extends TestCase
         } catch (ParameterMismatch $e) {
             self::assertSame(<<<'EOT'
                 {
-                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:142",
+                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:133",
                     "class": "DateTimeImmutable",
                     "index": 0,
                     "methodName": "format",
