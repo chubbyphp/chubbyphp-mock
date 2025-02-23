@@ -91,6 +91,16 @@ final class PingRequestHandlerTest extends TestCase
 }
 ```
 
+## Upgrade from 1.x
+
+- Drop `use MockByCallsTrait;` instead add `$builder = new MockObjectBuilder();` to each test need mocking.
+- Replace `$this->getMockByCalls(DateTimeService::class, [])` with `$builder->create(DateTimeService::class, [])`
+- Replace `Call::create('methodName')->with('parameter1')->willReturn('returnValue')` with `new WithReturn('methodName', ['parameter1'], 'returnValue')`
+- Replace `Call::create('methodName')->with('parameter1')->willReturnSelf()` with `new WithReturnSelf('methodName', ['parameter1'])`
+- Replace `Call::create('methodName')->with('parameter1')->willThrowException(new \Exception('message'))` with `new WithException('methodName', ['parameter1'], new \Exception('message'))`
+- Replace `Call::create('methodName')->with('parameter1')` with `new WithoutReturn('methodName', ['parameter1'], 'returnValue')`
+- If you got things like `ArgumentCallback` refactor for `WithCallback`.
+
 ## Copyright
 
 2025 Dominik Zogg
