@@ -58,8 +58,8 @@ final class MockByCallsTraitTest extends TestCase
             $mock->sample(new \DateTimeImmutable());
         } catch (ExpectationFailedException $e) {
             self::assertSame(
-                'Method "sample" on class "Chubbyphp\Tests\Mock\Unit\SampleInterface" at call 0, argument 0'.PHP_EOL.
-                'Failed asserting that an instance of class DateTimeImmutable is an instance of class stdClass.',
+                'Method "sample" on class "Chubbyphp\Tests\Mock\Unit\SampleInterface" at call 0, argument 0'.PHP_EOL
+                .'Failed asserting that an instance of class DateTimeImmutable is an instance of class stdClass.',
                 $e->getMessage()
             );
 
@@ -150,8 +150,8 @@ final class MockByCallsTraitTest extends TestCase
                 $invocation->verify();
             } catch (ExpectationFailedException $e) {
                 self::assertSame(
-                    'Expectation failed for method name is anything when invoked 0 times.'.PHP_EOL.
-                        'Method was expected to be called 0 times, actually called 1 time.'.PHP_EOL,
+                    'Expectation failed for method name is anything when invoked 0 times.'.PHP_EOL
+                        .'Method was expected to be called 0 times, actually called 1 time.'.PHP_EOL,
                     $e->getMessage()
                 );
 
@@ -188,8 +188,8 @@ final class MockByCallsTraitTest extends TestCase
             $invocation->verify();
         } catch (ExpectationFailedException $e) {
             self::assertSame(
-                'Expectation failed for method name is anything when invoked 2 times.'.PHP_EOL.
-                    'Method was expected to be called 2 times, actually called 1 time.'.PHP_EOL,
+                'Expectation failed for method name is anything when invoked 2 times.'.PHP_EOL
+                    .'Method was expected to be called 2 times, actually called 1 time.'.PHP_EOL,
                 $e->getMessage()
             );
 
