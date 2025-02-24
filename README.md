@@ -93,13 +93,14 @@ final class PingRequestHandlerTest extends TestCase
 
 ## Upgrade from 1.x
 
-- Drop `use MockByCallsTrait;` instead add `$builder = new MockObjectBuilder();` to each test need mocking.
+- Drop `use Chubbyphp\Mock\MockByCallsTrait;` instead add `$builder = new Chubbyphp\Mock\MockObjectBuilder();` to each test need mocking.
 - Replace `$this->getMockByCalls(DateTimeService::class, [])` with `$builder->create(DateTimeService::class, [])`
-- Replace `Call::create('methodName')->with('parameter1')->willReturn('returnValue')` with `new WithReturn('methodName', ['parameter1'], 'returnValue')`
-- Replace `Call::create('methodName')->with('parameter1')->willReturnSelf()` with `new WithReturnSelf('methodName', ['parameter1'])`
-- Replace `Call::create('methodName')->with('parameter1')->willThrowException(new \Exception('message'))` with `new WithException('methodName', ['parameter1'], new \Exception('message'))`
-- Replace `Call::create('methodName')->with('parameter1')` with `new WithoutReturn('methodName', ['parameter1'], 'returnValue')`
-- If you got things like `ArgumentCallback` refactor for `WithCallback`.
+- Replace `Chubbyphp\Mock\Call::create('methodName')->with('parameter1')->willReturn('returnValue')` with `new Chubbyphp\Mock\MockMethod\WithReturn('methodName', ['parameter1'], 'returnValue')`
+- Replace `Chubbyphp\Mock\Call::create('methodName')->with('parameter1')->willReturnSelf()` with `new Chubbyphp\Mock\MockMethod\WithReturnSelf('methodName', ['parameter1'])`
+- Replace `Chubbyphp\Mock\Call::create('methodName')->with('parameter1')->willThrowException(new \Exception('message'))` with `new Chubbyphp\Mock\MockMethod\WithException('methodName', ['parameter1'], new \Exception('message'))`
+- Replace `Chubbyphp\Mock\Call::create('methodName')->with('parameter1')` with `new Chubbyphp\Mock\MockMethod\WithoutReturn('methodName', ['parameter1'], 'returnValue')`
+- If you got things like `Chubbyphp\Mock\Argument\ArgumentCallback` refactor for `Chubbyphp\Mock\MockMethod\WithCallback`, important `WithCallback` is on Method level, `ArgumentCallback` was on parameter level.
+- If you got things like `Chubbyphp\Mock\Argument\ArgumentInstanceOf` refactor for `Chubbyphp\Mock\MockMethod\WithCallback`, important `WithCallback` is on Method level, `ArgumentInstanceOf` was on parameter level.
 
 ## Copyright
 
