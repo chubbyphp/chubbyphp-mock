@@ -93,7 +93,7 @@ final class PingRequestHandlerTest extends TestCase
 
 ## Upgrade from 1.x
 
-**IMPORTANT**: If there is any use of `Chubbyphp\Mock\Argument\ArgumentCallback`, `Chubbyphp\Mock\Argument\ArgumentInstanceOf` or any other custom implementation of `Chubbyphp\Mock\Argument\ArgumentInterface` go to `Call with any implementation of Chubbyphp\Mock\Argument\ArgumentInterface`.
+**IMPORTANT**: If there is any use of `Chubbyphp\Mock\Argument\ArgumentCallback`, `Chubbyphp\Mock\Argument\ArgumentInstanceOf` or any other custom implementation of `Chubbyphp\Mock\Argument\ArgumentInterface` [click here](#call-with-any-implementation-of-chubbyphpmockargumentargumentinterface).
 
 ### Call with ->willReturn
 
