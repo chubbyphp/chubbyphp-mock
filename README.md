@@ -93,14 +93,130 @@ final class PingRequestHandlerTest extends TestCase
 
 ## Upgrade from 1.x
 
-- Drop `use Chubbyphp\Mock\MockByCallsTrait;` instead add `$builder = new Chubbyphp\Mock\MockObjectBuilder();` to each test need mocking.
-- Replace `$this->getMockByCalls(DateTimeService::class, [])` with `$builder->create(DateTimeService::class, [])`
-- Replace `Chubbyphp\Mock\Call::create('methodName')->with('parameter1')->willReturn('returnValue')` with `new Chubbyphp\Mock\MockMethod\WithReturn('methodName', ['parameter1'], 'returnValue')`
-- Replace `Chubbyphp\Mock\Call::create('methodName')->with('parameter1')->willReturnSelf()` with `new Chubbyphp\Mock\MockMethod\WithReturnSelf('methodName', ['parameter1'])`
-- Replace `Chubbyphp\Mock\Call::create('methodName')->with('parameter1')->willThrowException(new \Exception('message'))` with `new Chubbyphp\Mock\MockMethod\WithException('methodName', ['parameter1'], new \Exception('message'))`
-- Replace `Chubbyphp\Mock\Call::create('methodName')->with('parameter1')` with `new Chubbyphp\Mock\MockMethod\WithoutReturn('methodName', ['parameter1'], 'returnValue')`
-- If you got things like `Chubbyphp\Mock\Argument\ArgumentCallback` refactor for `Chubbyphp\Mock\MockMethod\WithCallback`, important `WithCallback` is on Method level, `ArgumentCallback` was on parameter level.
-- If you got things like `Chubbyphp\Mock\Argument\ArgumentInstanceOf` refactor for `Chubbyphp\Mock\MockMethod\WithCallback`, important `WithCallback` is on Method level, `ArgumentInstanceOf` was on parameter level.
+**IMPORTANT**: If there is any use of `Chubbyphp\Mock\Argument\ArgumentCallback`, `Chubbyphp\Mock\Argument\ArgumentInstanceOf` or any other custom implementation of `Chubbyphp\Mock\Argument\ArgumentInterface` go to `Call with any implementation of Chubbyphp\Mock\Argument\ArgumentInterface`.
+
+### Call with ->willReturn
+
+old
+
+```php
+<?php
+
+use Chubbyphp\Mock\Call;
+
+Call::create('methodName')->with('parameter1')->willReturn('returnValue');
+Call::create('methodName')->willReturn('returnValue');
+```
+
+new
+
+```php
+<?php
+
+use Chubbyphp\Mock\MockMethod\WithReturn;
+
+new WithReturn('methodName', ['parameter1'], 'returnValue');
+new WithReturn('methodName', [], 'returnValue');
+```
+
+### Call with ->willReturnSelf
+
+#### old
+
+```php
+<?php
+
+use Chubbyphp\Mock\Call;
+
+Call::create('methodName')->with('parameter1')->willReturnSelf();
+Call::create('methodName')->willReturnSelf();
+```
+
+#### new
+
+```php
+<?php
+
+use Chubbyphp\Mock\MockMethod\WithReturnSelf;
+
+new WithReturnSelf('methodName', ['parameter1']);
+new WithReturnSelf('methodName', []);
+```
+
+### Call with ->willThrowException
+
+#### old
+
+```php
+<?php
+
+use Chubbyphp\Mock\Call;
+
+Call::create('methodName')->with('parameter1')->willThrowException($exception);
+Call::create('methodName')-->willThrowException($exception);
+```
+
+#### new
+
+```php
+<?php
+
+use Chubbyphp\Mock\MockMethod\WithException;
+
+new WithException('methodName', ['parameter1']);
+new WithException('methodName', []);
+```
+
+### Call without any ->will...
+
+#### old
+
+```php
+<?php
+
+use Chubbyphp\Mock\Call;
+
+Call::create('methodName')->with('parameter1');
+Call::create('methodName');
+```
+
+#### new
+
+```php
+<?php
+
+use Chubbyphp\Mock\MockMethod\WithReturn;
+
+new WithoutReturn('methodName', ['parameter1']);
+new WithoutReturn('methodName', []);
+```
+
+### Call with any implementation of Chubbyphp\Mock\Argument\ArgumentInterface
+
+#### old
+
+```php
+<?php
+
+use Chubbyphp\Mock\Argument\ArgumentInstanceOf;
+use Chubbyphp\Mock\Call;
+
+Call::create('format')->with(new ArgumentInstanceOf(\DateTime::class), 'c')->willReturn('2004-02-12T15:19:21+00:00');
+```
+#### new
+
+```php
+<?php
+
+use Chubbyphp\Mock\MockMethod\WithCallback;
+
+new WithCallback('format', static function ($date, $format) {
+    self::assertInstanceOf(\DateTime::class, $date);
+    self::assertSame('c', $format);
+
+    return '2004-02-12T15:19:21+00:00';
+});
+```
 
 ## Copyright
 
