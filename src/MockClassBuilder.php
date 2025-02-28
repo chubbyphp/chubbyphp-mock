@@ -32,7 +32,7 @@ final class MockClassBuilder
 
         $mockedClass = $this->mockClass($reflectionClass, $mockClassName);
 
-        // echo $mockedClassString;
+        // echo $mockedClass;
 
         eval($mockedClass); // NOSONAR
 
@@ -168,7 +168,9 @@ final class MockClassBuilder
                 ? '= '.$this->mockDefaultParameters($reflectionClass, $matches[1])
                 : '';
 
-            $parameters[] = trim($type.' $'.$reflectionParameter->getName().' '.$default);
+            $byReference = $reflectionParameter->isPassedByReference() ? '&' : '';
+
+            $parameters[] = trim($type.' '.$byReference.'$'.$reflectionParameter->getName().' '.$default);
         }
 
         return implode(', ', $parameters);

@@ -10,6 +10,7 @@ use Chubbyphp\Mock\MockMethod\WithoutReturn;
 use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockMethod\WithReturnSelf;
 use Chubbyphp\Mock\MockObjectBuilder;
+use Chubbyphp\Tests\Mock\Sample\ByReference;
 use Chubbyphp\Tests\Mock\Sample\DefaultParameters;
 use Chubbyphp\Tests\Mock\Sample\PingRequestHandler;
 use Chubbyphp\Tests\Mock\Sample\Sample;
@@ -37,6 +38,19 @@ final class MockObjectBuilderTest extends TestCase
         ]);
 
         self::assertNull($sample->getPrevious());
+    }
+
+    public function testWithByReference(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        $text = 'THIS IS A TEST';
+
+        $byReference = $builder->create(ByReference::class, [
+            new WithReturnSelf('toLower', [$text]),
+        ]);
+
+        self::assertSame($byReference, $byReference->toLower($text));
     }
 
     #[DoesNotPerformAssertions]
@@ -141,7 +155,7 @@ final class MockObjectBuilderTest extends TestCase
         } catch (ParameterMismatch $e) {
             self::assertSame(<<<'EOT'
                 {
-                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:133",
+                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:147",
                     "class": "DateTimeImmutable",
                     "index": 0,
                     "methodName": "format",

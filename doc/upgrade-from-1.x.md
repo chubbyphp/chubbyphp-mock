@@ -129,7 +129,7 @@ final class MyTest extends TestCase
         $myService = $builder->create(MyService::class, [
             new WithReturnSelf('methodName', ['parameter1']),
             new WithReturnSelf('methodName', []),
-            new WithCallback('methodName', function ($parameter1) use ($myService) {
+            new WithCallback('methodName', function ($parameter1) use (&$myService) {
                 self::assertSame('parameter1', $parameter1);
 
                 return $myService;
