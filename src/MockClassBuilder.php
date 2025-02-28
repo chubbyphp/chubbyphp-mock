@@ -182,7 +182,7 @@ final class MockClassBuilder
             $type = $reflectionParameter->hasType()
                 ? $this->replaceSelfWithOriginalClass($reflectionClass, (string) $reflectionParameter->getType())
                 : '';
-            $default = $reflectionParameter->isDefaultValueAvailable()
+            $default = isset($matches[1])
                 ? '= '.$this->mockDefaultParameters($reflectionClass, $matches[1])
                 : '';
 
@@ -205,6 +205,12 @@ final class MockClassBuilder
             return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> {$type} {$variable} = (.+) \\]$/";
         }
 
+        // @codeCoverageIgnoreStart
+        if ($reflectionParameter->hasType() && $reflectionParameter->isOptional()) {
+            return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> {$type} {$variable} = (<default>) \\]$/";
+        }
+        // @codeCoverageIgnoreEnd
+
         if ($reflectionParameter->hasType()) {
             return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> {$type} {$variable} \\]$/";
         }
@@ -212,6 +218,12 @@ final class MockClassBuilder
         if ($reflectionParameter->isDefaultValueAvailable()) {
             return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> {$variable} = (.+) \\]$/";
         }
+
+        // @codeCoverageIgnoreStart
+        if ($reflectionParameter->isOptional()) {
+            return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> {$variable} = (<default>) \\]$/";
+        }
+        // @codeCoverageIgnoreEnd
 
         return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> {$variable} \\]$/";
     }
@@ -237,6 +249,12 @@ final class MockClassBuilder
      */
     private function mockDefaultParameters(\ReflectionClass $reflectionClass, string $defaultParametersCode): string
     {
+        // @codeCoverageIgnoreStart
+        if ('<default>' === $defaultParametersCode) {
+            return 'null';
+        }
+
+        /** @codeCoverageIgnoreEnd */
         $parser = (new ParserFactory())->createForNewestSupportedVersion();
         $traverser = new NodeTraverser();
         $prettyPrinter = new Standard();
