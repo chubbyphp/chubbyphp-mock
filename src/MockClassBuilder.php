@@ -249,12 +249,12 @@ final class MockClassBuilder
      */
     private function mockDefaultParameters(\ReflectionClass $reflectionClass, string $defaultParametersCode): string
     {
-        // @codeCoverageIgnoreStart
         if ('<default>' === $defaultParametersCode) {
+            // @codeCoverageIgnoreStart
             return 'null';
+            // @codeCoverageIgnoreEnd
         }
 
-        /** @codeCoverageIgnoreEnd */
         $parser = (new ParserFactory())->createForNewestSupportedVersion();
         $traverser = new NodeTraverser();
         $prettyPrinter = new Standard();
