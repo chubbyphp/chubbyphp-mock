@@ -14,6 +14,7 @@ use Chubbyphp\Tests\Mock\Sample\ByReference;
 use Chubbyphp\Tests\Mock\Sample\DefaultParameters;
 use Chubbyphp\Tests\Mock\Sample\PingRequestHandler;
 use Chubbyphp\Tests\Mock\Sample\Sample;
+use Chubbyphp\Tests\Mock\Sample\Variadic;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -51,6 +52,17 @@ final class MockObjectBuilderTest extends TestCase
         ]);
 
         self::assertSame($byReference, $byReference->toLower($text));
+    }
+
+    public function testWithVariadic(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        $variadic = $builder->create(Variadic::class, [
+            new WithReturn('join', ['|', ['string1', 'string2']], 'string1|string2'),
+        ]);
+
+        self::assertSame('string1|string2', $variadic->join('|', 'string1', 'string2'));
     }
 
     #[DoesNotPerformAssertions]
@@ -155,7 +167,7 @@ final class MockObjectBuilderTest extends TestCase
         } catch (ParameterMismatch $e) {
             self::assertSame(<<<'EOT'
                 {
-                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:147",
+                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:159",
                     "class": "DateTimeImmutable",
                     "index": 0,
                     "methodName": "format",

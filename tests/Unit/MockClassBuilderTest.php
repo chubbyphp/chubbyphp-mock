@@ -8,6 +8,7 @@ use Chubbyphp\Mock\MockClassBuilder;
 use Chubbyphp\Tests\Mock\Sample\ByReference;
 use Chubbyphp\Tests\Mock\Sample\DefaultParameters;
 use Chubbyphp\Tests\Mock\Sample\Sample;
+use Chubbyphp\Tests\Mock\Sample\Variadic;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -131,6 +132,64 @@ final class MockClassBuilderTest extends TestCase
                         Parameter #0 [ <required> string &\$text ]
                       }
                       - Return [ Chubbyphp\\Tests\\Mock\\Sample\\ByReference ]
+                    }
+                  }
+                }
+
+                EOT,
+            (string) $reflectionClass
+        );
+    }
+
+    public function testWithVariadic(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = $builder->mock(Variadic::class);
+
+        $reflectionClass = new \ReflectionClass($mockClassName);
+
+        $cwd = getcwd();
+
+        self::assertSame(
+            <<<EOT
+                Class [ <user> final class Chubbyphp_Tests_Mock_Sample_Variadic_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\Variadic ] {
+                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-8
+
+                  - Constants [0] {
+                  }
+
+                  - Static properties [0] {
+                  }
+
+                  - Static methods [0] {
+                  }
+
+                  - Properties [1] {
+                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                  }
+
+                  - Methods [3] {
+                    Method [ <user, ctor> public method __construct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                      }
+                    }
+
+                    Method [ <user> public method __destruct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Variadic, prototype Chubbyphp\\Tests\\Mock\\Sample\\Variadic> public method join ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+
+                      - Parameters [2] {
+                        Parameter #0 [ <required> string \$separator ]
+                        Parameter #1 [ <optional> ...\$strings ]
+                      }
+                      - Return [ string ]
                     }
                   }
                 }

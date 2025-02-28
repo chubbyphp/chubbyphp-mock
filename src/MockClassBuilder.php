@@ -169,8 +169,9 @@ final class MockClassBuilder
                 : '';
 
             $byReference = $reflectionParameter->isPassedByReference() ? '&' : '';
+            $variadic = $reflectionParameter->isVariadic() ? '...' : '';
 
-            $parameters[] = trim($type.' '.$byReference.'$'.$reflectionParameter->getName().' '.$default);
+            $parameters[] = trim($type.' '.$byReference.$variadic.'$'.$reflectionParameter->getName().' '.$default);
         }
 
         return implode(', ', $parameters);
