@@ -13,6 +13,7 @@ $finder = PhpCsFixer\Finder::create()
 $config = require __DIR__ . '/vendor/chubbyphp/chubbyphp-dev-helper/phpcs.php';
 
 unset ($config['rules']['final_class']);
+unset($config['rules']['final_public_method_for_abstract_class']);
 
 $config['rules']['strict_comparison'] = false;
 

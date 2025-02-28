@@ -70,7 +70,12 @@ final class MockClassBuilder
         \ReflectionClass $reflectionClass,
         \ReflectionMethod $reflectionMethod
     ): string {
-        if (!$reflectionMethod->isPublic() || $reflectionMethod->isConstructor() || $reflectionMethod->isDestructor()) {
+        if (
+            $reflectionMethod->isPrivate()
+            || ($reflectionMethod->isProtected() && !$reflectionMethod->isAbstract())
+            || $reflectionMethod->isConstructor()
+            || $reflectionMethod->isDestructor()
+        ) {
             return '';
         }
 
@@ -92,7 +97,9 @@ final class MockClassBuilder
 
         $methodName = $reflectionMethod->getName();
 
-        $method = 'public static function '.$methodName.'('.$parameters.')';
+        $visibility = $this->visibility($reflectionMethod);
+
+        $method = $visibility.' static function '.$methodName.'('.$parameters.')';
 
         $returnType = (string) ($reflectionMethod->getReturnType() ?? $reflectionMethod->getTentativeReturnType());
 
@@ -116,7 +123,9 @@ final class MockClassBuilder
 
         $methodName = $reflectionMethod->getName();
 
-        $method = 'public function '.$methodName.'('.$parameters.')';
+        $visibility = $this->visibility($reflectionMethod);
+
+        $method = $visibility.' function '.$methodName.'('.$parameters.')';
 
         $returnType = (string) ($reflectionMethod->getReturnType() ?? $reflectionMethod->getTentativeReturnType());
 
@@ -143,6 +152,15 @@ final class MockClassBuilder
         $method .= ' }';
 
         return $method;
+    }
+
+    private function visibility(\ReflectionMethod $reflectionMethod): string
+    {
+        if ($reflectionMethod->isProtected()) {
+            return 'protected';
+        }
+
+        return 'public';
     }
 
     /**

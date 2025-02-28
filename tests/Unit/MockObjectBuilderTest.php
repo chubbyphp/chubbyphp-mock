@@ -10,6 +10,7 @@ use Chubbyphp\Mock\MockMethod\WithoutReturn;
 use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockMethod\WithReturnSelf;
 use Chubbyphp\Mock\MockObjectBuilder;
+use Chubbyphp\Tests\Mock\Sample\AbstractMethods;
 use Chubbyphp\Tests\Mock\Sample\ByReference;
 use Chubbyphp\Tests\Mock\Sample\DefaultParameters;
 use Chubbyphp\Tests\Mock\Sample\PingRequestHandler;
@@ -30,15 +31,18 @@ use Psr\Http\Message\StreamInterface;
  */
 final class MockObjectBuilderTest extends TestCase
 {
-    public function testWithSample(): void
+    public function testWithAbstractMethods(): void
     {
         $builder = new MockObjectBuilder();
 
-        $sample = $builder->create(Sample::class, [
-            new WithReturn('getPrevious', [], null),
+        $input = 'THIS IS A TEST';
+        $output = strtolower($input);
+
+        $abstractMethods = $builder->create(AbstractMethods::class, [
+            new WithReturn('toLower', [$input], $output),
         ]);
 
-        self::assertNull($sample->getPrevious());
+        self::assertSame($output, $abstractMethods->toLower($input));
     }
 
     public function testWithByReference(): void
@@ -52,17 +56,6 @@ final class MockObjectBuilderTest extends TestCase
         ]);
 
         self::assertSame($byReference, $byReference->toLower($text));
-    }
-
-    public function testWithVariadic(): void
-    {
-        $builder = new MockObjectBuilder();
-
-        $variadic = $builder->create(Variadic::class, [
-            new WithReturn('join', ['|', ['string1', 'string2']], 'string1|string2'),
-        ]);
-
-        self::assertSame('string1|string2', $variadic->join('|', 'string1', 'string2'));
     }
 
     #[DoesNotPerformAssertions]
@@ -167,7 +160,7 @@ final class MockObjectBuilderTest extends TestCase
         } catch (ParameterMismatch $e) {
             self::assertSame(<<<'EOT'
                 {
-                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:159",
+                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:152",
                     "class": "DateTimeImmutable",
                     "index": 0,
                     "methodName": "format",
@@ -178,5 +171,27 @@ final class MockObjectBuilderTest extends TestCase
                 }
                 EOT, $e->getMessage());
         }
+    }
+
+    public function testWithSample(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        $sample = $builder->create(Sample::class, [
+            new WithReturn('getPrevious', [], null),
+        ]);
+
+        self::assertNull($sample->getPrevious());
+    }
+
+    public function testWithVariadic(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        $variadic = $builder->create(Variadic::class, [
+            new WithReturn('join', ['|', ['string1', 'string2']], 'string1|string2'),
+        ]);
+
+        self::assertSame('string1|string2', $variadic->join('|', 'string1', 'string2'));
     }
 }
