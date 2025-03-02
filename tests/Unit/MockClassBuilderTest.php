@@ -230,7 +230,7 @@ final class MockClassBuilderTest extends TestCase
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\DefaultParameters, prototype Chubbyphp\\Tests\\Mock\\Sample\\DefaultParameters> static public method staticDefaultParameters ] {
                       @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
 
-                      - Parameters [25] {
+                      - Parameters [26] {
                         Parameter #0 [ <optional> null \$null = NULL ]
                         Parameter #1 [ <optional> null \$nullWithCustomConst = NULL ]
                         Parameter #2 [ <optional> bool \$booleanTrue = true ]
@@ -253,9 +253,10 @@ final class MockClassBuilderTest extends TestCase
                         Parameter #19 [ <optional> array \$array = ['null' => NULL, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string'] ]
                         Parameter #20 [ <optional> ?array \$optionalArray = NULL ]
                         Parameter #21 [ <optional> array \$arrayWithCustomConst = ['null' => NULL, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string'] ]
-                        Parameter #22 [ <optional> DateTimeImmutable \$dateTimeImmutable = new \\DateTimeImmutable('2025-02-16T00:25:30+01:00', new \\DateTimeZone('Europe/Zurich')) ]
-                        Parameter #23 [ <optional> ArrayIterator \$arrayIterator = new \\ArrayIterator(['null' => null, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string']) ]
-                        Parameter #24 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\Sample \$sample = new \\Chubbyphp\\Tests\\Mock\\Sample\\Sample('name', 'value') ]
+                        Parameter #22 [ <optional> Traversable|array \$iterable = ['null' => NULL, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string'] ]
+                        Parameter #23 [ <optional> DateTimeImmutable \$dateTimeImmutable = new \\DateTimeImmutable('2025-02-16T00:25:30+01:00', new \\DateTimeZone('Europe/Zurich')) ]
+                        Parameter #24 [ <optional> ArrayIterator \$arrayIterator = new \\ArrayIterator(['null' => null, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string']) ]
+                        Parameter #25 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\Sample \$sample = new \\Chubbyphp\\Tests\\Mock\\Sample\\Sample('name', 'value') ]
                       }
                       - Return [ void ]
                     }
@@ -281,7 +282,7 @@ final class MockClassBuilderTest extends TestCase
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\DefaultParameters, prototype Chubbyphp\\Tests\\Mock\\Sample\\DefaultParameters> public method defaultParameters ] {
                       @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
 
-                      - Parameters [25] {
+                      - Parameters [26] {
                         Parameter #0 [ <optional> null \$null = NULL ]
                         Parameter #1 [ <optional> null \$nullWithCustomConst = NULL ]
                         Parameter #2 [ <optional> bool \$booleanTrue = true ]
@@ -304,9 +305,10 @@ final class MockClassBuilderTest extends TestCase
                         Parameter #19 [ <optional> array \$array = ['null' => NULL, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string'] ]
                         Parameter #20 [ <optional> ?array \$optionalArray = NULL ]
                         Parameter #21 [ <optional> array \$arrayWithCustomConst = ['null' => NULL, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string'] ]
-                        Parameter #22 [ <optional> DateTimeImmutable \$dateTimeImmutable = new \\DateTimeImmutable('2025-02-16T00:25:30+01:00', new \\DateTimeZone('Europe/Zurich')) ]
-                        Parameter #23 [ <optional> ArrayIterator \$arrayIterator = new \\ArrayIterator(['null' => null, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string']) ]
-                        Parameter #24 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\Sample \$sample = new \\Chubbyphp\\Tests\\Mock\\Sample\\Sample('name', 'value') ]
+                        Parameter #22 [ <optional> Traversable|array \$iterable = ['null' => NULL, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string'] ]
+                        Parameter #23 [ <optional> DateTimeImmutable \$dateTimeImmutable = new \\DateTimeImmutable('2025-02-16T00:25:30+01:00', new \\DateTimeZone('Europe/Zurich')) ]
+                        Parameter #24 [ <optional> ArrayIterator \$arrayIterator = new \\ArrayIterator(['null' => null, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string']) ]
+                        Parameter #25 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\Sample \$sample = new \\Chubbyphp\\Tests\\Mock\\Sample\\Sample('name', 'value') ]
                       }
                       - Return [ void ]
                     }

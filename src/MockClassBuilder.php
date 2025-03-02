@@ -198,7 +198,7 @@ final class MockClassBuilder
     private function parameterPattern(\ReflectionParameter $reflectionParameter, int $parameterIndex): string
     {
         $requiredOrOptional = !$reflectionParameter->isOptional() ? 'required' : 'optional';
-        $type = preg_quote((string) $reflectionParameter->getType());
+        $type = $this->resolveParameterType($reflectionParameter);
         $variable = preg_quote('$'.$reflectionParameter->getName());
 
         if ($reflectionParameter->hasType() && $reflectionParameter->isDefaultValueAvailable()) {
@@ -226,6 +226,17 @@ final class MockClassBuilder
         // @codeCoverageIgnoreEnd
 
         return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> {$variable} \\]$/";
+    }
+
+    private function resolveParameterType(\ReflectionParameter $reflectionParameter): string
+    {
+        $type = (string) $reflectionParameter->getType();
+
+        if ('iterable' === $type) {
+            $type = 'Traversable|array';
+        }
+
+        return preg_quote($type);
     }
 
     /**

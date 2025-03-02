@@ -42,6 +42,8 @@ class DefaultParameters
         array $array = ['null' => self::NULL, 'boolean' => self::BOOLEAN, 'int' => self::INT, 'float' => self::FLOAT, 'string' => self::STRING],
         ?array $optionalArray = null,
         array $arrayWithCustomConst = self::ARRAY,
+        // iterable
+        iterable $iterable = ['null' => self::NULL, 'boolean' => self::BOOLEAN, 'int' => self::INT, 'float' => self::FLOAT, 'string' => self::STRING],
         // datetime
         \DateTimeImmutable $dateTimeImmutable = new \DateTimeImmutable('2025-02-16T00:25:30+01:00', new \DateTimeZone('Europe/Zurich')),
         // iterator
@@ -79,6 +81,8 @@ class DefaultParameters
         array $array = ['null' => self::NULL, 'boolean' => self::BOOLEAN, 'int' => self::INT, 'float' => self::FLOAT, 'string' => self::STRING],
         ?array $optionalArray = null,
         array $arrayWithCustomConst = self::ARRAY,
+        // iterable
+        iterable $iterable = ['null' => self::NULL, 'boolean' => self::BOOLEAN, 'int' => self::INT, 'float' => self::FLOAT, 'string' => self::STRING],
         // datetime
         \DateTimeImmutable $dateTimeImmutable = new \DateTimeImmutable('2025-02-16T00:25:30+01:00', new \DateTimeZone('Europe/Zurich')),
         // iterator

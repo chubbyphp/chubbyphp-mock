@@ -87,6 +87,7 @@ final class MockObjectBuilderTest extends TestCase
                 ['null' => null, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string'],
                 null,
                 ['null' => null, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string'],
+                ['null' => null, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string'],
                 new \DateTimeImmutable('2025-02-16T00:25:30+01:00', new \DateTimeZone('Europe/Zurich')),
                 new \ArrayIterator(['null' => null, 'boolean' => true, 'int' => 5, 'float' => 9.81, 'string' => 'string']),
                 new Sample('name', 'value'),
@@ -160,7 +161,7 @@ final class MockObjectBuilderTest extends TestCase
         } catch (ParameterMismatch $e) {
             self::assertSame(<<<'EOT'
                 {
-                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:152",
+                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:153",
                     "class": "DateTimeImmutable",
                     "index": 0,
                     "methodName": "format",
