@@ -32,7 +32,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> final class Chubbyphp_Tests_Mock_Sample_Sample_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\Sample ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-12
+                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-16
 
                   - Constants [0] {
                   }
@@ -47,7 +47,7 @@ final class MockClassBuilderTest extends TestCase
                     Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
                   }
 
-                  - Methods [4] {
+                  - Methods [6] {
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, ctor> public method __construct ] {
                       @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
 
@@ -60,8 +60,25 @@ final class MockClassBuilderTest extends TestCase
                       @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
                     }
 
-                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method setPrevious ] {
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method setInitialized ] {
                       @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> bool \$initialized ]
+                      }
+                      - Return [ void ]
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method getInitialized ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 10 - 10
+
+                      - Parameters [0] {
+                      }
+                      - Return [ bool ]
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method setPrevious ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 12 - 12
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Tests\\Mock\\Sample\\Sample \$previous ]
@@ -70,7 +87,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method getPrevious ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 10 - 10
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 14 - 14
 
                       - Parameters [0] {
                       }

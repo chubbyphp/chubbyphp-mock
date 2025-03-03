@@ -157,8 +157,10 @@ final class WithoutReturn implements MockMethodInterface
         foreach ($reflectionObject->getProperties() as $reflectionProperty) {
             $reflectionProperty->setAccessible(true);
 
-            $actualPropertyValue = $reflectionProperty->getValue($actual);
-            $expectedPropertyValue = $reflectionProperty->getValue($expected);
+            $actualPropertyValue = $reflectionProperty->isInitialized($actual)
+                ? $reflectionProperty->getValue($actual) : '(uninitialized)';
+            $expectedPropertyValue = $reflectionProperty->isInitialized($expected)
+                ? $reflectionProperty->getValue($expected) : '(uninitialized)';
 
             if (!$this->compareEqual($actualPropertyValue, $expectedPropertyValue)) {
                 return false;

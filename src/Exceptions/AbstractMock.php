@@ -82,7 +82,8 @@ abstract class AbstractMock extends \RuntimeException
             $reflectionProperty->setAccessible(true);
 
             $subKey = $reflectionProperty->getName();
-            $subValue = $reflectionProperty->getValue($value);
+            $subValue = $reflectionProperty->isInitialized($value)
+                ? $reflectionProperty->getValue($value) : '(uninitialized)';
 
             $data[$subKey] = $this->getData($subValue, $splObjectHashes);
         }
