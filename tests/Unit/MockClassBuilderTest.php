@@ -7,6 +7,7 @@ namespace Chubbyphp\Tests\Mock\Unit;
 use Chubbyphp\Mock\MockClassBuilder;
 use Chubbyphp\Tests\Mock\Sample\ByReference;
 use Chubbyphp\Tests\Mock\Sample\DefaultParameters;
+use Chubbyphp\Tests\Mock\Sample\NestedWithParents;
 use Chubbyphp\Tests\Mock\Sample\Sample;
 use Chubbyphp\Tests\Mock\Sample\Variadic;
 use PHPUnit\Framework\TestCase;
@@ -19,88 +20,6 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 final class MockClassBuilderTest extends TestCase
 {
-    public function testWithSample(): void
-    {
-        $builder = new MockClassBuilder();
-
-        $mockClassName = $builder->mock(Sample::class);
-
-        $reflectionClass = new \ReflectionClass($mockClassName);
-
-        $cwd = getcwd();
-
-        self::assertSame(
-            <<<EOT
-                Class [ <user> final class Chubbyphp_Tests_Mock_Sample_Sample_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\Sample ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-16
-
-                  - Constants [0] {
-                  }
-
-                  - Static properties [0] {
-                  }
-
-                  - Static methods [0] {
-                  }
-
-                  - Properties [1] {
-                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
-                  }
-
-                  - Methods [6] {
-                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
-
-                      - Parameters [1] {
-                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
-                      }
-                    }
-
-                    Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
-                    }
-
-                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method setInitialized ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
-
-                      - Parameters [1] {
-                        Parameter #0 [ <required> bool \$initialized ]
-                      }
-                      - Return [ void ]
-                    }
-
-                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method getInitialized ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 10 - 10
-
-                      - Parameters [0] {
-                      }
-                      - Return [ bool ]
-                    }
-
-                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method setPrevious ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 12 - 12
-
-                      - Parameters [1] {
-                        Parameter #0 [ <required> Chubbyphp\\Tests\\Mock\\Sample\\Sample \$previous ]
-                      }
-                      - Return [ Chubbyphp\\Tests\\Mock\\Sample\\Sample ]
-                    }
-
-                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method getPrevious ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 14 - 14
-
-                      - Parameters [0] {
-                      }
-                      - Return [ ?Chubbyphp\\Tests\\Mock\\Sample\\Sample ]
-                    }
-                  }
-                }
-
-                EOT,
-            (string) $reflectionClass
-        );
-    }
-
     public function testWithByReference(): void
     {
         $builder = new MockClassBuilder();
@@ -149,64 +68,6 @@ final class MockClassBuilderTest extends TestCase
                         Parameter #0 [ <required> string &\$text ]
                       }
                       - Return [ Chubbyphp\\Tests\\Mock\\Sample\\ByReference ]
-                    }
-                  }
-                }
-
-                EOT,
-            (string) $reflectionClass
-        );
-    }
-
-    public function testWithVariadic(): void
-    {
-        $builder = new MockClassBuilder();
-
-        $mockClassName = $builder->mock(Variadic::class);
-
-        $reflectionClass = new \ReflectionClass($mockClassName);
-
-        $cwd = getcwd();
-
-        self::assertSame(
-            <<<EOT
-                Class [ <user> final class Chubbyphp_Tests_Mock_Sample_Variadic_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\Variadic ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-8
-
-                  - Constants [0] {
-                  }
-
-                  - Static properties [0] {
-                  }
-
-                  - Static methods [0] {
-                  }
-
-                  - Properties [1] {
-                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
-                  }
-
-                  - Methods [3] {
-                    Method [ <user, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
-
-                      - Parameters [1] {
-                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
-                      }
-                    }
-
-                    Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
-                    }
-
-                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Variadic, prototype Chubbyphp\\Tests\\Mock\\Sample\\Variadic> public method join ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
-
-                      - Parameters [2] {
-                        Parameter #0 [ <required> string \$separator ]
-                        Parameter #1 [ <optional> ...\$strings ]
-                      }
-                      - Return [ string ]
                     }
                   }
                 }
@@ -328,6 +189,117 @@ final class MockClassBuilderTest extends TestCase
                         Parameter #25 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\Sample \$sample = new \\Chubbyphp\\Tests\\Mock\\Sample\\Sample('name', 'value') ]
                       }
                       - Return [ void ]
+                    }
+                  }
+                }
+
+                EOT,
+            (string) $reflectionClass
+        );
+    }
+
+    public function testNestedWithParents(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = $builder->mock(NestedWithParents::class);
+
+        $reflectionClass = new \ReflectionClass($mockClassName);
+
+        $cwd = getcwd();
+
+        self::assertSame(
+            <<<EOT
+                Class [ <user> final class Chubbyphp_Tests_Mock_Sample_NestedWithParents_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\NestedWithParents ] {
+                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-20
+
+                  - Constants [0] {
+                  }
+
+                  - Static properties [0] {
+                  }
+
+                  - Static methods [0] {
+                  }
+
+                  - Properties [1] {
+                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                  }
+
+                  - Methods [9] {
+                    Method [ <user, ctor> public method __construct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                      }
+                    }
+
+                    Method [ <user> public method __destruct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ParentD, prototype Chubbyphp\\Tests\\Mock\\Sample\\ParentD> public method d ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+
+                      - Parameters [1] {
+                        Parameter #0 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\ParentD \$self = new \\Chubbyphp\\Tests\\Mock\\Sample\\ParentD() ]
+                      }
+                      - Return [ Chubbyphp\\Tests\\Mock\\Sample\\ParentD ]
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ParentD, prototype Chubbyphp\\Tests\\Mock\\Sample\\ParentD> public method dc ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+
+                      - Parameters [1] {
+                        Parameter #0 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\ParentC \$parent = new \\Chubbyphp\\Tests\\Mock\\Sample\\ParentC() ]
+                      }
+                      - Return [ Chubbyphp\\Tests\\Mock\\Sample\\ParentC ]
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ParentC, prototype Chubbyphp\\Tests\\Mock\\Sample\\ParentC> public method c ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 10 - 10
+
+                      - Parameters [1] {
+                        Parameter #0 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\ParentC \$self = new \\Chubbyphp\\Tests\\Mock\\Sample\\ParentC() ]
+                      }
+                      - Return [ Chubbyphp\\Tests\\Mock\\Sample\\ParentC ]
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ParentC, prototype Chubbyphp\\Tests\\Mock\\Sample\\ParentC> public method cb ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 12 - 12
+
+                      - Parameters [1] {
+                        Parameter #0 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\ParentB \$parent = new \\Chubbyphp\\Tests\\Mock\\Sample\\ParentB() ]
+                      }
+                      - Return [ Chubbyphp\\Tests\\Mock\\Sample\\ParentB ]
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ParentB, prototype Chubbyphp\\Tests\\Mock\\Sample\\ParentB> public method b ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 14 - 14
+
+                      - Parameters [1] {
+                        Parameter #0 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\ParentB \$self = new \\Chubbyphp\\Tests\\Mock\\Sample\\ParentB() ]
+                      }
+                      - Return [ Chubbyphp\\Tests\\Mock\\Sample\\ParentB ]
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ParentB, prototype Chubbyphp\\Tests\\Mock\\Sample\\ParentB> public method ba ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 16 - 16
+
+                      - Parameters [1] {
+                        Parameter #0 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\ParentA \$parent = new \\Chubbyphp\\Tests\\Mock\\Sample\\ParentA() ]
+                      }
+                      - Return [ Chubbyphp\\Tests\\Mock\\Sample\\ParentA ]
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ParentA, prototype Chubbyphp\\Tests\\Mock\\Sample\\ParentA> public method a ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 18 - 18
+
+                      - Parameters [1] {
+                        Parameter #0 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\ParentA \$self = new \\Chubbyphp\\Tests\\Mock\\Sample\\ParentA() ]
+                      }
+                      - Return [ Chubbyphp\\Tests\\Mock\\Sample\\ParentA ]
                     }
                   }
                 }
@@ -634,6 +606,146 @@ final class MockClassBuilderTest extends TestCase
                         Parameter #0 [ <required> Psr\\Http\\Message\\StreamInterface \$body ]
                       }
                       - Return [ Psr\\Http\\Message\\MessageInterface ]
+                    }
+                  }
+                }
+
+                EOT,
+            (string) $reflectionClass
+        );
+    }
+
+    public function testWithSample(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = $builder->mock(Sample::class);
+
+        $reflectionClass = new \ReflectionClass($mockClassName);
+
+        $cwd = getcwd();
+
+        self::assertSame(
+            <<<EOT
+                Class [ <user> final class Chubbyphp_Tests_Mock_Sample_Sample_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\Sample ] {
+                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-16
+
+                  - Constants [0] {
+                  }
+
+                  - Static properties [0] {
+                  }
+
+                  - Static methods [0] {
+                  }
+
+                  - Properties [1] {
+                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                  }
+
+                  - Methods [6] {
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, ctor> public method __construct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                      }
+                    }
+
+                    Method [ <user> public method __destruct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method setInitialized ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> bool \$initialized ]
+                      }
+                      - Return [ void ]
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method getInitialized ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 10 - 10
+
+                      - Parameters [0] {
+                      }
+                      - Return [ bool ]
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method setPrevious ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 12 - 12
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> Chubbyphp\\Tests\\Mock\\Sample\\Sample \$previous ]
+                      }
+                      - Return [ Chubbyphp\\Tests\\Mock\\Sample\\Sample ]
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method getPrevious ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 14 - 14
+
+                      - Parameters [0] {
+                      }
+                      - Return [ ?Chubbyphp\\Tests\\Mock\\Sample\\Sample ]
+                    }
+                  }
+                }
+
+                EOT,
+            (string) $reflectionClass
+        );
+    }
+
+    public function testWithVariadic(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = $builder->mock(Variadic::class);
+
+        $reflectionClass = new \ReflectionClass($mockClassName);
+
+        $cwd = getcwd();
+
+        self::assertSame(
+            <<<EOT
+                Class [ <user> final class Chubbyphp_Tests_Mock_Sample_Variadic_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\Variadic ] {
+                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-8
+
+                  - Constants [0] {
+                  }
+
+                  - Static properties [0] {
+                  }
+
+                  - Static methods [0] {
+                  }
+
+                  - Properties [1] {
+                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                  }
+
+                  - Methods [3] {
+                    Method [ <user, ctor> public method __construct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                      }
+                    }
+
+                    Method [ <user> public method __destruct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Variadic, prototype Chubbyphp\\Tests\\Mock\\Sample\\Variadic> public method join ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+
+                      - Parameters [2] {
+                        Parameter #0 [ <required> string \$separator ]
+                        Parameter #1 [ <optional> ...\$strings ]
+                      }
+                      - Return [ string ]
                     }
                   }
                 }

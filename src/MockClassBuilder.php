@@ -45,6 +45,8 @@ final class MockClassBuilder
      */
     private function mockClass(\ReflectionClass $reflectionClass, string $mockClassName): string
     {
+        $reflectionClasses = $this->resolveReflectionClasses($reflectionClass);
+
         $implementsOrExtends = $reflectionClass->isInterface() ? 'implements' : 'extends';
 
         $methods = [
@@ -53,7 +55,7 @@ final class MockClassBuilder
         ];
 
         foreach ($reflectionClass->getMethods() as $reflectionMethod) {
-            $methods[] = $this->mockMethod($reflectionClass, $reflectionMethod).PHP_EOL;
+            $methods[] = $this->mockMethod($reflectionClasses, $reflectionMethod).PHP_EOL;
         }
 
         $class = "final class {$mockClassName} {$implementsOrExtends} {$reflectionClass->getName()} {".PHP_EOL;
@@ -65,9 +67,29 @@ final class MockClassBuilder
 
     /**
      * @param \ReflectionClass<object> $reflectionClass
+     *
+     * @return non-empty-array<\ReflectionClass<object>>
+     */
+    private static function resolveReflectionClasses(\ReflectionClass $reflectionClass): array
+    {
+        if ($reflectionClass->isInterface()) {
+            return [$reflectionClass];
+        }
+
+        $reflectionClasses = [];
+
+        do {
+            $reflectionClasses[] = $reflectionClass;
+        } while (false !== $reflectionClass = $reflectionClass->getParentClass());
+
+        return $reflectionClasses;
+    }
+
+    /**
+     * @param non-empty-array<int, \ReflectionClass<object>> $reflectionClasses
      */
     private function mockMethod(
-        \ReflectionClass $reflectionClass,
+        array $reflectionClasses,
         \ReflectionMethod $reflectionMethod
     ): string {
         if (
@@ -80,31 +102,32 @@ final class MockClassBuilder
         }
 
         if ($reflectionMethod->isStatic()) {
-            return $this->mockStaticMethod($reflectionClass, $reflectionMethod);
+            return $this->mockStaticMethod($reflectionClasses, $reflectionMethod);
         }
 
-        return $this->mockDynamicMethod($reflectionClass, $reflectionMethod);
+        return $this->mockDynamicMethod($reflectionClasses, $reflectionMethod);
     }
 
     /**
-     * @param \ReflectionClass<object> $reflectionClass
+     * @param non-empty-array<int, \ReflectionClass<object>> $reflectionClasses
      */
     private function mockStaticMethod(
-        \ReflectionClass $reflectionClass,
+        array $reflectionClasses,
         \ReflectionMethod $reflectionMethod
     ): string {
-        $parameters = $this->mockParameters($reflectionClass, $reflectionMethod);
+        $parameters = $this->mockParameters($reflectionClasses, $reflectionMethod);
 
         $methodName = $reflectionMethod->getName();
 
-        $visibility = $this->visibility($reflectionMethod);
+        $visibility = $reflectionMethod->isProtected() ? 'protected' : 'public';
+        $returnsReference = $reflectionMethod->returnsReference() ? '&' : '';
 
-        $method = $visibility.' static function '.$methodName.'('.$parameters.')';
+        $method = $visibility.' static function '.$returnsReference.$methodName.'('.$parameters.')';
 
         $returnType = (string) ($reflectionMethod->getReturnType() ?? $reflectionMethod->getTentativeReturnType());
 
         if ($returnType) {
-            $method .= ': '.$this->replaceSelfWithOriginalClass($reflectionClass, $returnType);
+            $method .= ': '.$this->replaceSelfWithOriginalClassInType($reflectionClasses, $reflectionMethod->getName(), $returnType);
         }
 
         $method .= ' { throw new \Exception(\'Static method cannot be mocked\'); }';
@@ -113,29 +136,30 @@ final class MockClassBuilder
     }
 
     /**
-     * @param \ReflectionClass<object> $reflectionClass
+     * @param non-empty-array<int, \ReflectionClass<object>> $reflectionClasses
      */
     private function mockDynamicMethod(
-        \ReflectionClass $reflectionClass,
+        array $reflectionClasses,
         \ReflectionMethod $reflectionMethod
     ): string {
-        $parameters = $this->mockParameters($reflectionClass, $reflectionMethod);
+        $parameters = $this->mockParameters($reflectionClasses, $reflectionMethod);
 
         $methodName = $reflectionMethod->getName();
 
-        $visibility = $this->visibility($reflectionMethod);
+        $visibility = $reflectionMethod->isProtected() ? 'protected' : 'public';
+        $returnsReference = $reflectionMethod->returnsReference() ? '&' : '';
 
-        $method = $visibility.' function '.$methodName.'('.$parameters.')';
+        $method = $visibility.' function '.$returnsReference.$methodName.'('.$parameters.')';
 
         $returnType = (string) ($reflectionMethod->getReturnType() ?? $reflectionMethod->getTentativeReturnType());
 
         if ($returnType) {
-            $method .= ': '.$this->replaceSelfWithOriginalClass($reflectionClass, $returnType);
+            $method .= ': '.$this->replaceSelfWithOriginalClassInType($reflectionClasses, $reflectionMethod->getName(), $returnType);
         }
 
         $method .= ' { ';
 
-        if ('void' !== $returnType) {
+        if ('void' !== $returnType && 'never' !== $returnType) {
             $method .= 'return ';
         }
 
@@ -154,20 +178,11 @@ final class MockClassBuilder
         return $method;
     }
 
-    private function visibility(\ReflectionMethod $reflectionMethod): string
-    {
-        if ($reflectionMethod->isProtected()) {
-            return 'protected';
-        }
-
-        return 'public';
-    }
-
     /**
-     * @param \ReflectionClass<object> $reflectionClass
+     * @param non-empty-array<int, \ReflectionClass<object>> $reflectionClasses
      */
     private function mockParameters(
-        \ReflectionClass $reflectionClass,
+        array $reflectionClasses,
         \ReflectionMethod $reflectionMethod
     ): string {
         $parameters = [];
@@ -180,16 +195,16 @@ final class MockClassBuilder
             preg_match($pattern, (string) $reflectionParameter, $matches);
 
             $type = $reflectionParameter->hasType()
-                ? $this->replaceSelfWithOriginalClass($reflectionClass, (string) $reflectionParameter->getType())
+                ? $this->replaceSelfWithOriginalClassInType($reflectionClasses, $reflectionMethod->getName(), (string) $reflectionParameter->getType())
                 : '';
-            $default = isset($matches[1])
-                ? '= '.$this->mockDefaultParameters($reflectionClass, $matches[1])
+            $variable = $matches[1];
+            $default = $matches[2]
+                ? '= '.$this->mockDefaultParameters($reflectionClasses, $reflectionMethod->getName(), $matches[2])
                 : '';
 
-            $byReference = $reflectionParameter->isPassedByReference() ? '&' : '';
-            $variadic = $reflectionParameter->isVariadic() ? '...' : '';
+            $parameter = trim($type.' '.$variable.' '.$default);
 
-            $parameters[] = trim($type.' '.$byReference.$variadic.'$'.$reflectionParameter->getName().' '.$default);
+            $parameters[] = $parameter;
         }
 
         return implode(', ', $parameters);
@@ -198,68 +213,73 @@ final class MockClassBuilder
     private function parameterPattern(\ReflectionParameter $reflectionParameter, int $parameterIndex): string
     {
         $requiredOrOptional = !$reflectionParameter->isOptional() ? 'required' : 'optional';
-        $type = $this->resolveParameterType($reflectionParameter);
+        $byReference = preg_quote($reflectionParameter->isPassedByReference() ? '&' : '');
+        $variadic = preg_quote($reflectionParameter->isVariadic() ? '...' : '');
         $variable = preg_quote('$'.$reflectionParameter->getName());
 
-        if ($reflectionParameter->hasType() && $reflectionParameter->isDefaultValueAvailable()) {
-            return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> {$type} {$variable} = (.+) \\]$/";
-        }
-
-        // @codeCoverageIgnoreStart
-        if ($reflectionParameter->hasType() && $reflectionParameter->isOptional()) {
-            return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> {$type} {$variable} = (<default>) \\]$/";
-        }
-        // @codeCoverageIgnoreEnd
-
         if ($reflectionParameter->hasType()) {
-            return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> {$type} {$variable} \\]$/";
+            return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> [^ ]+ ({$byReference}{$variadic}{$variable})(.*) \\]$/";
         }
 
-        if ($reflectionParameter->isDefaultValueAvailable()) {
-            return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> {$variable} = (.+) \\]$/";
-        }
-
-        // @codeCoverageIgnoreStart
-        if ($reflectionParameter->isOptional()) {
-            return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> {$variable} = (<default>) \\]$/";
-        }
-        // @codeCoverageIgnoreEnd
-
-        return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> {$variable} \\]$/";
-    }
-
-    private function resolveParameterType(\ReflectionParameter $reflectionParameter): string
-    {
-        $type = (string) $reflectionParameter->getType();
-
-        if ('iterable' === $type) {
-            $type = 'Traversable|array';
-        }
-
-        return preg_quote($type);
+        return "/^Parameter \\#{$parameterIndex} \\[ <{$requiredOrOptional}> ({$byReference}{$variadic}{$variable})(.*) \\]$/";
     }
 
     /**
-     * @param \ReflectionClass<object> $reflectionClass
+     * @param non-empty-array<int, \ReflectionClass<object>> $reflectionClasses
      */
-    private function replaceSelfWithOriginalClass(\ReflectionClass $reflectionClass, string $type): string
+    private function replaceSelfWithOriginalClassInType(array $reflectionClasses, string $methodName, string $type): string
     {
-        if ('?self' === $type) {
-            return '?'.$reflectionClass->getName();
+        $isNullable = false;
+
+        if ('?' === $type[0]) {
+            $isNullable = true;
+            $type = substr($type, 1);
         }
 
-        if ('self' === $type) {
-            return $reflectionClass->getName();
+        $typeParts = explode('|', $type);
+
+        foreach ($typeParts as $i => $typePart) {
+            if ('self' === $typePart) {
+                $selfReflectionClass = $this->resolveSelfReflectionClassForMethodName($reflectionClasses, $methodName);
+
+                $typeParts[$i] = $selfReflectionClass->getName();
+            } elseif ('parent' === $typePart) {
+                /** @var \ReflectionClass<object> $parentReflectionClass */
+                $parentReflectionClass = $this->resolveSelfReflectionClassForMethodName($reflectionClasses, $methodName)->getParentClass();
+
+                $typeParts[$i] = $parentReflectionClass->getName();
+            }
         }
 
-        return $type;
+        $type = implode('|', $typeParts);
+
+        return $isNullable ? '?'.$type : $type;
     }
 
     /**
-     * @param \ReflectionClass<object> $reflectionClass
+     * @param non-empty-array<int, \ReflectionClass<object>> $reflectionClasses
+     *
+     * @return \ReflectionClass<object>
      */
-    private function mockDefaultParameters(\ReflectionClass $reflectionClass, string $defaultParametersCode): string
+    private function resolveSelfReflectionClassForMethodName(array $reflectionClasses, string $methodName): \ReflectionClass
     {
+        foreach (array_reverse(\array_slice($reflectionClasses, 1)) as $reflectionClass) {
+            if ($reflectionClass->hasMethod($methodName)) {
+                return $reflectionClass;
+            }
+        }
+
+        return $reflectionClasses[0];
+    }
+
+    /**
+     * @param non-empty-array<int, \ReflectionClass<object>> $reflectionClasses
+     */
+    private function mockDefaultParameters(array $reflectionClasses, string $methodName, string $defaultParametersCode): string
+    {
+        // drop the ' = ' at the beginning
+        $defaultParametersCode = substr($defaultParametersCode, 3);
+
         if ('<default>' === $defaultParametersCode) {
             // @codeCoverageIgnoreStart
             return 'null';
@@ -270,11 +290,11 @@ final class MockClassBuilder
         $traverser = new NodeTraverser();
         $prettyPrinter = new Standard();
 
-        $traverser->addVisitor(new class($reflectionClass) extends NodeVisitorAbstract {
+        $traverser->addVisitor(new class($this, $reflectionClasses, $methodName) extends NodeVisitorAbstract {
             /**
-             * @param \ReflectionClass<object> $reflectionClass
+             * @param non-empty-array<int, \ReflectionClass<object>> $reflectionClasses
              */
-            public function __construct(private \ReflectionClass $reflectionClass) {}
+            public function __construct(private MockClassBuilder $mockClassBuilder, private array $reflectionClasses, private string $methodName) {}
 
             public function enterNode(Node $node): null
             {
@@ -283,7 +303,19 @@ final class MockClassBuilder
                 }
 
                 if ('self' === $node->name) {
-                    $node->name = $this->reflectionClass->getName();
+                    $reflectionMethod = new \ReflectionMethod($this->mockClassBuilder, 'replaceSelfWithOriginalClassInType');
+                    $reflectionMethod->setAccessible(true);
+
+                    $node->name = $reflectionMethod->invoke($this->mockClassBuilder, $this->reflectionClasses, $this->methodName, 'self');
+
+                    return null;
+                }
+
+                if ('parent' === $node->name) {
+                    $reflectionMethod = new \ReflectionMethod($this->mockClassBuilder, 'replaceSelfWithOriginalClassInType');
+                    $reflectionMethod->setAccessible(true);
+
+                    $node->name = $reflectionMethod->invoke($this->mockClassBuilder, $this->reflectionClasses, $this->methodName, 'parent');
 
                     return null;
                 }
@@ -305,7 +337,7 @@ final class MockClassBuilder
         $stmts = $parser->parse('<?php '.$defaultParametersCode.';');
 
         return $this->resolveOriginalClassConsts(
-            $reflectionClass,
+            $reflectionClasses[0],
             substr(
                 $prettyPrinter->prettyPrint(
                     $traverser->traverse($stmts)
