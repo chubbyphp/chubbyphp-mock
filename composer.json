@@ -1,6 +1,6 @@
 {
     "name": "chubbyphp/chubbyphp-mock",
-    "description": "Chubbyphp Mock",
+    "description": "A strict mocking solution.",
     "keywords": ["chubbyphp", "phpunit", "mock"],
     "license": "MIT",
     "authors": [

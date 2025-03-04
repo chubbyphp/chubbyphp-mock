@@ -21,7 +21,7 @@
 
 ## Description
 
-A helper trait simplify mocking within phpunit.
+A strict mocking solution.
 
 ## Requirements
 
@@ -66,7 +66,7 @@ final class PingRequestHandlerTest extends TestCase
         $responseBody = $builder->create(StreamInterface::class, [
             new WithCallback('write', static function (string $string): int {
                 $data = json_decode($string, true);
-                self::assertArrayHasKey('date', $data);
+                self::assertArrayHasKey('datetime', $data);
 
                 return \strlen($string);
             }),
