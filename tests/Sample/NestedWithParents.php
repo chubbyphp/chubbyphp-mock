@@ -21,7 +21,7 @@ class ParentB extends ParentA
         return $self;
     }
 
-    public function ba(parent $parent = new ParentA()): parent
+    public function ba(parent $parent = new parent()): parent
     {
         return $parent;
     }
@@ -34,7 +34,7 @@ class ParentC extends ParentB
         return $self;
     }
 
-    public function cb(parent $parent = new ParentB()): parent
+    public function cb(parent $parent = new parent()): parent
     {
         return $parent;
     }
@@ -47,7 +47,7 @@ class ParentD extends ParentC
         return $self;
     }
 
-    public function dc(parent $parent = new ParentC()): parent
+    public function dc(parent $parent = new parent()): parent
     {
         return $parent;
     }
