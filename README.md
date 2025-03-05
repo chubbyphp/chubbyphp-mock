@@ -105,6 +105,8 @@ Use the third party package [dg/bypass-finals](https://packagist.org/packages/dg
 
 - **Properties**
 
+- **__construct, __destruct methods**
+
 - **Interfaces extending internal interfaces:**
   Interfaces that extend built-in PHP interfaces like `Traversable` are used as markers rather than containing methods. They cannot be mocked.
 
@@ -113,9 +115,6 @@ Use the third party package [dg/bypass-finals](https://packagist.org/packages/dg
 
 - **Poorly built extension classes:**
   Some older PHP extensions create classes that cannot be fully reverse-engineered using reflection. These classes are not mockable.
-
-- **Classes with a final `__construct` method:**
-  If a class's constructor is marked as final, it gets overridden during mocking, leading to a signature mismatch. As a result, such classes cannot be properly mocked.
 
 Please report if you find other restrictions / bugs.
 
