@@ -13,6 +13,11 @@ use Chubbyphp\Mock\MockObjectBuilder;
 use Chubbyphp\Tests\Mock\Sample\AbstractMethods;
 use Chubbyphp\Tests\Mock\Sample\ByReference;
 use Chubbyphp\Tests\Mock\Sample\DefaultParameters;
+use Chubbyphp\Tests\Mock\Sample\NestedWithParents;
+use Chubbyphp\Tests\Mock\Sample\ParentA;
+use Chubbyphp\Tests\Mock\Sample\ParentB;
+use Chubbyphp\Tests\Mock\Sample\ParentC;
+use Chubbyphp\Tests\Mock\Sample\ParentD;
 use Chubbyphp\Tests\Mock\Sample\PingRequestHandler;
 use Chubbyphp\Tests\Mock\Sample\Sample;
 use Chubbyphp\Tests\Mock\Sample\Variadic;
@@ -97,6 +102,57 @@ final class MockObjectBuilderTest extends TestCase
         $defaultParameters->defaultParameters();
     }
 
+    public function testNestedWithParents(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        $nestedWithParents = $builder->create(NestedWithParents::class, [
+            new WithCallback('d', static function ($self) {
+                self::assertSame(ParentD::class, $self::class);
+
+                return $self;
+            }),
+            new WithCallback('dc', static function ($parent) {
+                self::assertSame(ParentC::class, $parent::class);
+
+                return $parent;
+            }),
+            new WithCallback('c', static function ($self) {
+                self::assertSame(ParentC::class, $self::class);
+
+                return $self;
+            }),
+            new WithCallback('cb', static function ($parent) {
+                self::assertSame(ParentB::class, $parent::class);
+
+                return $parent;
+            }),
+            new WithCallback('b', static function ($self) {
+                self::assertSame(ParentB::class, $self::class);
+
+                return $self;
+            }),
+            new WithCallback('ba', static function ($parent) {
+                self::assertSame(ParentA::class, $parent::class);
+
+                return $parent;
+            }),
+            new WithCallback('a', static function ($self) {
+                self::assertSame(ParentA::class, $self::class);
+
+                return $self;
+            }),
+        ]);
+
+        $nestedWithParents->d();
+        $nestedWithParents->dc();
+        $nestedWithParents->c();
+        $nestedWithParents->cb();
+        $nestedWithParents->b();
+        $nestedWithParents->ba();
+        $nestedWithParents->a();
+    }
+
     public function testWithPingRequestHandler(): void
     {
         $builder = new MockObjectBuilder();
@@ -129,6 +185,28 @@ final class MockObjectBuilderTest extends TestCase
         self::assertSame($response, $requestHandler->handle($request));
     }
 
+    public function testWithSample(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        $sample = $builder->create(Sample::class, [
+            new WithReturn('getPrevious', [], null),
+        ]);
+
+        self::assertNull($sample->getPrevious());
+    }
+
+    public function testWithVariadic(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        $variadic = $builder->create(Variadic::class, [
+            new WithReturn('join', ['|', ['string1', 'string2']], 'string1|string2'),
+        ]);
+
+        self::assertSame('string1|string2', $variadic->join('|', 'string1', 'string2'));
+    }
+
     public function testWithDateTimeImmutable(): void
     {
         $builder = new MockObjectBuilder();
@@ -150,6 +228,7 @@ final class MockObjectBuilderTest extends TestCase
     {
         $builder = new MockObjectBuilder();
 
+        $line = __LINE__ + 1;
         $dateTimeImmutable = $builder->create(\DateTimeImmutable::class, [
             new WithReturn('format', ['c'], '2025-02-16T00:25:30+01:00'),
         ]);
@@ -159,9 +238,9 @@ final class MockObjectBuilderTest extends TestCase
 
             throw new \Exception('should not be reachable');
         } catch (ParameterMismatch $e) {
-            self::assertSame(<<<'EOT'
+            self::assertSame(<<<EOT
                 {
-                    "in": "(project)\/tests\/Unit\/MockObjectBuilderTest.php:153",
+                    "in": "(project)\\/tests\\/Unit\\/MockObjectBuilderTest.php:{$line}",
                     "class": "DateTimeImmutable",
                     "index": 0,
                     "methodName": "format",
@@ -172,27 +251,5 @@ final class MockObjectBuilderTest extends TestCase
                 }
                 EOT, $e->getMessage());
         }
-    }
-
-    public function testWithSample(): void
-    {
-        $builder = new MockObjectBuilder();
-
-        $sample = $builder->create(Sample::class, [
-            new WithReturn('getPrevious', [], null),
-        ]);
-
-        self::assertNull($sample->getPrevious());
-    }
-
-    public function testWithVariadic(): void
-    {
-        $builder = new MockObjectBuilder();
-
-        $variadic = $builder->create(Variadic::class, [
-            new WithReturn('join', ['|', ['string1', 'string2']], 'string1|string2'),
-        ]);
-
-        self::assertSame('string1|string2', $variadic->join('|', 'string1', 'string2'));
     }
 }
