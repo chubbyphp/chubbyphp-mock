@@ -91,7 +91,25 @@ final class PingRequestHandlerTest extends TestCase
 }
 ```
 
-# Upgrade
+## FAQ
+
+### Howto mock final classes/methods
+
+Use the third party package [dg/bypass-finals](https://packagist.org/packages/dg/bypass-finals).
+
+**This does not work to get rid of the final keyword on internal classes.**
+
+### What cannot be mocked
+
+- Interfaces extending internal interfaces like `Traversable` which behave like a flag, but not containing methods.
+- Internal final Classes/Methods even when installing `dg/bypass-finals`
+- Classes from older not that well built php extensions, which cannot be fully reverse engineered by reflections.
+- Classes with final __construct, cause this methods gets overridden by the mocking and will not match the signature.
+
+If you find other bugs, please create an issue. Either it's a bug within this library or something to add to the list.
+
+
+## Upgrade
 
 [Upgrade from 1.x](doc/upgrade-from-1.x.md)
 
