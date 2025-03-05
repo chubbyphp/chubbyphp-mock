@@ -99,15 +99,25 @@ Use the third party package [dg/bypass-finals](https://packagist.org/packages/dg
 
 **This does not work to get rid of the final keyword on internal classes.**
 
-### What cannot be mocked
+### What Cannot Be Mocked
 
-- Interfaces extending internal interfaces like `Traversable` which behave like a flag, but not containing methods.
-- Internal final Classes/Methods even when installing `dg/bypass-finals`
-- Classes from older not that well built php extensions, which cannot be fully reverse engineered by reflections.
-- Classes with final __construct, cause this methods gets overridden by the mocking and will not match the signature.
+- **Static methods**
 
-If you find other bugs, please create an issue. Either it's a bug within this library or something to add to the list.
+- **Properties**
 
+- **Interfaces extending internal interfaces:**
+  Interfaces that extend built-in PHP interfaces like `Traversable` are used as markers rather than containing methods. They cannot be mocked.
+
+- **Internal final classes or methods:**
+  Even with tools like `dg/bypass-finals`, you cannot mock internal final classes or methods.
+
+- **Poorly built extension classes:**
+  Some older PHP extensions create classes that cannot be fully reverse-engineered using reflection. These classes are not mockable.
+
+- **Classes with a final `__construct` method:**
+  If a class's constructor is marked as final, it gets overridden during mocking, leading to a signature mismatch. As a result, such classes cannot be properly mocked.
+
+Please report if you find other restrictions / bugs.
 
 ## Upgrade
 
