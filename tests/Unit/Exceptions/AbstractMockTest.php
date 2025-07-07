@@ -34,7 +34,7 @@ enum BackedEmpty: string {}
  */
 final class AbstractMockTest extends TestCase
 {
-    #[DataProvider('provideData')]
+    #[DataProvider('provideGetDataCases')]
     public function testGetData(mixed $expected, mixed $actual): void
     {
         $mockException = new class extends AbstractMock {
@@ -47,7 +47,7 @@ final class AbstractMockTest extends TestCase
         self::assertSame($expected, $mockException->publicGetData($actual));
     }
 
-    public static function provideData(): array
+    public static function provideGetDataCases(): iterable
     {
         $array = ['null' => null, 'boolean' => true, 'int' => 5, 'float' => 3.14, 'string' => 'string'];
 
