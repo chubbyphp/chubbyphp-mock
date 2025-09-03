@@ -387,7 +387,7 @@ final class MockClassBuilder
      */
     private function resolveOriginalClassConst(
         \ReflectionClass $reflectionClass,
-        null|array|bool|float|int|string $value
+        array|bool|float|int|string|null $value
     ): string {
         if (null === $value) {
             return 'null';
