@@ -21,7 +21,7 @@ final class ParametersCountMismatch extends AbstractMock
             'methodName' => $methodName,
             'actualParametersCount' => $actualParametersCount,
             'expectedParametersCount' => $expectedParametersCount,
-        ], JSON_PRETTY_PRINT);
+        ], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
 
         $this->code = 20470;
     }

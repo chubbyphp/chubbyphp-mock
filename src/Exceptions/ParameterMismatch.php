@@ -25,7 +25,7 @@ final class ParameterMismatch extends AbstractMock
             'actualParameter' => $this->getData($actualParameter),
             'expectedParameter' => $this->getData($expectedParameter),
             'strict' => $strict,
-        ], JSON_PRETTY_PRINT);
+        ], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
 
         $this->code = 41273;
     }

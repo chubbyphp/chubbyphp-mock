@@ -19,7 +19,7 @@ final class MethodNameMismatch extends AbstractMock
             'index' => $index,
             'actualName' => $actualName,
             'expectedName' => $expectedName,
-        ], JSON_PRETTY_PRINT);
+        ], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
 
         $this->code = 98990;
     }

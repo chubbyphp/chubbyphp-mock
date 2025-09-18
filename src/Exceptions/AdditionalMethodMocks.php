@@ -17,7 +17,7 @@ final class AdditionalMethodMocks extends AbstractMock
             'class' => $class,
             'actualIndex' => $actualIndex,
             'expectedIndex' => $expectedIndex,
-        ], JSON_PRETTY_PRINT);
+        ], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
 
         $this->code = 90952;
     }

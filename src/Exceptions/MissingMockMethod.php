@@ -15,7 +15,7 @@ final class MissingMockMethod extends AbstractMock
             'in' => $in,
             'class' => $class,
             'index' => $index,
-        ], JSON_PRETTY_PRINT);
+        ], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
 
         $this->code = 47412;
     }
