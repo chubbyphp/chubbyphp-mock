@@ -14,6 +14,7 @@ final class MethodNameMismatch extends AbstractMock
         string $expectedName,
     ) {
         $this->message = json_encode([
+            'exception' => self::class,
             'in' => $in,
             'class' => $class,
             'index' => $index,

@@ -18,6 +18,7 @@ final class ParametersCountMismatchTest extends TestCase
     {
         $message = <<<'EOT'
             {
+                "exception": "Chubbyphp\\Mock\\Exceptions\\ParametersCountMismatch",
                 "in": "in",
                 "class": "class",
                 "index": 4,

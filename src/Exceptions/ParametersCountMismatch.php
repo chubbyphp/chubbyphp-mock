@@ -15,6 +15,7 @@ final class ParametersCountMismatch extends AbstractMock
         int $expectedParametersCount,
     ) {
         $this->message = json_encode([
+            'exception' => self::class,
             'in' => $in,
             'class' => $class,
             'index' => $index,

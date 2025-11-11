@@ -36,6 +36,7 @@ final class WithoutReturnTest extends AbstractHasParameter
         } catch (MethodNameMismatch $e) {
             $expectedMessage = <<<'EOT'
                 {
+                    "exception": "Chubbyphp\\Mock\\Exceptions\\MethodNameMismatch",
                     "in": "in",
                     "class": "class",
                     "index": 0,
@@ -60,6 +61,7 @@ final class WithoutReturnTest extends AbstractHasParameter
         } catch (ParametersCountMismatch $e) {
             $expectedMessage = <<<'EOT'
                 {
+                    "exception": "Chubbyphp\\Mock\\Exceptions\\ParametersCountMismatch",
                     "in": "in",
                     "class": "class",
                     "index": 0,

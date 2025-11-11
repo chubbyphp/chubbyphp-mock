@@ -240,6 +240,7 @@ final class MockObjectBuilderTest extends TestCase
         } catch (ParameterMismatch $e) {
             self::assertSame(<<<EOT
                 {
+                    "exception": "Chubbyphp\\\\Mock\\\\Exceptions\\\\ParameterMismatch",
                     "in": "(project)\\/tests\\/Unit\\/MockObjectBuilderTest.php:{$line}",
                     "class": "DateTimeImmutable",
                     "index": 0,

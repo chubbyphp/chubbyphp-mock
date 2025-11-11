@@ -12,6 +12,7 @@ final class MissingMockMethod extends AbstractMock
         int $index,
     ) {
         $this->message = json_encode([
+            'exception' => self::class,
             'in' => $in,
             'class' => $class,
             'index' => $index,

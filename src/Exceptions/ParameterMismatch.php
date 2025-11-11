@@ -17,6 +17,7 @@ final class ParameterMismatch extends AbstractMock
         bool $strict,
     ) {
         $this->message = json_encode([
+            'exception' => self::class,
             'in' => $in,
             'class' => $class,
             'index' => $index,

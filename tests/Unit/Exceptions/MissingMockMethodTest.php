@@ -18,6 +18,7 @@ final class MissingMockMethodTest extends TestCase
     {
         $message = <<<'EOT'
             {
+                "exception": "Chubbyphp\\Mock\\Exceptions\\MissingMockMethod",
                 "in": "in",
                 "class": "class",
                 "index": 5

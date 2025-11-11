@@ -18,6 +18,7 @@ final class MethodNameMismatchTest extends TestCase
     {
         $message = <<<'EOT'
             {
+                "exception": "Chubbyphp\\Mock\\Exceptions\\MethodNameMismatch",
                 "in": "in",
                 "class": "class",
                 "index": 0,

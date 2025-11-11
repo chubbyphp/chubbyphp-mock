@@ -18,6 +18,7 @@ final class AdditionalMethodMocksTest extends TestCase
     {
         $message = <<<'EOT'
             {
+                "exception": "Chubbyphp\\Mock\\Exceptions\\AdditionalMethodMocks",
                 "in": "in",
                 "class": "class",
                 "actualIndex": 2,

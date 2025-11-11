@@ -36,6 +36,7 @@ final class WithCallbackTest extends TestCase
         } catch (MethodNameMismatch $e) {
             $expectedMessage = <<<'EOT'
                 {
+                    "exception": "Chubbyphp\\Mock\\Exceptions\\MethodNameMismatch",
                     "in": "in",
                     "class": "class",
                     "index": 0,

@@ -13,6 +13,7 @@ final class AdditionalMethodMocks extends AbstractMock
         int $expectedIndex,
     ) {
         $this->message = json_encode([
+            'exception' => self::class,
             'in' => $in,
             'class' => $class,
             'actualIndex' => $actualIndex,

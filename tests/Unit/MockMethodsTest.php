@@ -59,6 +59,7 @@ final class MockMethodsTest extends TestCase
         } catch (MissingMockMethod $e) {
             $expectedMessage = <<<'EOT'
                 {
+                    "exception": "Chubbyphp\\Mock\\Exceptions\\MissingMockMethod",
                     "in": "in",
                     "class": "class",
                     "index": 0
@@ -81,6 +82,7 @@ final class MockMethodsTest extends TestCase
         } catch (AdditionalMethodMocks $e) {
             $expectedMessage = <<<'EOT'
                 {
+                    "exception": "Chubbyphp\\Mock\\Exceptions\\AdditionalMethodMocks",
                     "in": "in",
                     "class": "class",
                     "actualIndex": -1,
