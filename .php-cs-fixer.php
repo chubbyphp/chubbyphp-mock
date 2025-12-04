@@ -18,6 +18,7 @@ unset($config['rules']['final_public_method_for_abstract_class']);
 $config['rules']['strict_comparison'] = false;
 
 return (new PhpCsFixer\Config)
+    ->setUnsupportedPhpVersionAllowed(true)
     ->setIndent($config['indent'])
     ->setLineEnding($config['lineEnding'])
     ->setRules($config['rules'])

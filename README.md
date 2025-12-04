@@ -25,14 +25,15 @@ A strict mocking solution.
 
 ## Requirements
 
- * php: ^8.2
+ * php: ^8.3
+ * [nikic/php-parser][2]: ^5.6.2
 
 ## Installation
 
 Through [Composer](http://getcomposer.org) as [chubbyphp/chubbyphp-mock][1].
 
 ```sh
-composer require chubbyphp/chubbyphp-mock "^2.0" --dev
+composer require chubbyphp/chubbyphp-mock "^2.1" --dev
 ```
 
 ## Usage
@@ -129,3 +130,5 @@ Please report if you find other restrictions / bugs.
 
 
 [1]: https://packagist.org/packages/chubbyphp/chubbyphp-mock
+[2]: https://packagist.org/packages/nikic/php-parser
+
