@@ -304,7 +304,6 @@ final class MockClassBuilder
 
                 if ('self' === $node->name) {
                     $reflectionMethod = new \ReflectionMethod($this->mockClassBuilder, 'replaceSelfWithOriginalClassInType');
-                    $reflectionMethod->setAccessible(true);
 
                     $node->name = $reflectionMethod->invoke($this->mockClassBuilder, $this->reflectionClasses, $this->methodName, 'self');
 
@@ -313,7 +312,6 @@ final class MockClassBuilder
 
                 if ('parent' === $node->name) {
                     $reflectionMethod = new \ReflectionMethod($this->mockClassBuilder, 'replaceSelfWithOriginalClassInType');
-                    $reflectionMethod->setAccessible(true);
 
                     $node->name = $reflectionMethod->invoke($this->mockClassBuilder, $this->reflectionClasses, $this->methodName, 'parent');
 
