@@ -11,13 +11,13 @@ final class WithCallback implements MockMethodInterface
     /**
      * @phpstan-var callable(mixed ...$args): mixed
      */
-    private $callback;
+    private readonly mixed $callback;
 
     /**
      * @phpstan-param callable(mixed ...$args): mixed $callback
      */
     public function __construct(
-        private string $expectedName,
+        private readonly string $expectedName,
         callable $callback,
     ) {
         $this->callback = $callback;

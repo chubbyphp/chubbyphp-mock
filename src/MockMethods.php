@@ -16,7 +16,7 @@ final class MockMethods
     /**
      * @param array<MockMethodInterface> $mockMethods
      */
-    public function __construct(private string $in, private string $class, private array $mockMethods)
+    public function __construct(private readonly string $in, private readonly string $class, private readonly array $mockMethods)
     {
         $this->actualIndex = -1;
         $this->expectedIndex = \count($mockMethods) - 1;

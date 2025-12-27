@@ -6,7 +6,7 @@ namespace Chubbyphp\Mock\MockMethod;
 
 final class WithReturnSelf implements MockMethodInterface
 {
-    private WithoutReturn $withoutReturn;
+    private readonly WithoutReturn $withoutReturn;
 
     /**
      * @param array<mixed> $expectedParameters

@@ -6,7 +6,7 @@ namespace Chubbyphp\Mock\MockMethod;
 
 final class WithException implements MockMethodInterface
 {
-    private WithoutReturn $withoutReturn;
+    private readonly WithoutReturn $withoutReturn;
 
     /**
      * @param array<mixed> $expectedParameters
@@ -14,7 +14,7 @@ final class WithException implements MockMethodInterface
     public function __construct(
         string $expectedName,
         array $expectedParameters,
-        private \Throwable $exception,
+        private readonly \Throwable $exception,
         mixed $strict = true,
     ) {
         $this->withoutReturn = new WithoutReturn(

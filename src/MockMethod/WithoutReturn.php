@@ -12,9 +12,8 @@ final class WithoutReturn implements MockMethodInterface
 {
     /**
      * @param array<mixed> $expectedParameters
-     * @param mixed        $strict
      */
-    public function __construct(private string $expectedName, private array $expectedParameters, private $strict = true) {}
+    public function __construct(private readonly string $expectedName, private readonly array $expectedParameters, private readonly mixed $strict = true) {}
 
     /**
      * @param array<mixed> $actualParameters

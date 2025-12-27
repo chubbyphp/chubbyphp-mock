@@ -8,7 +8,7 @@ use Chubbyphp\Mock\MockMethod\MockMethodInterface;
 
 final class MockObjectBuilder
 {
-    public function __construct(private MockClassBuilder $mockClassBuilder = new MockClassBuilder()) {}
+    public function __construct(private readonly MockClassBuilder $mockClassBuilder = new MockClassBuilder()) {}
 
     /**
      * @template T of object
