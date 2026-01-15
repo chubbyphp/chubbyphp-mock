@@ -14,7 +14,7 @@ final class WithReturnSelf implements MockMethodInterface
     public function __construct(
         string $expectedName,
         array $expectedParameters,
-        mixed $strict = true,
+        bool $strict = true,
     ) {
         $this->withoutReturn = new WithoutReturn(
             $expectedName,

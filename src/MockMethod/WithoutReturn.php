@@ -13,7 +13,7 @@ final class WithoutReturn implements MockMethodInterface
     /**
      * @param array<mixed> $expectedParameters
      */
-    public function __construct(private readonly string $expectedName, private readonly array $expectedParameters, private readonly mixed $strict = true) {}
+    public function __construct(private readonly string $expectedName, private readonly array $expectedParameters, private readonly bool $strict = true) {}
 
     /**
      * @param array<mixed> $actualParameters
@@ -118,10 +118,12 @@ final class WithoutReturn implements MockMethodInterface
         }
 
         if (\is_array($actual)) {
+            /** @var array<mixed> $expected */
             return $this->compareArrayEqual($actual, $expected);
         }
 
         if (\is_object($actual)) {
+            /** @var object $expected */
             return $this->compareObjectEqual($actual, $expected);
         }
 

@@ -69,6 +69,7 @@ abstract class AbstractMock extends \RuntimeException
             if ($reflectionObject->hasMethod($method)) {
                 $reflectionMethod = $reflectionObject->getMethod($method);
 
+                /** @var array<mixed> */
                 $data = $this->getData($reflectionMethod->invoke($value), $splObjectHashes);
 
                 $data['__CLASS__'] = $value::class;

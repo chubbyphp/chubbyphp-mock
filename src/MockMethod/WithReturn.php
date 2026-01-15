@@ -15,7 +15,7 @@ final class WithReturn implements MockMethodInterface
         string $expectedName,
         array $expectedParameters,
         private readonly mixed $return,
-        mixed $strict = true,
+        bool $strict = true,
     ) {
         $this->withoutReturn = new WithoutReturn($expectedName, $expectedParameters, $strict);
     }

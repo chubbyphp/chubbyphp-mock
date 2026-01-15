@@ -15,7 +15,7 @@ final class WithException implements MockMethodInterface
         string $expectedName,
         array $expectedParameters,
         private readonly \Throwable $exception,
-        mixed $strict = true,
+        bool $strict = true,
     ) {
         $this->withoutReturn = new WithoutReturn(
             $expectedName,

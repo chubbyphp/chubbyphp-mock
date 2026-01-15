@@ -305,7 +305,9 @@ final class MockClassBuilder
                 if ('self' === $node->name) {
                     $reflectionMethod = new \ReflectionMethod($this->mockClassBuilder, 'replaceSelfWithOriginalClassInType');
 
-                    $node->name = $reflectionMethod->invoke($this->mockClassBuilder, $this->reflectionClasses, $this->methodName, 'self');
+                    /** @var non-empty-string */
+                    $name = $reflectionMethod->invoke($this->mockClassBuilder, $this->reflectionClasses, $this->methodName, 'self');
+                    $node->name = $name;
 
                     return null;
                 }
@@ -313,7 +315,9 @@ final class MockClassBuilder
                 if ('parent' === $node->name) {
                     $reflectionMethod = new \ReflectionMethod($this->mockClassBuilder, 'replaceSelfWithOriginalClassInType');
 
-                    $node->name = $reflectionMethod->invoke($this->mockClassBuilder, $this->reflectionClasses, $this->methodName, 'parent');
+                    /** @var non-empty-string */
+                    $name = $reflectionMethod->invoke($this->mockClassBuilder, $this->reflectionClasses, $this->methodName, 'parent');
+                    $node->name = $name;
 
                     return null;
                 }
@@ -402,9 +406,12 @@ final class MockClassBuilder
         if (\is_string($value)) {
             $matches = [];
             if (preg_match('/^'.$this->originalClassConstPattern($reflectionClass).'$/', $value, $matches)) {
+                /** @var null|bool|float|int|string */
+                $constantValue = $reflectionClass->getConstant($matches[1]);
+
                 return $this->resolveOriginalClassConst(
                     $reflectionClass,
-                    $reflectionClass->getConstant($matches[1])
+                    $constantValue
                 );
             }
 
