@@ -32,7 +32,7 @@ abstract class AbstractMock extends \RuntimeException
      * @param array<mixed>        $value
      * @param array<string, bool> &$splObjectHashes
      *
-     * @return array<string>
+     * @return array<mixed>
      */
     private function getArrayData(array $value, array &$splObjectHashes): array
     {
