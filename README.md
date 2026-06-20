@@ -106,10 +106,10 @@ Use the third party package [dg/bypass-finals](https://packagist.org/packages/dg
 
 - **Properties**
 
-- **__construct, __destruct methods**
+- **__construct and __destruct methods**
 
-- **Interfaces extending internal interfaces:**
-  Interfaces that extend built-in PHP interfaces like `Traversable` are used as markers rather than containing methods. They cannot be mocked.
+- **Interfaces that extend `\Traversable` without `\Iterator` or `\IteratorAggregate`:**
+  `\Traversable` is special: PHP does not allow userland classes to implement it directly. A class can only implement `\Traversable` by also implementing `\Iterator` or `\IteratorAggregate`. If an interface extends `\Traversable` but not one of those, the generated mock class cannot satisfy the interface and therefore cannot be mocked.
 
 - **Internal final classes or methods:**
   Even with tools like `dg/bypass-finals`, you cannot mock internal final classes or methods.
