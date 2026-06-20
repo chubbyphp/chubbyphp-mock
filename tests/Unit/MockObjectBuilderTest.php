@@ -11,8 +11,10 @@ use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockMethod\WithReturnSelf;
 use Chubbyphp\Mock\MockObjectBuilder;
 use Chubbyphp\Tests\Mock\Sample\AbstractMethods;
+use Chubbyphp\Tests\Mock\Sample\AbstractTraversable;
 use Chubbyphp\Tests\Mock\Sample\ByReference;
 use Chubbyphp\Tests\Mock\Sample\DefaultParameters;
+use Chubbyphp\Tests\Mock\Sample\IteratorInterface;
 use Chubbyphp\Tests\Mock\Sample\NestedWithParents;
 use Chubbyphp\Tests\Mock\Sample\ParentA;
 use Chubbyphp\Tests\Mock\Sample\ParentB;
@@ -20,6 +22,7 @@ use Chubbyphp\Tests\Mock\Sample\ParentC;
 use Chubbyphp\Tests\Mock\Sample\ParentD;
 use Chubbyphp\Tests\Mock\Sample\PingRequestHandler;
 use Chubbyphp\Tests\Mock\Sample\Sample;
+use Chubbyphp\Tests\Mock\Sample\TraversableInterface;
 use Chubbyphp\Tests\Mock\Sample\Variadic;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
@@ -252,5 +255,66 @@ final class MockObjectBuilderTest extends TestCase
                 }
                 EOT, $e->getMessage());
         }
+    }
+
+    public function testWithTraversable(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        $traversable = $builder->create(\Traversable::class, [
+            new WithReturn('getIterator', [], new \ArrayIterator(['a', 'b', 'c'])),
+        ]);
+
+        self::assertSame(['a', 'b', 'c'], iterator_to_array($traversable));
+    }
+
+    public function testWithTraversableInterface(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        $traversable = $builder->create(TraversableInterface::class, [
+            new WithReturn('getIterator', [], new \ArrayIterator(['a', 'b', 'c'])),
+            new WithReturn('count', [], 3),
+        ]);
+
+        self::assertSame(['a', 'b', 'c'], iterator_to_array($traversable));
+        self::assertSame(3, $traversable->count());
+    }
+
+    public function testWithAbstractTraversable(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        $traversable = $builder->create(AbstractTraversable::class, [
+            new WithReturn('getIterator', [], new \ArrayIterator(['a', 'b', 'c'])),
+            new WithReturn('isEmpty', [], false),
+        ]);
+
+        self::assertSame(['a', 'b', 'c'], iterator_to_array($traversable));
+        self::assertFalse($traversable->isEmpty());
+    }
+
+    public function testWithIterator(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        $iterator = $builder->create(\Iterator::class, [
+            new WithReturn('current', [], 'value'),
+        ]);
+
+        self::assertSame('value', $iterator->current());
+    }
+
+    public function testWithIteratorInterface(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        $iterator = $builder->create(IteratorInterface::class, [
+            new WithReturn('current', [], 'value'),
+            new WithReturn('count', [], 1),
+        ]);
+
+        self::assertSame('value', $iterator->current());
+        self::assertSame(1, $iterator->count());
     }
 }

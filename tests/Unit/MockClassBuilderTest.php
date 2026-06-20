@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Chubbyphp\Tests\Mock\Unit;
 
 use Chubbyphp\Mock\MockClassBuilder;
+use Chubbyphp\Tests\Mock\Sample\AbstractTraversable;
 use Chubbyphp\Tests\Mock\Sample\ByReference;
 use Chubbyphp\Tests\Mock\Sample\DefaultParameters;
+use Chubbyphp\Tests\Mock\Sample\IteratorAggregateInterface;
+use Chubbyphp\Tests\Mock\Sample\IteratorInterface;
 use Chubbyphp\Tests\Mock\Sample\NestedWithParents;
 use Chubbyphp\Tests\Mock\Sample\Sample;
+use Chubbyphp\Tests\Mock\Sample\TraversableInterface;
 use Chubbyphp\Tests\Mock\Sample\Variadic;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -790,5 +794,493 @@ final class MockClassBuilderTest extends TestCase
         foreach ($lines as $line) {
             self::assertStringContainsString($line, $reflectionClassAsString);
         }
+    }
+
+    public function testWithTraversable(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = $builder->mock(\Traversable::class);
+
+        $reflectionClass = new \ReflectionClass($mockClassName);
+
+        $cwd = getcwd();
+
+        self::assertSame(
+            <<<EOT
+                Class [ <user> <iterateable> final class Traversable_Mock implements Traversable, IteratorAggregate ] {
+                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-8
+
+                  - Constants [0] {
+                  }
+
+                  - Static properties [0] {
+                  }
+
+                  - Static methods [0] {
+                  }
+
+                  - Properties [1] {
+                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                  }
+
+                  - Methods [3] {
+                    Method [ <user, ctor> public method __construct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                      }
+                    }
+
+                    Method [ <user> public method __destruct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                    }
+
+                    Method [ <user, prototype IteratorAggregate> public method getIterator ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+
+                      - Parameters [0] {
+                      }
+                      - Return [ Traversable ]
+                    }
+                  }
+                }
+
+                EOT,
+            (string) $reflectionClass
+        );
+    }
+
+    public function testWithTraversableInterface(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = $builder->mock(TraversableInterface::class);
+
+        $reflectionClass = new \ReflectionClass($mockClassName);
+
+        $cwd = getcwd();
+
+        self::assertSame(
+            <<<EOT
+                Class [ <user> <iterateable> final class Chubbyphp_Tests_Mock_Sample_TraversableInterface_Mock implements Chubbyphp\\Tests\\Mock\\Sample\\TraversableInterface, IteratorAggregate, Traversable ] {
+                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-10
+
+                  - Constants [0] {
+                  }
+
+                  - Static properties [0] {
+                  }
+
+                  - Static methods [0] {
+                  }
+
+                  - Properties [1] {
+                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                  }
+
+                  - Methods [4] {
+                    Method [ <user, ctor> public method __construct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                      }
+                    }
+
+                    Method [ <user> public method __destruct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                    }
+
+                    Method [ <user, prototype IteratorAggregate> public method getIterator ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+
+                      - Parameters [0] {
+                      }
+                      - Return [ Traversable ]
+                    }
+
+                    Method [ <user, prototype Chubbyphp\\Tests\\Mock\\Sample\\TraversableInterface> public method count ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+
+                      - Parameters [0] {
+                      }
+                      - Return [ int ]
+                    }
+                  }
+                }
+
+                EOT,
+            (string) $reflectionClass
+        );
+    }
+
+    public function testWithAbstractTraversable(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = $builder->mock(AbstractTraversable::class);
+
+        $reflectionClass = new \ReflectionClass($mockClassName);
+
+        $cwd = getcwd();
+
+        self::assertSame(
+            <<<EOT
+                Class [ <user> <iterateable> final class Chubbyphp_Tests_Mock_Sample_AbstractTraversable_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\AbstractTraversable implements Traversable, IteratorAggregate ] {
+                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-10
+
+                  - Constants [0] {
+                  }
+
+                  - Static properties [0] {
+                  }
+
+                  - Static methods [0] {
+                  }
+
+                  - Properties [1] {
+                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                  }
+
+                  - Methods [4] {
+                    Method [ <user, ctor> public method __construct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                      }
+                    }
+
+                    Method [ <user> public method __destruct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                    }
+
+                    Method [ <user, prototype IteratorAggregate> public method getIterator ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+
+                      - Parameters [0] {
+                      }
+                      - Return [ Traversable ]
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\AbstractTraversable, prototype Chubbyphp\\Tests\\Mock\\Sample\\AbstractTraversable> public method isEmpty ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+
+                      - Parameters [0] {
+                      }
+                      - Return [ bool ]
+                    }
+                  }
+                }
+
+                EOT,
+            (string) $reflectionClass
+        );
+    }
+
+    public function testWithIteratorAggregate(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = $builder->mock(\IteratorAggregate::class);
+
+        $reflectionClass = new \ReflectionClass($mockClassName);
+
+        $cwd = getcwd();
+
+        self::assertSame(
+            <<<EOT
+                Class [ <user> <iterateable> final class IteratorAggregate_Mock implements IteratorAggregate, Traversable ] {
+                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-8
+
+                  - Constants [0] {
+                  }
+
+                  - Static properties [0] {
+                  }
+
+                  - Static methods [0] {
+                  }
+
+                  - Properties [1] {
+                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                  }
+
+                  - Methods [3] {
+                    Method [ <user, ctor> public method __construct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                      }
+                    }
+
+                    Method [ <user> public method __destruct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                    }
+
+                    Method [ <user, prototype IteratorAggregate> public method getIterator ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+
+                      - Parameters [0] {
+                      }
+                      - Return [ Traversable ]
+                    }
+                  }
+                }
+
+                EOT,
+            (string) $reflectionClass
+        );
+    }
+
+    public function testWithIteratorAggregateInterface(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = $builder->mock(IteratorAggregateInterface::class);
+
+        $reflectionClass = new \ReflectionClass($mockClassName);
+
+        $cwd = getcwd();
+
+        self::assertSame(
+            <<<EOT
+                Class [ <user> <iterateable> final class Chubbyphp_Tests_Mock_Sample_IteratorAggregateInterface_Mock implements Chubbyphp\\Tests\\Mock\\Sample\\IteratorAggregateInterface, Traversable, IteratorAggregate ] {
+                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-10
+
+                  - Constants [0] {
+                  }
+
+                  - Static properties [0] {
+                  }
+
+                  - Static methods [0] {
+                  }
+
+                  - Properties [1] {
+                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                  }
+
+                  - Methods [4] {
+                    Method [ <user, ctor> public method __construct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                      }
+                    }
+
+                    Method [ <user> public method __destruct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                    }
+
+                    Method [ <user, prototype Chubbyphp\\Tests\\Mock\\Sample\\IteratorAggregateInterface> public method count ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+
+                      - Parameters [0] {
+                      }
+                      - Return [ int ]
+                    }
+
+                    Method [ <user, prototype IteratorAggregate> public method getIterator ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+
+                      - Parameters [0] {
+                      }
+                      - Return [ Traversable ]
+                    }
+                  }
+                }
+
+                EOT,
+            (string) $reflectionClass
+        );
+    }
+
+    public function testWithIterator(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = $builder->mock(\Iterator::class);
+
+        $reflectionClass = new \ReflectionClass($mockClassName);
+
+        $cwd = getcwd();
+
+        self::assertSame(
+            <<<EOT
+                Class [ <user> <iterateable> final class Iterator_Mock implements Iterator, Traversable ] {
+                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-16
+
+                  - Constants [0] {
+                  }
+
+                  - Static properties [0] {
+                  }
+
+                  - Static methods [0] {
+                  }
+
+                  - Properties [1] {
+                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                  }
+
+                  - Methods [7] {
+                    Method [ <user, ctor> public method __construct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                      }
+                    }
+
+                    Method [ <user> public method __destruct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                    }
+
+                    Method [ <user, prototype Iterator> public method current ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+
+                      - Parameters [0] {
+                      }
+                      - Return [ mixed ]
+                    }
+
+                    Method [ <user, prototype Iterator> public method next ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+
+                      - Parameters [0] {
+                      }
+                      - Return [ void ]
+                    }
+
+                    Method [ <user, prototype Iterator> public method key ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 10 - 10
+
+                      - Parameters [0] {
+                      }
+                      - Return [ mixed ]
+                    }
+
+                    Method [ <user, prototype Iterator> public method valid ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 12 - 12
+
+                      - Parameters [0] {
+                      }
+                      - Return [ bool ]
+                    }
+
+                    Method [ <user, prototype Iterator> public method rewind ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 14 - 14
+
+                      - Parameters [0] {
+                      }
+                      - Return [ void ]
+                    }
+                  }
+                }
+
+                EOT,
+            (string) $reflectionClass
+        );
+    }
+
+    public function testWithIteratorInterface(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = $builder->mock(IteratorInterface::class);
+
+        $reflectionClass = new \ReflectionClass($mockClassName);
+
+        $cwd = getcwd();
+
+        self::assertSame(
+            <<<EOT
+                Class [ <user> <iterateable> final class Chubbyphp_Tests_Mock_Sample_IteratorInterface_Mock implements Chubbyphp\\Tests\\Mock\\Sample\\IteratorInterface, Traversable, Iterator ] {
+                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-18
+
+                  - Constants [0] {
+                  }
+
+                  - Static properties [0] {
+                  }
+
+                  - Static methods [0] {
+                  }
+
+                  - Properties [1] {
+                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                  }
+
+                  - Methods [8] {
+                    Method [ <user, ctor> public method __construct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                      }
+                    }
+
+                    Method [ <user> public method __destruct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                    }
+
+                    Method [ <user, prototype Chubbyphp\\Tests\\Mock\\Sample\\IteratorInterface> public method count ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+
+                      - Parameters [0] {
+                      }
+                      - Return [ int ]
+                    }
+
+                    Method [ <user, prototype Iterator> public method current ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+
+                      - Parameters [0] {
+                      }
+                      - Return [ mixed ]
+                    }
+
+                    Method [ <user, prototype Iterator> public method next ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 10 - 10
+
+                      - Parameters [0] {
+                      }
+                      - Return [ void ]
+                    }
+
+                    Method [ <user, prototype Iterator> public method key ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 12 - 12
+
+                      - Parameters [0] {
+                      }
+                      - Return [ mixed ]
+                    }
+
+                    Method [ <user, prototype Iterator> public method valid ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 14 - 14
+
+                      - Parameters [0] {
+                      }
+                      - Return [ bool ]
+                    }
+
+                    Method [ <user, prototype Iterator> public method rewind ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 16 - 16
+
+                      - Parameters [0] {
+                      }
+                      - Return [ void ]
+                    }
+                  }
+                }
+
+                EOT,
+            (string) $reflectionClass
+        );
     }
 }

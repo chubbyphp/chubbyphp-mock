@@ -19,8 +19,6 @@
  *   - classes with a final __construct() / __destruct()
  *   - \Throwable based interfaces (getMessage(), ... can only be provided by
  *     the final implementations within \Exception / \Error)
- *   - \Traversable based interfaces which do not extend \Iterator or
- *     \IteratorAggregate (cannot be implemented directly)
  *   - interfaces based on \UnitEnum or \DateTimeInterface
  *   - enums and traits
  *
@@ -217,9 +215,16 @@ function discoverClasses(string $dir): array
         }
 
         foreach (extractDeclarations($code) as $fqcn) {
-            if (str_starts_with($fqcn, 'Symfony\\')) {
-                $found[$fqcn] = true;
+            if (!str_starts_with($fqcn, 'Symfony\\')) {
+                continue;
             }
+
+            // ignore test helpers/classes declared in test-only namespaces
+            if (str_contains($fqcn, '\\Test\\')) {
+                continue;
+            }
+
+            $found[$fqcn] = true;
         }
     }
 
@@ -368,15 +373,6 @@ function probe(string $fqcn, int $counter): ?string
             return 'interface declares __construct(), a mock cannot replace it';
         }
 
-        // \Traversable can only be implemented through \Iterator or \IteratorAggregate,
-        // a plain "implements" of such an interface is impossible
-        if (
-            $reflectionClass->implementsInterface(\Traversable::class)
-            && !$reflectionClass->implementsInterface(\Iterator::class)
-            && !$reflectionClass->implementsInterface(\IteratorAggregate::class)
-        ) {
-            return 'Traversable interface, cannot be implemented without \Iterator or \IteratorAggregate';
-        }
     } else {
         if ($reflectionClass->isFinal()) {
             return 'final class, cannot be extended';

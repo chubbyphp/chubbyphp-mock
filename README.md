@@ -33,7 +33,7 @@ A strict mocking solution.
 Through [Composer](http://getcomposer.org) as [chubbyphp/chubbyphp-mock][1].
 
 ```sh
-composer require chubbyphp/chubbyphp-mock "^2.1" --dev
+composer require chubbyphp/chubbyphp-mock "^2.2" --dev
 ```
 
 ## Usage
@@ -108,14 +108,16 @@ Use the third party package [dg/bypass-finals](https://packagist.org/packages/dg
 
 - **__construct and __destruct methods**
 
-- **Interfaces that extend `\Traversable` without `\Iterator` or `\IteratorAggregate`:**
-  `\Traversable` is special: PHP does not allow userland classes to implement it directly. A class can only implement `\Traversable` by also implementing `\Iterator` or `\IteratorAggregate`. If an interface extends `\Traversable` but not one of those, the generated mock class cannot satisfy the interface and therefore cannot be mocked.
-
 - **Internal final classes or methods:**
   Even with tools like `dg/bypass-finals`, you cannot mock internal final classes or methods.
 
 - **Poorly built extension classes:**
   Some older PHP extensions create classes that cannot be fully reverse-engineered using reflection. These classes are not mockable.
+
+### Special Handling
+
+- **`\Traversable` and interfaces extending it:**
+  PHP does not allow userland classes to implement `\Traversable` directly; a class can only implement it by also implementing `\Iterator` or `\IteratorAggregate`. chubbyphp-mock handles this automatically by adding `\IteratorAggregate` (and a matching `getIterator()` method if needed) to the generated mock, so `\Traversable` and interfaces extending it can be mocked.
 
 Please report if you find other restrictions / bugs.
 

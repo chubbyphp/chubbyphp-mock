@@ -47,22 +47,71 @@ final class MockClassBuilder
     {
         $reflectionClasses = $this->resolveReflectionClasses($reflectionClass);
 
-        $implementsOrExtends = $reflectionClass->isInterface() ? 'implements' : 'extends';
+        $additionalInterfaces = $this->resolveAdditionalInterfaces($reflectionClass);
 
         $methods = [
             'public function __construct(private Chubbyphp\Mock\MockMethods $mockMethods) { }'.PHP_EOL,
             'public function __destruct() { }'.PHP_EOL,
         ];
 
+        if ($this->needsIteratorAggregate($reflectionClass) && !$reflectionClass->hasMethod('getIterator')) {
+            $methods[] = 'public function getIterator(): \Traversable { return $this->mockMethods->mock($this, \'getIterator\', []); }'.PHP_EOL;
+        }
+
         foreach ($reflectionClass->getMethods() as $reflectionMethod) {
             $methods[] = $this->mockMethod($reflectionClasses, $reflectionMethod).PHP_EOL;
         }
 
-        $class = "final class {$mockClassName} {$implementsOrExtends} {$reflectionClass->getName()} {".PHP_EOL;
+        $class = $this->mockClassDeclaration($reflectionClass, $mockClassName, $additionalInterfaces).PHP_EOL;
         $class .= implode(PHP_EOL, $methods).PHP_EOL;
         $class .= '}';
 
         return $class;
+    }
+
+    /**
+     * @param \ReflectionClass<object> $reflectionClass
+     * @param class-string             $mockClassName
+     */
+    private function mockClassDeclaration(\ReflectionClass $reflectionClass, string $mockClassName, string $additionalInterfaces): string
+    {
+        if ($reflectionClass->isInterface()) {
+            return "final class {$mockClassName} implements {$reflectionClass->getName()}{$additionalInterfaces} {";
+        }
+
+        if ('' === $additionalInterfaces) {
+            return "final class {$mockClassName} extends {$reflectionClass->getName()} {";
+        }
+
+        return "final class {$mockClassName} extends {$reflectionClass->getName()} implements".substr($additionalInterfaces, 1).' {';
+    }
+
+    /**
+     * @param \ReflectionClass<object> $reflectionClass
+     */
+    private function resolveAdditionalInterfaces(\ReflectionClass $reflectionClass): string
+    {
+        if (!$this->needsIteratorAggregate($reflectionClass)) {
+            return '';
+        }
+
+        return ', \IteratorAggregate';
+    }
+
+    /**
+     * @param \ReflectionClass<object> $reflectionClass
+     */
+    private function needsIteratorAggregate(\ReflectionClass $reflectionClass): bool
+    {
+        $implementsTraversable = \Traversable::class === $reflectionClass->getName()
+            || $reflectionClass->isSubclassOf(\Traversable::class);
+
+        $implementsIterator = \Iterator::class === $reflectionClass->getName()
+            || \IteratorAggregate::class === $reflectionClass->getName()
+            || $reflectionClass->isSubclassOf(\Iterator::class)
+            || $reflectionClass->isSubclassOf(\IteratorAggregate::class);
+
+        return $implementsTraversable && !$implementsIterator;
     }
 
     /**
