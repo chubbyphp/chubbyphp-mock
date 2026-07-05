@@ -26,7 +26,7 @@ A strict mocking solution.
 ## Requirements
 
  * php: ^8.3
- * [nikic/php-parser][2]: ^5.7
+ * [nikic/php-parser][2]: ^5.8
 
 ## Installation
 
