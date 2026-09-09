@@ -11,6 +11,7 @@ use Chubbyphp\Tests\Mock\Sample\ByReference;
 use Chubbyphp\Tests\Mock\Sample\DefaultParameters;
 use Chubbyphp\Tests\Mock\Sample\IteratorAggregateInterface;
 use Chubbyphp\Tests\Mock\Sample\IteratorInterface;
+use Chubbyphp\Tests\Mock\Sample\MixedParameters;
 use Chubbyphp\Tests\Mock\Sample\NestedWithParents;
 use Chubbyphp\Tests\Mock\Sample\ReturnsReference;
 use Chubbyphp\Tests\Mock\Sample\Sample;
@@ -1449,6 +1450,35 @@ final class MockClassBuilderTest extends TestCase
                 'Parameter #1 [ <optional> mixed $value = NULL ]',
             ],
             array_map(static fn (\ReflectionParameter $parameter) => (string) $parameter, $reflectionMethod->getParameters())
+        );
+    }
+
+    public function testGeneratedMockClassCode(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = 'Chubbyphp_Tests_Mock_Sample_MixedParameters_Mock';
+
+        $reflectionMethod = new \ReflectionMethod($builder, 'mockClass');
+
+        $mockedClass = $reflectionMethod->invoke($builder, new \ReflectionClass(MixedParameters::class), $mockClassName);
+
+        self::assertSame(
+            <<<'EOT'
+                final class Chubbyphp_Tests_Mock_Sample_MixedParameters_Mock extends Chubbyphp\Tests\Mock\Sample\MixedParameters {
+                public function __construct(private Chubbyphp\Mock\MockMethods $mockMethods) { }
+
+                public function __destruct() { }
+
+                public function withoutParameters(): void { $this->mockMethods->mock($this, 'withoutParameters', []); }
+
+                public function withParameters(string $typed, $untyped, string &$byReference, int $default = 10, string ...$variadic): ?Chubbyphp\Tests\Mock\Sample\MixedParameters { return $this->mockMethods->mock($this, 'withParameters', [$typed, $untyped, $byReference, $default, $variadic]); }
+
+                public static function staticWithParameters(string $typed, int $default = 10): string { throw new \Exception('Static method cannot be mocked'); }
+
+                }
+                EOT,
+            $mockedClass
         );
     }
 }
