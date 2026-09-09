@@ -123,6 +123,10 @@ final class AbstractMockTest extends TestCase
                 BackedSuit::Diamonds,
             ],
             'resource (stream)' => ['(resource)', fopen('php://memory', 'w')],
+            'array (nested object)' => [
+                ['object' => [...$array, '__CLASS__' => \stdClass::class], 'objects' => ['(recursion)']],
+                ['object' => $object, 'objects' => [$object]],
+            ],
         ];
     }
 }

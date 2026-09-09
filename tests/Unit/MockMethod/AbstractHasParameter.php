@@ -41,6 +41,7 @@ abstract class AbstractHasParameter extends TestCase
             'truthy '.++$truthy => [1.0, true],
             'truthy '.++$truthy => [1.0, 1],
             'truthy '.++$truthy => [1.0, '1'],
+            'object' => [new class {}, new \stdClass()],
         ];
     }
 

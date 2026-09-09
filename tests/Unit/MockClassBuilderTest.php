@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace Chubbyphp\Tests\Mock\Unit;
 
 use Chubbyphp\Mock\MockClassBuilder;
+use Chubbyphp\Tests\Mock\Sample\AbstractMethods;
 use Chubbyphp\Tests\Mock\Sample\AbstractTraversable;
 use Chubbyphp\Tests\Mock\Sample\ByReference;
 use Chubbyphp\Tests\Mock\Sample\DefaultParameters;
 use Chubbyphp\Tests\Mock\Sample\IteratorAggregateInterface;
 use Chubbyphp\Tests\Mock\Sample\IteratorInterface;
 use Chubbyphp\Tests\Mock\Sample\NestedWithParents;
+use Chubbyphp\Tests\Mock\Sample\ReturnsReference;
 use Chubbyphp\Tests\Mock\Sample\Sample;
 use Chubbyphp\Tests\Mock\Sample\TraversableInterface;
 use Chubbyphp\Tests\Mock\Sample\Variadic;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -22,6 +25,7 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * @internal
  */
+#[RunTestsInSeparateProcesses]
 final class MockClassBuilderTest extends TestCase
 {
     public function testWithByReference(): void
@@ -714,7 +718,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> final class Chubbyphp_Tests_Mock_Sample_Variadic_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\Variadic ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-8
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-10
 
                   - Constants [0] {
                   }
@@ -729,7 +733,7 @@ final class MockClassBuilderTest extends TestCase
                     Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
                   }
 
-                  - Methods [3] {
+                  - Methods [4] {
                     Method [ <user, ctor> public method __construct ] {
                       @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
 
@@ -748,6 +752,16 @@ final class MockClassBuilderTest extends TestCase
                       - Parameters [2] {
                         Parameter #0 [ <required> string \$separator ]
                         Parameter #1 [ <optional> ...\$strings ]
+                      }
+                      - Return [ string ]
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Variadic, prototype Chubbyphp\\Tests\\Mock\\Sample\\Variadic> public method joinByReference ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 8 - 8
+
+                      - Parameters [2] {
+                        Parameter #0 [ <required> string \$separator ]
+                        Parameter #1 [ <optional> string &...\$strings ]
                       }
                       - Return [ string ]
                     }
@@ -1281,6 +1295,160 @@ final class MockClassBuilderTest extends TestCase
 
                 EOT,
             (string) $reflectionClass
+        );
+    }
+
+    public function testWithAbstractMethods(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = $builder->mock(AbstractMethods::class);
+
+        $reflectionClass = new \ReflectionClass($mockClassName);
+
+        $cwd = getcwd();
+
+        self::assertSame(
+            <<<EOT
+                Class [ <user> final class Chubbyphp_Tests_Mock_Sample_AbstractMethods_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\AbstractMethods ] {
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-14
+
+                  - Constants [0] {
+                  }
+
+                  - Static properties [0] {
+                  }
+
+                  - Static methods [1] {
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\AbstractMethods, prototype Chubbyphp\\Tests\\Mock\\Sample\\AbstractMethods> static protected method internalStaticToLower ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 10 - 10
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> string \$text ]
+                      }
+                      - Return [ string ]
+                    }
+                  }
+
+                  - Properties [1] {
+                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                  }
+
+                  - Methods [4] {
+                    Method [ <user, ctor> public method __construct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                      }
+                    }
+
+                    Method [ <user> public method __destruct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\AbstractMethods, prototype Chubbyphp\\Tests\\Mock\\Sample\\AbstractMethods> public method toLower ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 6 - 6
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> string \$text ]
+                      }
+                      - Return [ string ]
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\AbstractMethods, prototype Chubbyphp\\Tests\\Mock\\Sample\\AbstractMethods> protected method internalToLower ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 8 - 8
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> string \$text ]
+                      }
+                      - Return [ string ]
+                    }
+                  }
+                }
+
+                EOT,
+            (string) $reflectionClass
+        );
+    }
+
+    public function testWithReturnsReference(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = $builder->mock(ReturnsReference::class);
+
+        $reflectionClass = new \ReflectionClass($mockClassName);
+
+        $cwd = getcwd();
+
+        self::assertSame(
+            <<<EOT
+                Class [ <user> final class Chubbyphp_Tests_Mock_Sample_ReturnsReference_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\ReturnsReference ] {
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-10
+
+                  - Constants [0] {
+                  }
+
+                  - Static properties [0] {
+                  }
+
+                  - Static methods [1] {
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ReturnsReference, prototype Chubbyphp\\Tests\\Mock\\Sample\\ReturnsReference> static public method &getStaticValue ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 8 - 8
+
+                      - Parameters [0] {
+                      }
+                      - Return [ string ]
+                    }
+                  }
+
+                  - Properties [1] {
+                    Property [ private Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                  }
+
+                  - Methods [3] {
+                    Method [ <user, ctor> public method __construct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
+
+                      - Parameters [1] {
+                        Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
+                      }
+                    }
+
+                    Method [ <user> public method __destruct ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
+                    }
+
+                    Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ReturnsReference, prototype Chubbyphp\\Tests\\Mock\\Sample\\ReturnsReference> public method &getValue ] {
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 6 - 6
+
+                      - Parameters [0] {
+                      }
+                      - Return [ string ]
+                    }
+                  }
+                }
+
+                EOT,
+            (string) $reflectionClass
+        );
+    }
+
+    public function testWithReflectionProperty(): void
+    {
+        $builder = new MockClassBuilder();
+
+        $mockClassName = $builder->mock(\ReflectionProperty::class);
+
+        $reflectionMethod = new \ReflectionMethod($mockClassName, 'setValue');
+
+        self::assertSame(
+            [
+                'Parameter #0 [ <required> mixed $objectOrValue ]',
+                'Parameter #1 [ <optional> mixed $value = NULL ]',
+            ],
+            array_map(static fn (\ReflectionParameter $parameter) => (string) $parameter, $reflectionMethod->getParameters())
         );
     }
 }

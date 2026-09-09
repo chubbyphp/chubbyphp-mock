@@ -10,4 +10,9 @@ class Variadic
     {
         return implode($separator, $strings);
     }
+
+    public function joinByReference(string $separator, string &...$strings): string
+    {
+        return implode($separator, $strings);
+    }
 }
