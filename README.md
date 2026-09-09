@@ -21,7 +21,14 @@
 
 ## Description
 
-A strict mocking solution.
+A strict mocking solution. It works with any testing framework; the examples below use PHPUnit.
+
+A mock is defined as an ordered list of expected method calls. Every call made on the mock must match the next expectation
+in that list by method name and parameters, otherwise an exception is thrown. Missing calls are detected as well: a mock
+that still has unconsumed expectations when it is destroyed throws too.
+
+Every exception carries a JSON message with the mocked class, the position of the failing call, the actual and expected
+values, and the file and line where the mock was created.
 
 ## Requirements
 
@@ -37,6 +44,23 @@ composer require chubbyphp/chubbyphp-mock "^2.2" --dev
 ```
 
 ## Usage
+
+Create a `MockObjectBuilder` and pass it the class or interface to mock together with the list of expected calls.
+Each expected call is an instance of one of the following mock methods:
+
+| Mock method      | Constructor                                                    | Behaviour                                                     |
+|------------------|----------------------------------------------------------------|---------------------------------------------------------------|
+| `WithoutReturn`  | `(string $name, array $parameters, bool $strict = true)`       | Validates the call and returns nothing.                       |
+| `WithReturn`     | `(string $name, array $parameters, mixed $return, bool $strict = true)` | Validates the call and returns the given value.      |
+| `WithReturnSelf` | `(string $name, array $parameters, bool $strict = true)`       | Validates the call and returns the mock itself (fluent APIs). |
+| `WithException`  | `(string $name, array $parameters, \Throwable $exception, bool $strict = true)` | Validates the call and throws the given exception. |
+| `WithCallback`   | `(string $name, callable $callback)`                           | Validates the method name and delegates to the callback with the actual parameters. Its return value is returned by the mock. |
+
+Parameters are compared with `===` by default. Pass `$strict = false` to compare by value instead; arrays are then
+compared entry by entry and objects property by property (or via `__serialize` / `__sleep` when available).
+
+Use `WithCallback` whenever a parameter cannot be known in advance (for example a generated id or a timestamp) or when
+you want to assert on it inside the callback.
 
 ```php
 <?php
@@ -62,9 +86,11 @@ final class PingRequestHandlerTest extends TestCase
     {
         $builder = new MockObjectBuilder();
 
+        // no calls expected: any method call on this mock fails the test
         $request = $builder->create(ServerRequestInterface::class, []);
 
         $responseBody = $builder->create(StreamInterface::class, [
+            // the written JSON is not known in advance, so assert on it in a callback
             new WithCallback('write', static function (string $string): int {
                 $data = json_decode($string, true);
                 self::assertArrayHasKey('datetime', $data);
@@ -74,6 +100,7 @@ final class PingRequestHandlerTest extends TestCase
         ]);
 
         $response = $builder->create(ResponseInterface::class, [
+            // calls must happen in exactly this order
             new WithReturnSelf('withHeader', ['Content-Type', 'application/json']),
             new WithReturnSelf('withHeader', ['Cache-Control', 'no-cache, no-store, must-revalidate']),
             new WithReturnSelf('withHeader', ['Pragma', 'no-cache']),
@@ -98,26 +125,31 @@ final class PingRequestHandlerTest extends TestCase
 
 Use the third party package [dg/bypass-finals](https://packagist.org/packages/dg/bypass-finals).
 
-**This does not work to get rid of the final keyword on internal classes.**
+**This does not remove the final keyword from internal (PHP core or extension) classes.**
 
 ### What Cannot Be Mocked
 
-- **Static methods**
+- **Static methods:**
+  They are declared on the mock but throw when called.
 
-- **Properties**
+- **Properties:**
+  Only method calls are intercepted.
 
-- **__construct and __destruct methods**
+- **`__construct` and `__destruct`:**
+  The mock defines its own constructor and destructor.
 
 - **Internal final classes or methods:**
-  Even with tools like `dg/bypass-finals`, you cannot mock internal final classes or methods.
+  Even with `dg/bypass-finals`, final internal classes or methods cannot be mocked.
 
 - **Poorly built extension classes:**
-  Some older PHP extensions create classes that cannot be fully reverse-engineered using reflection. These classes are not mockable.
+  Some older PHP extensions declare classes that cannot be fully reverse-engineered via reflection. Those classes are not mockable.
 
 ### Special Handling
 
 - **`\Traversable` and interfaces extending it:**
-  PHP does not allow userland classes to implement `\Traversable` directly; a class can only implement it by also implementing `\Iterator` or `\IteratorAggregate`. chubbyphp-mock handles this automatically by adding `\IteratorAggregate` (and a matching `getIterator()` method if needed) to the generated mock, so `\Traversable` and interfaces extending it can be mocked.
+  PHP does not allow a userland class to implement `\Traversable` directly; it must implement `\Iterator` or `\IteratorAggregate` instead.
+  The generated mock therefore additionally implements `\IteratorAggregate` and, if the mocked type does not declare it, a `getIterator()` method.
+  That method behaves like any other mocked method and needs a matching expectation when called.
 
 Please report if you find other restrictions / bugs.
 
@@ -133,4 +165,3 @@ Please report if you find other restrictions / bugs.
 
 [1]: https://packagist.org/packages/chubbyphp/chubbyphp-mock
 [2]: https://packagist.org/packages/nikic/php-parser
-

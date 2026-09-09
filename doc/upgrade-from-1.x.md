@@ -1,5 +1,23 @@
-
 # Upgrade from 1.x
+
+Version 2 replaces the `MockByCallsTrait` / `Call` API with a `MockObjectBuilder` and one class per expectation.
+The behaviour stays the same: calls are validated in order by method name and parameters.
+
+| 1.x                                         | 2.x                                                       |
+|---------------------------------------------|-----------------------------------------------------------|
+| `use MockByCallsTrait;` + `getMockByCalls()` | `$builder = new MockObjectBuilder();` + `$builder->create()` |
+| `Call::create('m')->with(...)->willReturn($v)` | `new WithReturn('m', [...], $v)`                        |
+| `Call::create('m')->with(...)->willReturnSelf()` | `new WithReturnSelf('m', [...])`                      |
+| `Call::create('m')->with(...)->willThrowException($e)` | `new WithException('m', [...], $e)`             |
+| `Call::create('m')->with(...)`               | `new WithoutReturn('m', [...])`                          |
+| `->with(new ArgumentCallback(...))` / any `ArgumentInterface` | `new WithCallback('m', ...)`             |
+
+Notes:
+
+- A call without `->with(...)` in 1.x becomes an empty parameter list `[]` in 2.x.
+- `ArgumentInterface` implementations no longer exist. Use `WithCallback`, which receives the actual parameters and
+  must return (or throw) whatever the mocked method should return.
+- Parameters are compared with `===`. Pass `false` as the last constructor argument to compare by value instead.
 
 ## Call with ->willReturn
 
@@ -31,7 +49,7 @@ final class MyTest extends TestCase
                 ->with(new ArgumentCallback(static function ($parameter1) {
                     self::assertSame('parameter1', $parameter1);
                 }))
-                ->willReturn('returnValue')
+                ->willReturn('returnValue'),
         ]);
     }
 }
@@ -46,8 +64,8 @@ declare(strict_types=1);
 
 namespace MyProject\Tests;
 
-use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockMethod\WithCallback;
+use Chubbyphp\Mock\MockMethod\WithReturn;
 use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -108,6 +126,8 @@ final class MyTest extends TestCase
 
 ### new
 
+The callback has no access to the mock, so capture the variable by reference to return it.
+
 ```php
 <?php
 
@@ -115,8 +135,8 @@ declare(strict_types=1);
 
 namespace MyProject\Tests;
 
-use Chubbyphp\Mock\MockMethod\WithReturnSelf;
 use Chubbyphp\Mock\MockMethod\WithCallback;
+use Chubbyphp\Mock\MockMethod\WithReturnSelf;
 use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -140,6 +160,8 @@ final class MyTest extends TestCase
 ```
 
 ## Call with ->willThrowException
+
+### old
 
 ```php
 <?php
@@ -184,8 +206,8 @@ declare(strict_types=1);
 
 namespace MyProject\Tests;
 
-use Chubbyphp\Mock\MockMethod\WithException;
 use Chubbyphp\Mock\MockMethod\WithCallback;
+use Chubbyphp\Mock\MockMethod\WithException;
 use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -239,7 +261,7 @@ final class MyTest extends TestCase
             Call::create('methodName')
                 ->with(new ArgumentCallback(static function ($parameter1) {
                     self::assertSame('parameter1', $parameter1);
-                }))
+                })),
         ]);
     }
 }
@@ -254,8 +276,8 @@ declare(strict_types=1);
 
 namespace MyProject\Tests;
 
-use Chubbyphp\Mock\MockMethod\WithoutReturn;
 use Chubbyphp\Mock\MockMethod\WithCallback;
+use Chubbyphp\Mock\MockMethod\WithoutReturn;
 use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 
