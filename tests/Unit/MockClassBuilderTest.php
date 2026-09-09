@@ -37,7 +37,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> final class Chubbyphp_Tests_Mock_Sample_ByReference_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\ByReference ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-8
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-8
 
                   - Constants [0] {
                   }
@@ -54,7 +54,7 @@ final class MockClassBuilderTest extends TestCase
 
                   - Methods [3] {
                     Method [ <user, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
@@ -62,11 +62,11 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ByReference, prototype Chubbyphp\\Tests\\Mock\\Sample\\ByReference> public method toLower ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 6 - 6
 
                       - Parameters [1] {
                         Parameter #0 [ <required> string &\$text ]
@@ -94,7 +94,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> final class Chubbyphp_Tests_Mock_Sample_DefaultParameters_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\DefaultParameters ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-10
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-10
 
                   - Constants [6] {
                     Constant [ public null NULL ] {  }
@@ -110,7 +110,7 @@ final class MockClassBuilderTest extends TestCase
 
                   - Static methods [1] {
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\DefaultParameters, prototype Chubbyphp\\Tests\\Mock\\Sample\\DefaultParameters> static public method staticDefaultParameters ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 8 - 8
 
                       - Parameters [26] {
                         Parameter #0 [ <optional> null \$null = NULL ]
@@ -150,7 +150,7 @@ final class MockClassBuilderTest extends TestCase
 
                   - Methods [3] {
                     Method [ <user, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
@@ -158,11 +158,11 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\DefaultParameters, prototype Chubbyphp\\Tests\\Mock\\Sample\\DefaultParameters> public method defaultParameters ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 6 - 6
 
                       - Parameters [26] {
                         Parameter #0 [ <optional> null \$null = NULL ]
@@ -215,7 +215,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> final class Chubbyphp_Tests_Mock_Sample_NestedWithParents_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\NestedWithParents ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-20
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-20
 
                   - Constants [0] {
                   }
@@ -232,7 +232,7 @@ final class MockClassBuilderTest extends TestCase
 
                   - Methods [9] {
                     Method [ <user, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
@@ -240,11 +240,11 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ParentD, prototype Chubbyphp\\Tests\\Mock\\Sample\\ParentD> public method d ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 6 - 6
 
                       - Parameters [1] {
                         Parameter #0 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\ParentD \$self = new \\Chubbyphp\\Tests\\Mock\\Sample\\ParentD() ]
@@ -253,7 +253,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ParentD, prototype Chubbyphp\\Tests\\Mock\\Sample\\ParentD> public method dc ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 8 - 8
 
                       - Parameters [1] {
                         Parameter #0 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\ParentC \$parent = new \\Chubbyphp\\Tests\\Mock\\Sample\\ParentC() ]
@@ -262,7 +262,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ParentC, prototype Chubbyphp\\Tests\\Mock\\Sample\\ParentC> public method c ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 10 - 10
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 10 - 10
 
                       - Parameters [1] {
                         Parameter #0 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\ParentC \$self = new \\Chubbyphp\\Tests\\Mock\\Sample\\ParentC() ]
@@ -271,7 +271,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ParentC, prototype Chubbyphp\\Tests\\Mock\\Sample\\ParentC> public method cb ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 12 - 12
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 12 - 12
 
                       - Parameters [1] {
                         Parameter #0 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\ParentB \$parent = new \\Chubbyphp\\Tests\\Mock\\Sample\\ParentB() ]
@@ -280,7 +280,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ParentB, prototype Chubbyphp\\Tests\\Mock\\Sample\\ParentB> public method b ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 14 - 14
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 14 - 14
 
                       - Parameters [1] {
                         Parameter #0 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\ParentB \$self = new \\Chubbyphp\\Tests\\Mock\\Sample\\ParentB() ]
@@ -289,7 +289,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ParentB, prototype Chubbyphp\\Tests\\Mock\\Sample\\ParentB> public method ba ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 16 - 16
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 16 - 16
 
                       - Parameters [1] {
                         Parameter #0 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\ParentA \$parent = new \\Chubbyphp\\Tests\\Mock\\Sample\\ParentA() ]
@@ -298,7 +298,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\ParentA, prototype Chubbyphp\\Tests\\Mock\\Sample\\ParentA> public method a ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 18 - 18
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 18 - 18
 
                       - Parameters [1] {
                         Parameter #0 [ <optional> Chubbyphp\\Tests\\Mock\\Sample\\ParentA \$self = new \\Chubbyphp\\Tests\\Mock\\Sample\\ParentA() ]
@@ -326,7 +326,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> final class Psr_Http_Message_ServerRequestInterface_Mock implements Psr\\Http\\Message\\ServerRequestInterface, Psr\\Http\\Message\\MessageInterface, Psr\\Http\\Message\\RequestInterface ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-66
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-66
 
                   - Constants [0] {
                   }
@@ -343,7 +343,7 @@ final class MockClassBuilderTest extends TestCase
 
                   - Methods [32] {
                     Method [ <user, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
@@ -351,11 +351,11 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\ServerRequestInterface> public method getServerParams ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 6 - 6
 
                       - Parameters [0] {
                       }
@@ -363,7 +363,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\ServerRequestInterface> public method getCookieParams ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 8 - 8
 
                       - Parameters [0] {
                       }
@@ -371,7 +371,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\ServerRequestInterface> public method withCookieParams ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 10 - 10
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 10 - 10
 
                       - Parameters [1] {
                         Parameter #0 [ <required> array \$cookies ]
@@ -380,7 +380,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\ServerRequestInterface> public method getQueryParams ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 12 - 12
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 12 - 12
 
                       - Parameters [0] {
                       }
@@ -388,7 +388,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\ServerRequestInterface> public method withQueryParams ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 14 - 14
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 14 - 14
 
                       - Parameters [1] {
                         Parameter #0 [ <required> array \$query ]
@@ -397,7 +397,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\ServerRequestInterface> public method getUploadedFiles ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 16 - 16
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 16 - 16
 
                       - Parameters [0] {
                       }
@@ -405,7 +405,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\ServerRequestInterface> public method withUploadedFiles ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 18 - 18
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 18 - 18
 
                       - Parameters [1] {
                         Parameter #0 [ <required> array \$uploadedFiles ]
@@ -414,11 +414,11 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\ServerRequestInterface> public method getParsedBody ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 20 - 20
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 20 - 20
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\ServerRequestInterface> public method withParsedBody ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 22 - 22
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 22 - 22
 
                       - Parameters [1] {
                         Parameter #0 [ <required> \$data ]
@@ -427,7 +427,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\ServerRequestInterface> public method getAttributes ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 24 - 24
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 24 - 24
 
                       - Parameters [0] {
                       }
@@ -435,7 +435,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\ServerRequestInterface> public method getAttribute ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 26 - 26
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 26 - 26
 
                       - Parameters [2] {
                         Parameter #0 [ <required> string \$name ]
@@ -444,7 +444,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\ServerRequestInterface> public method withAttribute ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 28 - 28
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 28 - 28
 
                       - Parameters [2] {
                         Parameter #0 [ <required> string \$name ]
@@ -454,7 +454,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\ServerRequestInterface> public method withoutAttribute ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 30 - 30
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 30 - 30
 
                       - Parameters [1] {
                         Parameter #0 [ <required> string \$name ]
@@ -463,7 +463,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\RequestInterface> public method getRequestTarget ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 32 - 32
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 32 - 32
 
                       - Parameters [0] {
                       }
@@ -471,7 +471,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\RequestInterface> public method withRequestTarget ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 34 - 34
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 34 - 34
 
                       - Parameters [1] {
                         Parameter #0 [ <required> string \$requestTarget ]
@@ -480,7 +480,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\RequestInterface> public method getMethod ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 36 - 36
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 36 - 36
 
                       - Parameters [0] {
                       }
@@ -488,7 +488,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\RequestInterface> public method withMethod ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 38 - 38
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 38 - 38
 
                       - Parameters [1] {
                         Parameter #0 [ <required> string \$method ]
@@ -497,7 +497,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\RequestInterface> public method getUri ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 40 - 40
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 40 - 40
 
                       - Parameters [0] {
                       }
@@ -505,7 +505,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\RequestInterface> public method withUri ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 42 - 42
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 42 - 42
 
                       - Parameters [2] {
                         Parameter #0 [ <required> Psr\\Http\\Message\\UriInterface \$uri ]
@@ -515,7 +515,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\MessageInterface> public method getProtocolVersion ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 44 - 44
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 44 - 44
 
                       - Parameters [0] {
                       }
@@ -523,7 +523,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\MessageInterface> public method withProtocolVersion ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 46 - 46
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 46 - 46
 
                       - Parameters [1] {
                         Parameter #0 [ <required> string \$version ]
@@ -532,7 +532,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\MessageInterface> public method getHeaders ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 48 - 48
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 48 - 48
 
                       - Parameters [0] {
                       }
@@ -540,7 +540,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\MessageInterface> public method hasHeader ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 50 - 50
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 50 - 50
 
                       - Parameters [1] {
                         Parameter #0 [ <required> string \$name ]
@@ -549,7 +549,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\MessageInterface> public method getHeader ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 52 - 52
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 52 - 52
 
                       - Parameters [1] {
                         Parameter #0 [ <required> string \$name ]
@@ -558,7 +558,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\MessageInterface> public method getHeaderLine ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 54 - 54
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 54 - 54
 
                       - Parameters [1] {
                         Parameter #0 [ <required> string \$name ]
@@ -567,7 +567,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\MessageInterface> public method withHeader ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 56 - 56
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 56 - 56
 
                       - Parameters [2] {
                         Parameter #0 [ <required> string \$name ]
@@ -577,7 +577,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\MessageInterface> public method withAddedHeader ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 58 - 58
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 58 - 58
 
                       - Parameters [2] {
                         Parameter #0 [ <required> string \$name ]
@@ -587,7 +587,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\MessageInterface> public method withoutHeader ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 60 - 60
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 60 - 60
 
                       - Parameters [1] {
                         Parameter #0 [ <required> string \$name ]
@@ -596,7 +596,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\MessageInterface> public method getBody ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 62 - 62
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 62 - 62
 
                       - Parameters [0] {
                       }
@@ -604,7 +604,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Psr\\Http\\Message\\MessageInterface> public method withBody ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 64 - 64
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 64 - 64
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Psr\\Http\\Message\\StreamInterface \$body ]
@@ -632,7 +632,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> final class Chubbyphp_Tests_Mock_Sample_Sample_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\Sample ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-16
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-16
 
                   - Constants [0] {
                   }
@@ -649,7 +649,7 @@ final class MockClassBuilderTest extends TestCase
 
                   - Methods [6] {
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
@@ -657,11 +657,11 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method setInitialized ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 8 - 8
 
                       - Parameters [1] {
                         Parameter #0 [ <required> bool \$initialized ]
@@ -670,7 +670,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method getInitialized ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 10 - 10
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 10 - 10
 
                       - Parameters [0] {
                       }
@@ -678,7 +678,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method setPrevious ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 12 - 12
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 12 - 12
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Tests\\Mock\\Sample\\Sample \$previous ]
@@ -687,7 +687,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Sample, prototype Chubbyphp\\Tests\\Mock\\Sample\\Sample> public method getPrevious ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 14 - 14
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 14 - 14
 
                       - Parameters [0] {
                       }
@@ -714,7 +714,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> final class Chubbyphp_Tests_Mock_Sample_Variadic_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\Variadic ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-8
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-8
 
                   - Constants [0] {
                   }
@@ -731,7 +731,7 @@ final class MockClassBuilderTest extends TestCase
 
                   - Methods [3] {
                     Method [ <user, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
@@ -739,11 +739,11 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\Variadic, prototype Chubbyphp\\Tests\\Mock\\Sample\\Variadic> public method join ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 6 - 6
 
                       - Parameters [2] {
                         Parameter #0 [ <required> string \$separator ]
@@ -809,7 +809,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> <iterateable> final class Traversable_Mock implements Traversable, IteratorAggregate ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-8
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-8
 
                   - Constants [0] {
                   }
@@ -826,7 +826,7 @@ final class MockClassBuilderTest extends TestCase
 
                   - Methods [3] {
                     Method [ <user, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
@@ -834,11 +834,11 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
                     }
 
                     Method [ <user, prototype IteratorAggregate> public method getIterator ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 6 - 6
 
                       - Parameters [0] {
                       }
@@ -865,7 +865,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> <iterateable> final class Chubbyphp_Tests_Mock_Sample_TraversableInterface_Mock implements Chubbyphp\\Tests\\Mock\\Sample\\TraversableInterface, IteratorAggregate, Traversable ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-10
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-10
 
                   - Constants [0] {
                   }
@@ -882,7 +882,7 @@ final class MockClassBuilderTest extends TestCase
 
                   - Methods [4] {
                     Method [ <user, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
@@ -890,11 +890,11 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
                     }
 
                     Method [ <user, prototype IteratorAggregate> public method getIterator ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 6 - 6
 
                       - Parameters [0] {
                       }
@@ -902,7 +902,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Chubbyphp\\Tests\\Mock\\Sample\\TraversableInterface> public method count ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 8 - 8
 
                       - Parameters [0] {
                       }
@@ -929,7 +929,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> <iterateable> final class Chubbyphp_Tests_Mock_Sample_AbstractTraversable_Mock extends Chubbyphp\\Tests\\Mock\\Sample\\AbstractTraversable implements Traversable, IteratorAggregate ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-10
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-10
 
                   - Constants [0] {
                   }
@@ -946,7 +946,7 @@ final class MockClassBuilderTest extends TestCase
 
                   - Methods [4] {
                     Method [ <user, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
@@ -954,11 +954,11 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
                     }
 
                     Method [ <user, prototype IteratorAggregate> public method getIterator ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 6 - 6
 
                       - Parameters [0] {
                       }
@@ -966,7 +966,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, overwrites Chubbyphp\\Tests\\Mock\\Sample\\AbstractTraversable, prototype Chubbyphp\\Tests\\Mock\\Sample\\AbstractTraversable> public method isEmpty ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 8 - 8
 
                       - Parameters [0] {
                       }
@@ -993,7 +993,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> <iterateable> final class IteratorAggregate_Mock implements IteratorAggregate, Traversable ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-8
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-8
 
                   - Constants [0] {
                   }
@@ -1010,7 +1010,7 @@ final class MockClassBuilderTest extends TestCase
 
                   - Methods [3] {
                     Method [ <user, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
@@ -1018,11 +1018,11 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
                     }
 
                     Method [ <user, prototype IteratorAggregate> public method getIterator ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 6 - 6
 
                       - Parameters [0] {
                       }
@@ -1049,7 +1049,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> <iterateable> final class Chubbyphp_Tests_Mock_Sample_IteratorAggregateInterface_Mock implements Chubbyphp\\Tests\\Mock\\Sample\\IteratorAggregateInterface, Traversable, IteratorAggregate ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-10
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-10
 
                   - Constants [0] {
                   }
@@ -1066,7 +1066,7 @@ final class MockClassBuilderTest extends TestCase
 
                   - Methods [4] {
                     Method [ <user, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
@@ -1074,11 +1074,11 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
                     }
 
                     Method [ <user, prototype Chubbyphp\\Tests\\Mock\\Sample\\IteratorAggregateInterface> public method count ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 6 - 6
 
                       - Parameters [0] {
                       }
@@ -1086,7 +1086,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype IteratorAggregate> public method getIterator ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 8 - 8
 
                       - Parameters [0] {
                       }
@@ -1113,7 +1113,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> <iterateable> final class Iterator_Mock implements Iterator, Traversable ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-16
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-16
 
                   - Constants [0] {
                   }
@@ -1130,7 +1130,7 @@ final class MockClassBuilderTest extends TestCase
 
                   - Methods [7] {
                     Method [ <user, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
@@ -1138,11 +1138,11 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
                     }
 
                     Method [ <user, prototype Iterator> public method current ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 6 - 6
 
                       - Parameters [0] {
                       }
@@ -1150,7 +1150,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Iterator> public method next ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 8 - 8
 
                       - Parameters [0] {
                       }
@@ -1158,7 +1158,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Iterator> public method key ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 10 - 10
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 10 - 10
 
                       - Parameters [0] {
                       }
@@ -1166,7 +1166,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Iterator> public method valid ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 12 - 12
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 12 - 12
 
                       - Parameters [0] {
                       }
@@ -1174,7 +1174,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Iterator> public method rewind ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 14 - 14
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 14 - 14
 
                       - Parameters [0] {
                       }
@@ -1201,7 +1201,7 @@ final class MockClassBuilderTest extends TestCase
         self::assertSame(
             <<<EOT
                 Class [ <user> <iterateable> final class Chubbyphp_Tests_Mock_Sample_IteratorInterface_Mock implements Chubbyphp\\Tests\\Mock\\Sample\\IteratorInterface, Traversable, Iterator ] {
-                  @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 1-18
+                  @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 1-18
 
                   - Constants [0] {
                   }
@@ -1218,7 +1218,7 @@ final class MockClassBuilderTest extends TestCase
 
                   - Methods [8] {
                     Method [ <user, ctor> public method __construct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 2 - 2
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 2 - 2
 
                       - Parameters [1] {
                         Parameter #0 [ <required> Chubbyphp\\Mock\\MockMethods \$mockMethods ]
@@ -1226,11 +1226,11 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user> public method __destruct ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 4 - 4
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 4 - 4
                     }
 
                     Method [ <user, prototype Chubbyphp\\Tests\\Mock\\Sample\\IteratorInterface> public method count ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 6 - 6
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 6 - 6
 
                       - Parameters [0] {
                       }
@@ -1238,7 +1238,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Iterator> public method current ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 8 - 8
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 8 - 8
 
                       - Parameters [0] {
                       }
@@ -1246,7 +1246,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Iterator> public method next ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 10 - 10
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 10 - 10
 
                       - Parameters [0] {
                       }
@@ -1254,7 +1254,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Iterator> public method key ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 12 - 12
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 12 - 12
 
                       - Parameters [0] {
                       }
@@ -1262,7 +1262,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Iterator> public method valid ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 14 - 14
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 14 - 14
 
                       - Parameters [0] {
                       }
@@ -1270,7 +1270,7 @@ final class MockClassBuilderTest extends TestCase
                     }
 
                     Method [ <user, prototype Iterator> public method rewind ] {
-                      @@ {$cwd}/src/MockClassBuilder.php(37) : eval()'d code 16 - 16
+                      @@ {$cwd}/src/MockClassBuilder.php(35) : eval()'d code 16 - 16
 
                       - Parameters [0] {
                       }

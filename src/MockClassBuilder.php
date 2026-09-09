@@ -32,8 +32,6 @@ final class MockClassBuilder
 
         $mockedClass = $this->mockClass($reflectionClass, $mockClassName);
 
-        // echo $mockedClass;
-
         eval($mockedClass); // NOSONAR
 
         return $mockClassName;
@@ -347,40 +345,29 @@ final class MockClassBuilder
 
             public function enterNode(Node $node): null
             {
-                if (!($node instanceof Name && !$node->isFullyQualified())) {
-                    return null;
+                if ($node instanceof Name && !$node->isFullyQualified()) {
+                    $this->resolveName($node);
                 }
 
-                if ('self' === $node->name) {
+                return null;
+            }
+
+            private function resolveName(Name $node): void
+            {
+                if (\in_array($node->name, ['self', 'parent'], true)) {
                     $reflectionMethod = new \ReflectionMethod($this->mockClassBuilder, 'replaceSelfWithOriginalClassInType');
 
                     /** @var non-empty-string */
-                    $name = $reflectionMethod->invoke($this->mockClassBuilder, $this->reflectionClasses, $this->methodName, 'self');
+                    $name = $reflectionMethod->invoke($this->mockClassBuilder, $this->reflectionClasses, $this->methodName, $node->name);
                     $node->name = $name;
-
-                    return null;
-                }
-
-                if ('parent' === $node->name) {
-                    $reflectionMethod = new \ReflectionMethod($this->mockClassBuilder, 'replaceSelfWithOriginalClassInType');
-
-                    /** @var non-empty-string */
-                    $name = $reflectionMethod->invoke($this->mockClassBuilder, $this->reflectionClasses, $this->methodName, 'parent');
-                    $node->name = $name;
-
-                    return null;
-                }
-
-                // when global const are not added as \CONST_NAME
-                if (strpos($node->name, '\\')) {
+                } elseif (strpos($node->name, '\\')) {
+                    // when global const are not added as \CONST_NAME
                     $parts = explode('\\', $node->name);
 
                     /** @var non-empty-string $name */
                     $name = $parts[\count($parts) - 1];
                     $node->name = $name;
                 }
-
-                return null;
             }
         });
 
@@ -411,7 +398,7 @@ final class MockClassBuilder
             $classConstantMatches
         );
 
-        foreach ($classConstantMatches[0] as $i => $match) {
+        foreach ($classConstantMatches[0] as $match) {
             $parameter = str_replace(
                 $match,
                 $this->resolveOriginalClassConst($reflectionClass, $match),
@@ -440,33 +427,50 @@ final class MockClassBuilder
         \ReflectionClass $reflectionClass,
         array|bool|float|int|string|null $value
     ): string {
-        if (null === $value) {
-            return 'null';
-        }
-
-        if (\is_bool($value)) {
-            return $value ? 'true' : 'false';
-        }
-
-        if (\is_int($value) || \is_float($value)) {
-            return (string) $value;
+        if (\is_array($value)) {
+            return $this->resolveOriginalClassConstArray($reflectionClass, $value);
         }
 
         if (\is_string($value)) {
-            $matches = [];
-            if (preg_match('/^'.$this->originalClassConstPattern($reflectionClass).'$/', $value, $matches)) {
-                /** @var null|bool|float|int|string */
-                $constantValue = $reflectionClass->getConstant($matches[1]);
-
-                return $this->resolveOriginalClassConst(
-                    $reflectionClass,
-                    $constantValue
-                );
-            }
-
-            return '\''.$value.'\'';
+            return $this->resolveOriginalClassConstString($reflectionClass, $value);
         }
 
+        return $this->resolveOriginalClassConstScalar($value);
+    }
+
+    private function resolveOriginalClassConstScalar(bool|float|int|null $value): string
+    {
+        return match (true) {
+            null === $value => 'null',
+            \is_bool($value) => $value ? 'true' : 'false',
+            default => (string) $value,
+        };
+    }
+
+    /**
+     * @param \ReflectionClass<object> $reflectionClass
+     */
+    private function resolveOriginalClassConstString(\ReflectionClass $reflectionClass, string $value): string
+    {
+        $matches = [];
+        if (preg_match('/^'.$this->originalClassConstPattern($reflectionClass).'$/', $value, $matches)) {
+            /** @var null|bool|float|int|string */
+            $constantValue = $reflectionClass->getConstant($matches[1]);
+
+            return $this->resolveOriginalClassConst($reflectionClass, $constantValue);
+        }
+
+        return '\''.$value.'\'';
+    }
+
+    /**
+     * @template T of null|bool|float|int|string
+     *
+     * @param \ReflectionClass<object> $reflectionClass
+     * @param array<T>                 $value
+     */
+    private function resolveOriginalClassConstArray(\ReflectionClass $reflectionClass, array $value): string
+    {
         $items = [];
         foreach ($value as $subKey => $subValue) {
             $items[] = $this->resolveOriginalClassConst($reflectionClass, $subKey)

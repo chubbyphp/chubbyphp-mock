@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Chubbyphp\Mock\MockMethod;
 
-final class WithException implements MockMethodInterface
+final class WithException implements MockMethodInterface // NOSONAR
 {
     private readonly WithoutReturn $withoutReturn;
 
@@ -31,7 +31,7 @@ final class WithException implements MockMethodInterface
         string $in,
         string $class,
         object $object,
-        int $Index,
+        int $index,
         string $actualName,
         mixed $actualParameters,
     ): mixed {
@@ -39,7 +39,7 @@ final class WithException implements MockMethodInterface
             $in,
             $class,
             $object,
-            $Index,
+            $index,
             $actualName,
             $actualParameters
         );

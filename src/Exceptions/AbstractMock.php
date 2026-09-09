@@ -13,19 +13,12 @@ abstract class AbstractMock extends \RuntimeException
      */
     final protected function getData(mixed $value, array &$splObjectHashes = []): mixed
     {
-        if (\is_array($value)) {
-            return $this->getArrayData($value, $splObjectHashes);
-        }
-
-        if (\is_object($value)) {
-            return $this->getObjectData($value, $splObjectHashes);
-        }
-
-        if (\is_resource($value)) {
-            return '(resource)';
-        }
-
-        return $value;
+        return match (true) {
+            \is_array($value) => $this->getArrayData($value, $splObjectHashes),
+            \is_object($value) => $this->getObjectData($value, $splObjectHashes),
+            \is_resource($value) => '(resource)',
+            default => $value,
+        };
     }
 
     /**
@@ -65,29 +58,53 @@ abstract class AbstractMock extends \RuntimeException
 
         $reflectionObject = new \ReflectionObject($value);
 
+        $data = $this->getSerializedObjectData($reflectionObject, $value, $splObjectHashes)
+            ?? $this->getPropertiesObjectData($reflectionObject, $value, $splObjectHashes);
+
+        $data['__CLASS__'] = $value::class;
+
+        return $data;
+    }
+
+    /**
+     * @param array<string, bool> &$splObjectHashes
+     *
+     * @return null|array<mixed>
+     */
+    private function getSerializedObjectData(
+        \ReflectionObject $reflectionObject,
+        object $value,
+        array &$splObjectHashes
+    ): ?array {
         foreach (['__serialize', '__sleep'] as $method) {
             if ($reflectionObject->hasMethod($method)) {
                 $reflectionMethod = $reflectionObject->getMethod($method);
 
                 /** @var array<mixed> */
-                $data = $this->getData($reflectionMethod->invoke($value), $splObjectHashes);
-
-                $data['__CLASS__'] = $value::class;
-
-                return $data;
+                return $this->getData($reflectionMethod->invoke($value), $splObjectHashes);
             }
         }
 
+        return null;
+    }
+
+    /**
+     * @param array<string, bool> &$splObjectHashes
+     *
+     * @return array<mixed>
+     */
+    private function getPropertiesObjectData(
+        \ReflectionObject $reflectionObject,
+        object $value,
+        array &$splObjectHashes
+    ): array {
         $data = [];
         foreach ($reflectionObject->getProperties() as $reflectionProperty) {
             $subKey = $reflectionProperty->getName();
-            $subValue = $reflectionProperty->isInitialized($value)
-                ? $reflectionProperty->getValue($value) : '(uninitialized)';
+            $subValue = Utils::getPropertyValue($reflectionProperty, $value);
 
             $data[$subKey] = $this->getData($subValue, $splObjectHashes);
         }
-
-        $data['__CLASS__'] = $value::class;
 
         return $data;
     }

@@ -13,7 +13,7 @@ interface MockMethodInterface
         string $in,
         string $class,
         object $object,
-        int $Index,
+        int $index,
         string $actualName,
         array $actualParameters,
     );

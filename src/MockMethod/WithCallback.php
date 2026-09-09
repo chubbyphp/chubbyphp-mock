@@ -30,7 +30,7 @@ final class WithCallback implements MockMethodInterface
         string $in,
         string $class,
         object $object,
-        int $Index,
+        int $index,
         string $actualName,
         array $actualParameters,
     ): mixed {
@@ -38,7 +38,7 @@ final class WithCallback implements MockMethodInterface
             throw new MethodNameMismatch(
                 $in,
                 $class,
-                $Index,
+                $index,
                 $actualName,
                 $this->expectedName
             );

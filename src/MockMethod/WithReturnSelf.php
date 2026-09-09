@@ -30,7 +30,7 @@ final class WithReturnSelf implements MockMethodInterface
         string $in,
         string $class,
         object $object,
-        int $Index,
+        int $index,
         string $actualName,
         array $actualParameters,
     ): mixed {
@@ -38,7 +38,7 @@ final class WithReturnSelf implements MockMethodInterface
             $in,
             $class,
             $object,
-            $Index,
+            $index,
             $actualName,
             $actualParameters
         );

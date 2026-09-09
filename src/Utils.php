@@ -12,4 +12,10 @@ final class Utils
 
         return $cwd ? str_replace($cwd, '(project)', $path) : $path;
     }
+
+    public static function getPropertyValue(\ReflectionProperty $reflectionProperty, object $object): mixed
+    {
+        return $reflectionProperty->isInitialized($object)
+            ? $reflectionProperty->getValue($object) : '(uninitialized)';
+    }
 }

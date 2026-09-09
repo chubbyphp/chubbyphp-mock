@@ -6,7 +6,7 @@ namespace Chubbyphp\Mock\Exceptions;
 
 final class ParameterMismatch extends AbstractMock
 {
-    public function __construct(
+    public function __construct(// NOSONAR
         string $in,
         string $class,
         int $index,

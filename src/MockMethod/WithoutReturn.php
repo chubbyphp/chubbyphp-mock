@@ -7,6 +7,7 @@ namespace Chubbyphp\Mock\MockMethod;
 use Chubbyphp\Mock\Exceptions\MethodNameMismatch;
 use Chubbyphp\Mock\Exceptions\ParameterMismatch;
 use Chubbyphp\Mock\Exceptions\ParametersCountMismatch;
+use Chubbyphp\Mock\Utils;
 
 final class WithoutReturn implements MockMethodInterface
 {
@@ -22,7 +23,7 @@ final class WithoutReturn implements MockMethodInterface
         string $in,
         string $class,
         object $object,
-        int $Index,
+        int $index,
         string $actualName,
         array $actualParameters,
     ): void {
@@ -30,7 +31,7 @@ final class WithoutReturn implements MockMethodInterface
             throw new MethodNameMismatch(
                 $in,
                 $class,
-                $Index,
+                $index,
                 $actualName,
                 $this->expectedName
             );
@@ -39,7 +40,7 @@ final class WithoutReturn implements MockMethodInterface
         $this->validateParameters(
             $in,
             $class,
-            $Index,
+            $index,
             $actualName,
             $actualParameters,
             $this->expectedParameters,
@@ -54,7 +55,7 @@ final class WithoutReturn implements MockMethodInterface
     private function validateParameters(
         string $in,
         string $class,
-        int $Index,
+        int $index,
         string $actualName,
         array $actualParameters,
         array $expectedParameters,
@@ -67,7 +68,7 @@ final class WithoutReturn implements MockMethodInterface
             throw new ParametersCountMismatch(
                 $in,
                 $class,
-                $Index,
+                $index,
                 $actualName,
                 $actualParametersCount,
                 $expectedParametersCount,
@@ -82,7 +83,7 @@ final class WithoutReturn implements MockMethodInterface
                     throw new ParameterMismatch(
                         $in,
                         $class,
-                        $Index,
+                        $index,
                         $actualName,
                         $parameterIndex,
                         $actualParameter,
@@ -95,7 +96,7 @@ final class WithoutReturn implements MockMethodInterface
                     throw new ParameterMismatch(
                         $in,
                         $class,
-                        $Index,
+                        $index,
                         $actualName,
                         $parameterIndex,
                         $actualParameter,
@@ -117,6 +118,11 @@ final class WithoutReturn implements MockMethodInterface
             return false;
         }
 
+        return $this->compareSameTypeEqual($actual, $expected);
+    }
+
+    private function compareSameTypeEqual(mixed $actual, mixed $expected): bool
+    {
         if (\is_array($actual)) {
             /** @var array<mixed> $expected */
             return $this->compareArrayEqual($actual, $expected);
@@ -156,10 +162,8 @@ final class WithoutReturn implements MockMethodInterface
         }
 
         foreach ($reflectionObject->getProperties() as $reflectionProperty) {
-            $actualPropertyValue = $reflectionProperty->isInitialized($actual)
-                ? $reflectionProperty->getValue($actual) : '(uninitialized)';
-            $expectedPropertyValue = $reflectionProperty->isInitialized($expected)
-                ? $reflectionProperty->getValue($expected) : '(uninitialized)';
+            $actualPropertyValue = Utils::getPropertyValue($reflectionProperty, $actual);
+            $expectedPropertyValue = Utils::getPropertyValue($reflectionProperty, $expected);
 
             if (!$this->compareEqual($actualPropertyValue, $expectedPropertyValue)) {
                 return false;
@@ -180,13 +184,9 @@ final class WithoutReturn implements MockMethodInterface
         }
 
         foreach ($actual as $actualSubKey => $actualSubValue) {
-            if (!\array_key_exists($actualSubKey, $expected)) {
-                return false;
-            }
-
-            $expectedSubValue = $expected[$actualSubKey];
-
-            if (!$this->compareEqual($actualSubValue, $expectedSubValue)) {
+            if (!\array_key_exists($actualSubKey, $expected)
+                || !$this->compareEqual($actualSubValue, $expected[$actualSubKey])
+            ) {
                 return false;
             }
         }
