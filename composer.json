@@ -1,7 +1,18 @@
 {
     "name": "chubbyphp/chubbyphp-mock",
-    "description": "A strict mocking solution.",
-    "keywords": ["chubbyphp", "phpunit", "mock"],
+    "description": "A strict mocking solution. It works with any testing framework; the examples below use PHPUnit.",
+    "keywords": [
+        "chubbyphp",
+        "mock",
+        "mock-objects",
+        "mocking",
+        "mocking-framework",
+        "test-double",
+        "strict",
+        "test-double",
+        "testing",
+        "phpunit"
+    ],
     "license": "MIT",
     "authors": [
         {
