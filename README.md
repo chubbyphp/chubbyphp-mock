@@ -119,6 +119,187 @@ final class PingRequestHandlerTest extends TestCase
 }
 ```
 
+## Other testing frameworks
+
+chubbyphp-mock has no dependency on PHPUnit. A host framework only needs to provide a place to build the mocks,
+a way to assert inside a `WithCallback`, and a test scope that ends when the test ends.
+
+Unconsumed expectations are reported from the mock's destructor. Keep mocks in local variables of the test and do not
+store them in long-lived properties, statics or shared setup, otherwise the check is delayed and the failure is
+attributed to the wrong place.
+
+The examples below use the same `PingRequestHandler` scenario as the PHPUnit example above.
+
+### Pest
+
+`expect()` replaces the PHPUnit assertion inside the callback, everything else stays the same.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Chubbyphp\Mock\MockMethod\WithCallback;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockMethod\WithReturnSelf;
+use Chubbyphp\Mock\MockObjectBuilder;
+use MyProject\RequestHandler\PingRequestHandler;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
+
+it('handles a ping request', function (): void {
+    $builder = new MockObjectBuilder();
+
+    $request = $builder->create(ServerRequestInterface::class, []);
+
+    $responseBody = $builder->create(StreamInterface::class, [
+        new WithCallback('write', static function (string $string): int {
+            expect(json_decode($string, true))->toHaveKey('datetime');
+
+            return \strlen($string);
+        }),
+    ]);
+
+    $response = $builder->create(ResponseInterface::class, [
+        new WithReturnSelf('withHeader', ['Content-Type', 'application/json']),
+        new WithReturnSelf('withHeader', ['Cache-Control', 'no-cache, no-store, must-revalidate']),
+        new WithReturnSelf('withHeader', ['Pragma', 'no-cache']),
+        new WithReturnSelf('withHeader', ['Expires', '0']),
+        new WithReturn('getBody', [], $responseBody),
+    ]);
+
+    $responseFactory = $builder->create(ResponseFactoryInterface::class, [
+        new WithReturn('createResponse', [200, ''], $response),
+    ]);
+
+    $requestHandler = new PingRequestHandler($responseFactory);
+
+    expect($requestHandler->handle($request))->toBe($response);
+});
+```
+
+### Codeception
+
+Codeception unit tests are PHPUnit test cases with a different base class, so the PHPUnit example works unchanged.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace MyProject\Tests\Unit\RequestHandler;
+
+use Chubbyphp\Mock\MockMethod\WithCallback;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockMethod\WithReturnSelf;
+use Chubbyphp\Mock\MockObjectBuilder;
+use Codeception\Test\Unit;
+use MyProject\RequestHandler\PingRequestHandler;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
+
+final class PingRequestHandlerTest extends Unit
+{
+    public function testHandle(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        $request = $builder->create(ServerRequestInterface::class, []);
+
+        $responseBody = $builder->create(StreamInterface::class, [
+            new WithCallback('write', function (string $string): int {
+                $data = json_decode($string, true);
+                $this->assertArrayHasKey('datetime', $data);
+
+                return \strlen($string);
+            }),
+        ]);
+
+        $response = $builder->create(ResponseInterface::class, [
+            new WithReturnSelf('withHeader', ['Content-Type', 'application/json']),
+            new WithReturnSelf('withHeader', ['Cache-Control', 'no-cache, no-store, must-revalidate']),
+            new WithReturnSelf('withHeader', ['Pragma', 'no-cache']),
+            new WithReturnSelf('withHeader', ['Expires', '0']),
+            new WithReturn('getBody', [], $responseBody),
+        ]);
+
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, [
+            new WithReturn('createResponse', [200, ''], $response),
+        ]);
+
+        $requestHandler = new PingRequestHandler($responseFactory);
+
+        $this->assertSame($response, $requestHandler->handle($request));
+    }
+}
+```
+
+### phpspec
+
+phpspec injects lenient, unordered Prophecy collaborators by default. Building the mocks with chubbyphp-mock instead
+gives the spec a strict, ordered script of expected calls.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace spec\MyProject\RequestHandler;
+
+use Chubbyphp\Mock\MockMethod\WithCallback;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockMethod\WithReturnSelf;
+use Chubbyphp\Mock\MockObjectBuilder;
+use MyProject\RequestHandler\PingRequestHandler;
+use PhpSpec\ObjectBehavior;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
+
+final class PingRequestHandlerSpec extends ObjectBehavior
+{
+    public function it_handles_a_ping_request(): void
+    {
+        $builder = new MockObjectBuilder();
+
+        $request = $builder->create(ServerRequestInterface::class, []);
+
+        $responseBody = $builder->create(StreamInterface::class, [
+            // phpspec has no standalone assertion API, so fail with an exception
+            new WithCallback('write', static function (string $string): int {
+                $data = json_decode($string, true);
+                if (!\array_key_exists('datetime', $data)) {
+                    throw new \RuntimeException('Missing key "datetime" in written JSON');
+                }
+
+                return \strlen($string);
+            }),
+        ]);
+
+        $response = $builder->create(ResponseInterface::class, [
+            new WithReturnSelf('withHeader', ['Content-Type', 'application/json']),
+            new WithReturnSelf('withHeader', ['Cache-Control', 'no-cache, no-store, must-revalidate']),
+            new WithReturnSelf('withHeader', ['Pragma', 'no-cache']),
+            new WithReturnSelf('withHeader', ['Expires', '0']),
+            new WithReturn('getBody', [], $responseBody),
+        ]);
+
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, [
+            new WithReturn('createResponse', [200, ''], $response),
+        ]);
+
+        $this->beConstructedWith($responseFactory);
+
+        $this->handle($request)->shouldReturn($response);
+    }
+}
+```
+
 ## FAQ
 
 ### Howto mock final classes/methods
