@@ -33,7 +33,7 @@ values, and the file and line where the mock was created.
 ## Requirements
 
  * php: ^8.3
- * [nikic/php-parser][2]: ^5.8
+ * [nikic/php-parser][2]: ^5.9
 
 ## Installation
 
